@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -11,17 +12,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Instituciones', function (Blueprint $table) {
-            $table->tinyIncrements('IDInstitucion');
-            $table->string('nombre', 250);
-            $table->tinyInteger('letraRif')->unsigned();
-            $table->bigInteger('numeroRif')->unsigned()->unique();
-            $table->string('direccion', 150);
-            $table->string('telefono', 13);
-            $table->string('logoPath', 255)->nullable();
+        Schema::create('PlanesDeEstudios', function (Blueprint $table) {
+            $table->id('IDPlanEstudio');
+            $table->string('nombre', 100);
+            $table->string('codigo', 50);
+            $table->string('descripcion', 255)->nullable();
+            $table->boolean('activo')->default(true);
+
             // Registro modificaciones
             $table->timestampTz('fechaCreado')->nullable();
             $table->timestampTz('fechaModificado')->nullable();
+            $table->softDeletesTz();
         });
     }
 
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('Instituciones');
+        Schema::dropIfExists('PlanesDeEstudios');
     }
 };

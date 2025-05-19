@@ -35,3 +35,24 @@ Route::get('/configuracion', function () {
 
     return $configuracion;
 });
+
+Route::get('/planes-estudio', function () {
+    $planesEstudio = DB::table('PlanesDeEstudios')->get();
+    return $planesEstudio;
+});
+Route::get('/planes-estudio/{planEstudio}', function ($planEstudio) {
+    $componentes = DB::table('Componentes')->where('planEstudioID', $planEstudio)->get();
+    return $componentes;
+});
+Route::get('planes-estudio/{planEstudio}/{componente}', function ($planEstudio, $componente) {
+    $materias = DB::table('Materias')->where('componenteID', $componente)->get();
+    return $materias;
+});
+Route::get('/matematicas', function () {
+    $materias = DB::table('Materias')->whereLike('nombre', '%matematica%')->get();
+    $materias->each(function ($materia) {
+        $materia->componente = DB::table('Componentes')->where('IDComponente', $materia->componenteID)->first();
+        $materia->planEstudio = DB::table('PlanesDeEstudios')->where('IDPlanEstudio', $materia->componente->planEstudioID)->first();
+    });
+    return $materias;
+});

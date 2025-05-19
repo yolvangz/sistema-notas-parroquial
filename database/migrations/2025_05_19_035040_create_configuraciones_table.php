@@ -24,7 +24,9 @@ return new class extends Migration
             $table->integer('calificacionCualitativaMinima')->unsigned();
             $table->integer('calificacionCualitativaMaxima')->unsigned();
             $table->integer('calificacionCualitativaAprobatoria')->unsigned();
-            $table->timestamps();
+            // Registro modificaciones
+            $table->timestampTz('fechaCreado')->nullable();
+            $table->timestampTz('fechaModificado')->nullable();
 
             $table->foreign('institucionID')
                 ->references('IDInstitucion')

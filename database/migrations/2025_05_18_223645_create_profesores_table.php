@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('Profesores', function (Blueprint $table) {
             // datos basicos
-            $table->increments('IDProfesor');
+            $table->id('IDProfesor');
             $table->string('nombres', 100);
             $table->string('apellidos', 100);
             $table->tinyInteger('cedulaLetra')->unsigned();

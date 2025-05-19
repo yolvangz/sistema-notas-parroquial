@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('Representantes', function (Blueprint $table) {
             // datos basicos
-            $table->bigIncrements('IDRepresentante');
+            $table->id('IDRepresentante');
             $table->string('nombres', 100);
             $table->string('apellidos', 100);
             $table->tinyInteger('cedulaLetra')->unsigned();
-            $table->bigInteger('cedulaNumero', 9)->unsigned();
+            $table->bigInteger('cedulaNumero')->unsigned();
             $table->enum('genero', ['M', 'F']);
             $table->date('fechaNacimiento');
             $table->string('direccion', 255);
