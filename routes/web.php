@@ -15,12 +15,14 @@ Route::get('/letras-cedula', function () {
 
 Route::controller(Profesores::class)->group(function () {
     Route::prefix('profesores')->group(function () {
-        Route::get('/', 'index')->name('profesores.index');
-        Route::get('/nuevo', 'create')->name('profesores.create');
-        Route::post('/', 'store')->name('profesores.store');
-        Route::get('/{id}', 'show')->name('profesores.show');
-        Route::get('/{id}/editar', 'edit')->name('profesores.edit');
-        Route::put('/{id}', 'update')->name('profesores.update');
-        Route::delete('/{id}', 'destroy')->name('profesores.destroy');
+        Route::name('profesores.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/nuevo', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{profesor}', 'show')->name('show');
+            Route::get('/{profesor}/editar', 'edit')->name('edit');
+            Route::put('/{profesor}', 'update')->name('update');
+            Route::delete('/{profesor}', 'destroy')->name('destroy');
+        });
     });
 });
