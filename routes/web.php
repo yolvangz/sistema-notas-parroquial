@@ -26,3 +26,12 @@ Route::controller(Profesores::class)->group(function () {
         });
     });
 });
+
+Route::get('/configuracion', function () {
+    $configuracion = DB::table('Configuraciones')
+        ->join('Instituciones', 'Configuraciones.institucionID', '=', 'Instituciones.IDInstitucion')
+        ->select('Configuraciones.*', 'Instituciones.*')
+        ->first();
+
+    return $configuracion;
+});
