@@ -44,7 +44,7 @@ class Profesores extends Controller
             'fechaNacimiento' => '1992-01-01',
             'fechaIngreso' => '2024-06-10',
             'direccion' => '345 Second St',
-            'telefonoPrincipal' => '+58543-4654320',
+            'telefonoPrincipal' => '+585434654320',
             'email'=> 'user2@example.com'
         ];
 
