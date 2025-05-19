@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nombres', 100);
             $table->string('apellidos', 100);
             $table->tinyInteger('cedulaLetra')->unsigned();
-            $table->string('cedulaNumero', 10);
+            $table->bigInteger('cedulaNumero')->unsigned();
             $table->enum('genero', ['M', 'F']);
             $table->date('fechaNacimiento');
             $table->date('fechaIngreso');
