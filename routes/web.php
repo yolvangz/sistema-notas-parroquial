@@ -56,3 +56,11 @@ Route::get('/matematicas', function () {
     });
     return $materias;
 });
+Route::get('/secciones', function () {
+    $secciones = DB::table('Secciones')
+        ->join('Componentes', 'Secciones.componenteID', '=', 'Componentes.IDComponente')
+        ->join('PlanesDeEstudios', 'Componentes.planEstudioID', '=', 'PlanesDeEstudios.IDPlanEstudio')
+        ->select('Secciones.*', 'Componentes.nombre as componenteNombre', 'PlanesDeEstudios.nombre as planEstudioNombre')
+        ->get();
+    return $secciones;
+});

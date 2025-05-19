@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             LetrasCedulaSeeder::class,
             ParroquialConfiguracionSeeder::class,
             MediaGeneralSeeder::class,
+            PeriodoAcademicoSeeder::class,
         ]);
     }
 }
