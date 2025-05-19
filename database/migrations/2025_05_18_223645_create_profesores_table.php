@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profesores', function (Blueprint $table) {
+        Schema::create('Profesores', function (Blueprint $table) {
             // datos basicos
             $table->increments('IDProfesor');
             $table->string('nombres', 100);
@@ -37,7 +37,7 @@ return new class extends Migration
             // llaves foraneas
             $table->foreign('cedulaLetra')
                 ->references('IDLetraCedula')
-                ->on('letrasCedula')
+                ->on('LetrasCedula')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
 
@@ -53,6 +53,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('profesores');
+        Schema::dropIfExists('Profesores');
     }
 };

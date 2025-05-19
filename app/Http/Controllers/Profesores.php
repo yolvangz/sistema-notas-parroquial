@@ -11,13 +11,13 @@ class Profesores extends Controller
 {
     public function index() : View
     {
-        $profesores = DB::table('profesores')
-            ->join('letrasCedula', 'letrasCedula.IDLetraCedula', '=', 'profesores.cedulaLetra')
-            ->select('profesores.IDProfesor as id',
-                'profesores.nombres as nombres',
-                'profesores.apellidos as apellidos',
-                'letrasCedula.letra as cedulaLetra',
-                'profesores.cedulaNumero as cedulaNumero')
+        $profesores = DB::table('Profesores')
+            ->join('LetrasCedula', 'LetrasCedula.IDLetraCedula', '=', 'Profesores.cedulaLetra')
+            ->select('Profesores.IDProfesor as id',
+                'Profesores.nombres as nombres',
+                'Profesores.apellidos as apellidos',
+                'LetrasCedula.letra as cedulaLetra',
+                'Profesores.cedulaNumero as cedulaNumero')
             ->orderBy('apellidos')
             ->get();
 
@@ -30,8 +30,8 @@ class Profesores extends Controller
     }
     public function show($id) : View
     {
-        $profesor = DB::table('profesores')->where('IDProfesor', $id)->first();
-        $profesor->cedulaLetra = DB::table('letrasCedula')->where('IDLetraCedula', $profesor->cedulaLetra)->value('letra');
+        $profesor = DB::table('Profesores')->where('IDProfesor', $id)->first();
+        $profesor->cedulaLetra = DB::table('LetrasCedula')->where('IDLetraCedula', $profesor->cedulaLetra)->value('letra');
         return view('profesores.show', ['profesor' => $profesor]);
     }
     public function create() : RedirectResponse
@@ -40,6 +40,7 @@ class Profesores extends Controller
             'nombres' => 'Pedro',
             'apellidos' => 'Perez',
             'cedulaLetra' => 1,
+            'genero' => 'M',
             'cedulaNumero' => '87654321',
             'fechaNacimiento' => '1992-01-01',
             'fechaIngreso' => '2024-06-10',
@@ -48,7 +49,7 @@ class Profesores extends Controller
             'email'=> 'user2@example.com'
         ];
 
-        DB::table('profesores')->insert($dummyProfesor);
+        DB::table('Profesores')->insert($dummyProfesor);
         return redirect()->route('profesores.index');
     }
 }

@@ -21,6 +21,6 @@ class LetrasCedulaSeeder extends Seeder
             ['letra' => 'J', 'nombre' => 'Jurídico'],
             ['letra' => 'T', 'nombre' => 'Generado por el sistema'],
         ];
-        DB::table('letrasCedula')->upsert($letrasCedula, ['letra'], ['nombre']);
+        DB::table('LetrasCedula')->upsert($letrasCedula, ['letra'], ['nombre']);
     }
 }

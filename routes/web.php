@@ -9,7 +9,7 @@ Route::get('/', function () {
 });
 
 Route::get('/letras-cedula', function () {
-    $letrasCedula = DB::table('letrasCedula')->orderBy('IDLetraCedula')->select('IDLetraCedula as id', 'letra', 'nombre')->get();
+    $letrasCedula = DB::table('LetrasCedula')->orderBy('IDLetraCedula')->select('IDLetraCedula as id', 'letra', 'nombre')->get();
     return view('letrasCedula', ['letrasCedula' => $letrasCedula]);
 });
 

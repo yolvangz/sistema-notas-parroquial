@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('representantes', function (Blueprint $table) {
+        Schema::create('Representantes', function (Blueprint $table) {
             // datos basicos
             $table->bigIncrements('IDRepresentante');
             $table->string('nombres', 100);
@@ -35,7 +35,7 @@ return new class extends Migration
             // llaves foraneas
             $table->foreign('cedulaLetra')
                 ->references('IDLetraCedula')
-                ->on('letrasCedula')
+                ->on('LetrasCedula')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
 
@@ -50,6 +50,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('representantes');
+        Schema::dropIfExists('Representantes');
     }
 };

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('letrasCedula', function (Blueprint $table) {
+        Schema::create('LetrasCedula', function (Blueprint $table) {
             $table->tinyIncrements('IDLetraCedula');
             $table->char('letra', 1)->unique();
             $table->string('nombre', 50);
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('letrasCedula');
+        Schema::dropIfExists('LetrasCedula');
     }
 };

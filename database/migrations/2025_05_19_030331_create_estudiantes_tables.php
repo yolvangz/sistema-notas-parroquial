@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('estudiantes', function (Blueprint $table) {
+        Schema::create('Estudiantes', function (Blueprint $table) {
             $table->bigIncrements('IDEstudiante');
             $table->string('nombres', 100);
             $table->string('apellidos', 100);
@@ -32,7 +32,7 @@ return new class extends Migration
             // llaves foraneas
             $table->foreign('cedulaLetra')
                 ->references('IDLetraCedula')
-                ->on('letrasCedula')
+                ->on('LetrasCedula')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
 
@@ -40,19 +40,19 @@ return new class extends Migration
             $table->index(['nombres', 'apellidos'], 'idx_nombres_apellidos');
             $table->unique(['cedulaLetra', 'cedulaNumero'], 'idx_cedula');
         });
-        Schema::create('aux_representantes_estudiantes', function (Blueprint $table) {
+        Schema::create('AuxRepresentantesDelEstudiante', function (Blueprint $table) {
             $table->bigInteger('representanteID')->unsigned();
             $table->bigInteger('estudianteID')->unsigned();
             $table->boolean('representantePrincipal')->default(false);
             // llaves foraneas
             $table->foreign('representanteID')
                 ->references('IDRepresentante')
-                ->on('representantes')
+                ->on('Representantes')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
             $table->foreign('estudianteID')
                 ->references('IDEstudiante')
-                ->on('estudiantes')
+                ->on('Estudiantes')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
 
@@ -66,7 +66,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('aux_representantes_estudiantes');
-        Schema::dropIfExists('estudiantes');
+        Schema::dropIfExists('AuxRepresentantesDelEstudiante');
+        Schema::dropIfExists('Estudiantes');
     }
 };
