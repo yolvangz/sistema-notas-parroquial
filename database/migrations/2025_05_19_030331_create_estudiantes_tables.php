@@ -11,24 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profesores', function (Blueprint $table) {
-            // datos basicos
-            $table->increments('IDProfesor');
+        Schema::create('estudiantes', function (Blueprint $table) {
+            $table->bigIncrements('IDEstudiante');
             $table->string('nombres', 100);
             $table->string('apellidos', 100);
             $table->tinyInteger('cedulaLetra')->unsigned();
             $table->string('cedulaNumero', 10);
             $table->enum('genero', ['M', 'F']);
             $table->date('fechaNacimiento');
-            $table->date('fechaIngreso');
             $table->string('direccion', 255);
-            $table->string('email', 320);
-            $table->char('telefonoPrincipal', 13);
-            $table->char('telefonoSecundario', 13)->nullable();
             // Rutas de los archivos subidos
             $table->string('fotoPerfilPath', 255)->nullable();
             $table->string('cedulaPath', 255)->nullable();
-            $table->string('registroRifPath', 255)->nullable();
+            $table->string('partidaNacimientoPath', 255)->nullable();
             // Registro modificaciones
             $table->timestampTz('fechaCreado')->nullable();
             $table->timestampTz('fechaModificado')->nullable();
@@ -45,6 +40,25 @@ return new class extends Migration
             $table->index(['nombres', 'apellidos'], 'idx_nombres_apellidos');
             $table->unique(['cedulaLetra', 'cedulaNumero'], 'idx_cedula');
         });
+        Schema::create('aux_representantes_estudiantes', function (Blueprint $table) {
+            $table->bigInteger('representanteID')->unsigned();
+            $table->bigInteger('estudianteID')->unsigned();
+            $table->boolean('representantePrincipal')->default(false);
+            // llaves foraneas
+            $table->foreign('representanteID')
+                ->references('IDRepresentante')
+                ->on('representantes')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+            $table->foreign('estudianteID')
+                ->references('IDEstudiante')
+                ->on('estudiantes')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            // Indices
+            $table->unique(['representanteID', 'estudianteID'], 'idx_representante_estudiante');
+        });
     }
 
     /**
@@ -52,7 +66,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('profesores');
+        Schema::dropIfExists('aux_representantes_estudiantes');
+        Schema::dropIfExists('estudiantes');
     }
 };
