@@ -31,6 +31,7 @@ class Profesores extends Controller
     public function show($id) : View
     {
         $profesor = DB::table('profesores')->where('IDProfesor', $id)->first();
+        $profesor->cedulaLetra = DB::table('letrasCedula')->where('IDLetraCedula', $profesor->cedulaLetra)->value('letra');
         return view('profesores.show', ['profesor' => $profesor]);
     }
     public function create() : RedirectResponse
