@@ -60,7 +60,23 @@ Route::get('/secciones', function () {
     $secciones = DB::table('Secciones')
         ->join('Componentes', 'Secciones.componenteID', '=', 'Componentes.IDComponente')
         ->join('PlanesDeEstudios', 'Componentes.planEstudioID', '=', 'PlanesDeEstudios.IDPlanEstudio')
-        ->select('Secciones.*', 'Componentes.nombre as componenteNombre', 'PlanesDeEstudios.nombre as planEstudioNombre')
+        ->join('Profesores', 'Secciones.profesorGuiaID', '=', 'Profesores.IDProfesor')
+        ->select('Secciones.*', 'Componentes.nombre as componenteNombre', 'PlanesDeEstudios.nombre as planEstudioNombre', 'Profesores.nombres as profesorGuiaNombres', 'Profesores.apellidos as profesorGuiaApellidos')
         ->get();
     return $secciones;
+});
+
+Route::get('/profesor', function () {
+    $profesor = DB::table('Profesores')
+        ->join('LetrasCedula', 'Profesores.cedulaLetra', '=', 'LetrasCedula.IDLetraCedula')
+        ->select('Profesores.*', 'LetrasCedula.letra as cedulaLetra', 'LetrasCedula.nombre as cedulaNombre')
+        ->first();
+    
+    $profesor->asignaciones = DB::table('AuxAsignacionMaterias')
+        ->join('Secciones', 'AuxAsignacionMaterias.seccionID', '=', 'Secciones.IDSeccion')
+        ->join('Materias', 'AuxAsignacionMaterias.materiaID', '=', 'Materias.IDMateria')
+        ->where('AuxAsignacionMaterias.profesorID', $profesor->IDProfesor)
+        ->select('AuxAsignacionMaterias.*', 'Secciones.nombre as seccionNombre', 'Materias.nombre as materiaNombre')
+        ->get();
+    return $profesor;
 });
