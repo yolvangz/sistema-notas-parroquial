@@ -14,9 +14,9 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Sistema de Notas Parroquial',
     'title_prefix' => '',
-    'title_postfix' => ' | Sistema Notas Parroquial',
+    'title_postfix' => '',
 
     /*
     |--------------------------------------------------------------------------
@@ -349,6 +349,16 @@ return [
     */
 
     'plugins' => [
+        'inputmask' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/inputmask/inputmask.min.js',
+                ]
+            ]
+        ]
         /* 'Datatables' => [
             'active' => false,
             'files' => [

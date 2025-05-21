@@ -1,17 +1,20 @@
-<!-- Order your soul. Reduce your wants. - Augustine -->
-@extends('adminlte::page')
+@extends('layouts.app')
 
-@section('title', 'Inicio')
-		
+@section('plugins.inputmask', true)
 
-@section('preloader')
-    <i class="fas fa-4x fa-spin fa-spinner text-secondary"></i>
-@stop
+@section('subtitle', 'Inicio')
 
-@section('content')
-	<x-adminlte-card title="Lightblue Card" theme="lightblue" theme-mode="outline"
-	icon="fas fa-lg fa-envelope" header-class="text-uppercase rounded-bottom border-info"
-	removable>
-	A removable card with outline lightblue theme...
-	</x-adminlte-card>
+@section('content_header_title', 'Bienvenido')
+
+@section('content_body')
+    <x-adminlte-card title="Formulario de Datos Personales">
+        <form>
+            @csrf
+            @method('POST')
+            <x-adminlte-input label="Nombres" id="nombres" name="nombres" />
+            <x-adminlte-input label="Apellidos" id="apellidos" name="apellidos" />
+            <x-adminlte-input label="Dirección" id="direccion" name="direccion" />
+            <x-adminlte-input label="Teléfono Principal" id="telefonoPrincipal" name="telefonoPrincipal" data-inputmask="'mask': '+57 999-9999999'" />
+        </form>
+    </x-adminlte-card>
 @endsection
