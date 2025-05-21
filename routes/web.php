@@ -9,9 +9,32 @@ Route::get('/', function () {
     return redirect('dashboard');
 });
 
-Route::get('dashboard', function () {
+Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::get('/institucion', function () {
+    $putDummy = false;
+    $dummy = (object)[
+        'nombre' => 'U.E.C. Parroquial Punta Cardón',
+        'letraRif' => 'J',
+        'numeroRif' => '123456789',
+        'telefono' => '123456789',
+        'direccion' => 'Av. 123, Punta Cardón, SUCRE',
+        'telefono' => '+58 123-2131231',
+        'logoPath' => null,
+        'fechaModificacion' => date('Y-m-d H:i:s'),
+    ];
+    return view('institucion', ['institucion' => $putDummy ? $dummy : null]);
+})->name('institucion');
+
+Route::get('/institucion/modificar', function () {
+    return view('institucion-modificar');
+})->name('institucion.modificar');
+
+Route::get('/institucion/crear', function () {
+    return view('institucion-crear');
+})->name('institucion.crear');
 
 // Testing routes
 Route::prefix('pruebas')->group(function () {

@@ -311,6 +311,11 @@ return [
             'text' => 'search',
             'id' => 'sidebarMenuSearch',
         ],
+        [
+            'text' => 'Sobre la institución',
+            'route' => 'institucion',
+            'icon' => 'fas fa-school',
+        ],
         
     ],
 
