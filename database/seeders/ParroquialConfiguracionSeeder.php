@@ -27,9 +27,7 @@ class ParroquialConfiguracionSeeder extends Seeder
                 'calificacionNumericaMinima' => 0,
                 'calificacionNumericaMaxima' => 20,
                 'calificacionNumericaAprobatoria' => 10,
-                'calificacionCualitativaLiterales' => json_encode(['D', 'C', 'B', 'A']),
-                'calificacionCualitativaMinima' => 0,
-                'calificacionCualitativaMaxima' => 3,
+                'calificacionCualitativaLiterales' => json_encode(['A', 'B', 'C', 'D']),
                 'calificacionCualitativaAprobatoria' => 1,
             ], ['IDConfiguracion'], [ 
                 'institucionID',
@@ -37,8 +35,6 @@ class ParroquialConfiguracionSeeder extends Seeder
                 'calificacionNumericaMaxima',
                 'calificacionNumericaAprobatoria',
                 'calificacionCualitativaLiterales',
-                'calificacionCualitativaMinima',
-                'calificacionCualitativaMaxima',
                 'calificacionCualitativaAprobatoria',
             ]);
         });

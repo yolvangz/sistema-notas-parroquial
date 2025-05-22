@@ -24,6 +24,18 @@ Route::get('/institucion', function () {
         'telefono' => '+58 123-2131231',
         'logoPath' => null,
         'fechaModificacion' => date('Y-m-d H:i:s'),
+        'configuracion' => (object) [
+            'calificacionNumericaMinima' => 0,
+            'calificacionNumericaMaxima' => 20,
+            'calificacionNumericaAprobatoria' => 10,
+            'calificacionCualitativaLiterales' => (object) [
+                (object) ['literal' => 'A', 'descripcion'=> 'Excelente',],
+                (object) ['literal' => 'B', 'descripcion'=> 'Bueno',],
+                (object) ['literal' => 'C', 'descripcion'=> 'Regular',],
+                (object) ['literal' => 'D', 'descripcion'=> 'Deficiente',],
+            ],
+            'calificacionCualitativaAprobatoria' => 'C',
+        ]
     ];
     return view('institucion.index', ['institucion' => $putDummy ? $dummy : null]);
 })->name('institucion');
@@ -31,6 +43,9 @@ Route::get('/institucion', function () {
 Route::get('/institucion/modificar', function () {
     return view('institucion-modificar');
 })->name('institucion.modificar');
+Route::get('/institucion/modificar/calificacion', function () {
+    return view('institucion-modificar');
+})->name('institucion.modificar.calificacion');
 
 Route::get('/institucion/crear', function () {
     return view('institucion.crear');

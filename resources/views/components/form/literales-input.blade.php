@@ -3,8 +3,9 @@
     <div class="literales-input">
         <div class="form-group">
             <button type="button" id="add-literal" class="btn btn-primary btn-sm mt-2">Añadir literal</button>
-            <ul id="literales-list" class="list-group" contenteditable="true">
+            <ul id="literales-list" class="list-group mt-2">
                 <!-- Dynamic list items will be rendered here -->
+                <div class="list-group-item empty"><br></div>
             </ul>
         </div>
         <input type="hidden" name="literales" id="literales-input" value="[]">
@@ -19,10 +20,10 @@
     
             // Update the hidden input with the current list of literales
             function updateInput() {
-                const literales = Array.from(list.children).map(item => {
+                const literales = Array.from(list.querySelectorAll('li.list-group-item')).map(item => {
                     return {
                         letra: item.querySelector('.literal-value-letter').value,
-                        descripcion: item.querySelector('.literal-value-description').value
+                        descripcion: item.querySelector('.literal-value-description').value,
                     }
                 });
                 input.value = JSON.stringify(literales);
@@ -38,6 +39,8 @@
     
             // Add a new letter to the list
             addButton.addEventListener('click', function () {
+                const emptyListItem = list.querySelector('.list-group-item.empty') ?? null;
+                if (emptyListItem) list.removeChild(emptyListItem);
                 const listItem = document.createElement('li');
                 listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
     
@@ -57,20 +60,31 @@
     
             // Handle list actions (edit, remove, reorder)
             list.addEventListener('click', function (e) {
+                const emptyListItem = list.querySelector('.list-group-item.empty') ?? null;
                 const target = e.target;
                 const listItem = target.closest('li');
+                let action = false;
     
                 if (target.classList.contains('remove-literal')) {
+                    action = true;
                     listItem.remove();
+                    if(list.childElementCount === 0) {
+                        empty = document.createElement('div');
+                        empty.className = 'list-group-item empty';
+                        empty.innerHTML = '<br>';
+                        list.appendChild(empty);
+                    }
                 } else if (target.classList.contains('move-up')) {
+                    action = true;
                     const prev = listItem.previousElementSibling;
                     if (prev) list.insertBefore(listItem, prev);
                 } else if (target.classList.contains('move-down')) {
+                    action = true;
                     const next = listItem.nextElementSibling;
                     if (next) list.insertBefore(next, listItem);
                 }
     
-                updateInput();
+                if (action) updateInput();
             });
     
             // Update input on letter change

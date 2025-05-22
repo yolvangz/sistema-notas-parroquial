@@ -12,8 +12,6 @@
 
 @php
     $referencias = [
-        'calificacionCualitativaMinima',
-        'calificacionCualitativaMaxima',
         'calificacionCualitativaAprobatoria'
     ];    
 @endphp
@@ -107,29 +105,6 @@
                             <x-form.literales-input :$referencias />
                         </dd>
 
-                        <dt class="col-md-3"><small class="text-muted">Calificación Mínima</small></dt>
-                        <dd class="col-md-9">
-                            <x-adminlte-select
-                                id="calificacionCualitativaMinima"
-                                name="calificacionCualitativaMinima" 
-                                class="border rounded px-2" 
-                                placeholder="Seleccione un literal"
-                                required
-                            >
-                            </x-adminlte-select>
-                        </dd>
-
-                        <dt class="col-md-3"><small class="text-muted">Calificación Máxima</small></dt>
-                        <dd class="col-md-9">
-                            <x-adminlte-select 
-                                id="calificacionCualitativaMaxima" 
-                                name="calificacionCualitativaMaxima" 
-                                class="border rounded px-2" 
-                                placeholder="Seleccione un literal"
-                                required
-                            >
-                            </x-adminlte-select>
-                        </dd>
 
                         <dt class="col-md-3"><small class="text-muted">Calificación Aprobatoria</small></dt>
                         <dd class="col-md-9">
