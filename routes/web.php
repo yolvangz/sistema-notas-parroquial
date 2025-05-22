@@ -25,7 +25,7 @@ Route::get('/institucion', function () {
         'logoPath' => null,
         'fechaModificacion' => date('Y-m-d H:i:s'),
     ];
-    return view('institucion', ['institucion' => $putDummy ? $dummy : null]);
+    return view('institucion.index', ['institucion' => $putDummy ? $dummy : null]);
 })->name('institucion');
 
 Route::get('/institucion/modificar', function () {
@@ -33,7 +33,7 @@ Route::get('/institucion/modificar', function () {
 })->name('institucion.modificar');
 
 Route::get('/institucion/crear', function () {
-    return view('institucion-crear');
+    return view('institucion.crear');
 })->name('institucion.crear');
 
 // Testing routes

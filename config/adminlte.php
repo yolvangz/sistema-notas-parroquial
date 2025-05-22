@@ -363,7 +363,7 @@ return [
                     'location' => 'vendor/inputmask/inputmask.min.js',
                 ]
             ]
-        ]
+        ],
         /* 'Datatables' => [
             'active' => false,
             'files' => [
@@ -383,9 +383,9 @@ return [
                     'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
                 ],
             ],
-        ],
+        ], */
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -395,7 +395,7 @@ return [
                 [
                     'type' => 'css',
                     'asset' => true,
-                    'location' => 'vendor/select2-bootstrap4-theme/css/select2-bootstrap4-theme.min.css',
+                    'location' => 'vendor/select2/css/select2.min.css',
                 ],
             ],
         ],
@@ -433,7 +433,7 @@ return [
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
                 ],
             ],
-        ],
+        ], */
         'BsCustomFileInput' => [
             'active' => false,
             'files' => [
@@ -443,7 +443,7 @@ return [
                     'location' => 'vendor/bs-custom-file-input/bs-custom-file-input.min.js',
                 ],
             ],
-        ], */
+        ],
     ],
 
     /*
