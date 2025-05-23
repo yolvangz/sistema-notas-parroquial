@@ -21,8 +21,6 @@ return new class extends Migration
             $table->decimal('calificacionNumericaAprobatoria', 6, 2)->unsigned();
             // Calificacion Cualitativa
             $table->json('calificacionCualitativaLiterales');
-            $table->integer('calificacionCualitativaMinima')->unsigned();
-            $table->integer('calificacionCualitativaMaxima')->unsigned();
             $table->integer('calificacionCualitativaAprobatoria')->unsigned();
             // Registro modificaciones
             $table->timestampTz('fechaCreado')->nullable();
