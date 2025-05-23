@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Profesores;
+use App\Http\Controllers\ProfesorController;
 use Illuminate\Support\Facades\DB;
 
 $dummy = [
@@ -66,7 +66,7 @@ Route::prefix('pruebas')->group(function () {
         return view('letrasCedula', ['letrasCedula' => $letrasCedula]);
     });
     
-    Route::controller(Profesores::class)->group(function () {
+    Route::controller(ProfesorController::class)->group(function () {
         Route::prefix('profesores')->group(function () {
             Route::name('profesores.')->group(function () {
                 Route::get('/', 'index')->name('index');
