@@ -1,20 +1,21 @@
+{{-- No surplus words or unnecessary actions. - Marcus Aurelius --}}
 @php
     $literales = $literales ?? [];
 @endphp
 
 <div>
-    <!-- No surplus words or unnecessary actions. - Marcus Aurelius -->
     <div class="literales-input">
         <div class="form-group">
             <button type="button" id="add-literal" class="btn btn-primary btn-sm mt-2">Añadir literal</button>
             <ul id="literales-list" class="list-group mt-2">
                 <!-- Dynamic list items will be rendered here -->
-                <div class="list-group-item empty"><br></div>
             </ul>
         </div>
         <input type="hidden" name="literales" id="literales-input" value="[]">
     </div>
+</div>
     
+@pushOnce('js')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const referencias = {{ Js::from($referencias) }};
@@ -23,9 +24,6 @@
             const list = document.getElementById('literales-list');
             const input = document.getElementById('literales-input');
             const addButton = document.getElementById('add-literal');
-            console.log('referencias', referencias);
-            console.log('selectsFromReferencias', selectsFromReferencias);
-            console.log('literales', literalesInicial);
     
             // Update the hidden input with the current list of literales
             function updateInput() {
@@ -89,9 +87,11 @@
             // Handle list actions (edit, remove, reorder)
             list.addEventListener('click', function (e) {
                 const emptyListItem = list.querySelector('.list-group-item.empty') ?? null;
-                const target = e.target;
-                const listItem = target.closest('li');
+                const target = e.target.closest('button');
+                const listItem = target?.closest('li');
                 let action = false;
+
+                if (!target || !listItem) return; // Exit if no button or list item is found
     
                 if (target.classList.contains('remove-literal')) {
                     action = true;
@@ -136,4 +136,4 @@
             }
         });
     </script>
-</div>
+@endPushOnce
