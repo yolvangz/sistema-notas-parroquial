@@ -17,8 +17,8 @@ class Profesor extends Model
     protected $primaryKey = 'IDProfesor';
     public $timestamps = false;
 
-    protected $dates = ['fechaCreado', 'fechaModificado'];
-
+    const CREATED_AT = 'fechaCreado';
+    const UPDATED_AT = 'fechaModificado';
 
     protected $fillable = [
         'nombres',

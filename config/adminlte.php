@@ -313,7 +313,7 @@ return [
         ],
         [
             'text' => 'Sobre la institución',
-            'route' => 'institucion',
+            'route' => 'institucion.show',
             'icon' => 'fas fa-school',
         ],
         

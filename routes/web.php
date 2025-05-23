@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfesorController;
+use App\Http\Controllers\InstitucionController;
+use App\Http\Controllers\ConfiguracionController;
 use Illuminate\Support\Facades\DB;
 
 $dummy = [
@@ -38,28 +40,24 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/institucion', function () use ($dummy) {
-    $putDummy = true;
-    return view('institucion.index', [
-        'institucion' => $putDummy ? $dummy['institucion'] : null,
-        'configuracion' => $putDummy ? $dummy['configuracion'] : null,
-    ]);
-})->name('institucion');
+Route::prefix('institucion')->group(function () {
+    Route::name('institucion.')->group(function () {
+        Route::controller(InstitucionController::class)->group(function () {
+            Route::get('/', 'show')->name('show');
+            Route::get('/crear', 'create')->name('create');
+            Route::get('/editar', 'edit')->name('edit');
+            Route::post('/', 'store')->name('store');
+            Route::put('/', 'update')->name('update');
+            // Rutas para la configuracion
+            Route::get('/configuracion/editar', 'editConfiguracion')->name('configuracion.edit');
+            Route::put('/configuracion', 'updateConfiguracion')->name('configuracion.update');
+        });
+    });
+});
 
-Route::get('/institucion/modificar', function () use ($dummy) {
-    $putDummy = true;
-    return view('institucion.modificar', ['institucion' => $putDummy ? $dummy['institucion'] : null]);
-})->name('institucion.modificar');
-Route::get('/institucion/modificar/calificacion', function () use ($dummy) {
-    $putDummy = true;
-    return view('configuracion.modificar', ['configuracion' => $putDummy ? $dummy['configuracion'] : null]);
-})->name('institucion.modificar.calificacion');
+// RUTAS DE PRUEBA
 
-Route::get('/institucion/crear', function () {
-    return view('institucion.crear');
-})->name('institucion.crear');
 
-// Testing routes
 Route::prefix('pruebas')->group(function () {
     Route::get('/letras-cedula', function () {
         $letrasCedula = App\Models\LetraCedula::orderBy('IDLetraCedula')->select('IDLetraCedula as id', 'letra', 'nombre')->get();

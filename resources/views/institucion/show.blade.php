@@ -45,7 +45,7 @@
                             </dl>
                             <div>
                                 <div class="text-center">
-                                    <a href="{{ route('institucion.modificar') }}" class="btn btn-primary"><i class="fas fa-edit"></i> Modificar institución</a>
+                                    <a href="{{ route('institucion.edit') }}" class="btn btn-primary"><i class="fas fa-edit"></i> Modificar institución</a>
                                 </div>
                             </div>
                         </div>
@@ -65,17 +65,17 @@
                     <dl class="row">
                         <dt class="col-md-3"><small class="text-muted">Calificación Mínima</small></dt>
                         <dd class="col-md-9 d-inline-flex align-items-center">
-                            <div class="h6 mb-0" style="vertical-align: middle;">{{$configuracion->calificacionNumericaMinima}}</div>
+                            <div class="h6 mb-0" style="vertical-align: middle;">{{$institucion->configuracion->calificacionNumericaMinima}}</div>
                         </dd>
 
                         <dt class="col-md-3"><small class="text-muted">Calificación Máxima</small></dt>
                         <dd class="col-md-9 d-inline-flex align-items-center">
-                            <div class="h6 mb-0" style="vertical-align: middle;">{{$configuracion->calificacionNumericaMaxima}}</div>
+                            <div class="h6 mb-0" style="vertical-align: middle;">{{$institucion->configuracion->calificacionNumericaMaxima}}</div>
                         </dd>
 
                         <dt class="col-md-3"><small class="text-muted">Calificación Aprobatoria</small></dt>
                         <dd class="col-md-9 d-inline-flex align-items-center">
-                            <div class="h6 mb-0" style="vertical-align: middle;">{{$configuracion->calificacionNumericaAprobatoria}}</div>
+                            <div class="h6 mb-0" style="vertical-align: middle;">{{$institucion->configuracion->calificacionNumericaAprobatoria}}</div>
                         </dd>
                     </dl>
                     <h6>Método cualitativo</h6>
@@ -83,26 +83,26 @@
                         <dt class="col-md-3"><small class="text-muted">Literales</small></dt>
                         <dd class="col-md-9">
                             <ul class="list-group">
-                                @foreach ($configuracion->calificacionCualitativaLiterales as $literal)
-                                    <li class="list-group-item">{{$literal->literal}} ({{$literal->descripcion}})</li>
+                                @foreach ($institucion->configuracion->calificacionCualitativaLiterales as $literal)
+                                    <li class="list-group-item">{{$literal['literal']}} ({{$literal['descripcion']}})</li>
                                 @endforeach
                             </ul>
                         </dd>
 
                         <dt class="col-md-3"><small class="text-muted">Calificación Aprobatoria</small></dt>
                         <dd class="col-md-9 d-inline-flex align-items-center">
-                            <div class="h6 mb-0" style="vertical-align: middle;">{{$configuracion->calificacionCualitativaAprobatoria}}</div>
+                            <div class="h6 mb-0" style="vertical-align: middle;">{{$institucion->configuracion->calificacionCualitativaAprobatoria}}</div>
                         </dd>
                     </dl>
                     <div>
                         <div class="text-center">
-                            <a href="{{ route('institucion.modificar.calificacion') }}" class="btn btn-primary"><i class="fas fa-edit"></i> Modificar métodos de calificación</a>
+                            <a href="{{ route('institucion.configuracion.edit') }}" class="btn btn-primary"><i class="fas fa-edit"></i> Modificar métodos de calificación</a>
                         </div>
                     </div>
                     <x-slot name="footerSlot">
                         <div class="row">
                             <div class="col-sm-12">
-                                <small class="text-muted">Fecha de última modificación: {{ date('d/m/Y h:i A', strtotime($configuracion->fechaModificacion)) }}</small>
+                                <small class="text-muted">Fecha de última modificación: {{ date('d/m/Y h:i A', strtotime($institucion->configuracion->fechaModificacion)) }}</small>
                             </div>
                         </div>
                     </x-slot>

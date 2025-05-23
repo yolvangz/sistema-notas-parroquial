@@ -27,7 +27,12 @@ class ParroquialConfiguracionSeeder extends Seeder
                 'calificacionNumericaMinima' => 0,
                 'calificacionNumericaMaxima' => 20,
                 'calificacionNumericaAprobatoria' => 10,
-                'calificacionCualitativaLiterales' => json_encode(['A', 'B', 'C', 'D']),
+                'calificacionCualitativaLiterales' => json_encode([
+                    ['literal' => 'A', 'descripcion' => null],
+                    ['literal' => 'B', 'descripcion' => null],
+                    ['literal' => 'C', 'descripcion' => null],
+                    ['literal' => 'D', 'descripcion' => null],
+                ]),
                 'calificacionCualitativaAprobatoria' => 1,
             ], ['IDConfiguracion'], [ 
                 'institucionID',
