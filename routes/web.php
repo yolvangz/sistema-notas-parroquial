@@ -4,6 +4,31 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Profesores;
 use Illuminate\Support\Facades\DB;
 
+$dummy = [
+    'institucion' => (object)[
+        'nombre' => 'U.E.C. Parroquial Punta Cardón',
+        'letraRif' => 'J',
+        'numeroRif' => '123456789',
+        'direccion' => 'Av. 123, Punta Cardón, SUCRE',
+        'telefono' => '+58 123-2131231',
+        'logoPath' => null,
+        'fechaModificacion' => date('Y-m-d H:i:s'),
+    ],
+    'configuracion' => (object) [
+        'calificacionNumericaMinima' => 0,
+        'calificacionNumericaMaxima' => 20,
+        'calificacionNumericaAprobatoria' => 10,
+        'calificacionCualitativaLiterales' => [
+            (object) ['literal' => 'A', 'descripcion'=> 'Excelente',],
+            (object) ['literal' => 'B', 'descripcion'=> 'Bueno',],
+            (object) ['literal' => 'C', 'descripcion'=> 'Regular',],
+            (object) ['literal' => 'D', 'descripcion'=> 'Deficiente',],
+        ],
+        'calificacionCualitativaAprobatoria' => 'C',
+        'fechaModificacion' => date('Y-m-d H:i:s'),
+    ],
+];
+
 // Real Routes
 Route::get('/', function () {
     return redirect('dashboard');
@@ -13,38 +38,21 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/institucion', function () {
-    $putDummy = false;
-    $dummy = (object)[
-        'nombre' => 'U.E.C. Parroquial Punta Cardón',
-        'letraRif' => 'J',
-        'numeroRif' => '123456789',
-        'telefono' => '123456789',
-        'direccion' => 'Av. 123, Punta Cardón, SUCRE',
-        'telefono' => '+58 123-2131231',
-        'logoPath' => null,
-        'fechaModificacion' => date('Y-m-d H:i:s'),
-        'configuracion' => (object) [
-            'calificacionNumericaMinima' => 0,
-            'calificacionNumericaMaxima' => 20,
-            'calificacionNumericaAprobatoria' => 10,
-            'calificacionCualitativaLiterales' => (object) [
-                (object) ['literal' => 'A', 'descripcion'=> 'Excelente',],
-                (object) ['literal' => 'B', 'descripcion'=> 'Bueno',],
-                (object) ['literal' => 'C', 'descripcion'=> 'Regular',],
-                (object) ['literal' => 'D', 'descripcion'=> 'Deficiente',],
-            ],
-            'calificacionCualitativaAprobatoria' => 'C',
-        ]
-    ];
-    return view('institucion.index', ['institucion' => $putDummy ? $dummy : null]);
+Route::get('/institucion', function () use ($dummy) {
+    $putDummy = true;
+    return view('institucion.index', [
+        'institucion' => $putDummy ? $dummy['institucion'] : null,
+        'configuracion' => $putDummy ? $dummy['configuracion'] : null,
+    ]);
 })->name('institucion');
 
-Route::get('/institucion/modificar', function () {
-    return view('institucion-modificar');
+Route::get('/institucion/modificar', function () use ($dummy) {
+    $putDummy = true;
+    return view('institucion.modificar', ['institucion' => $putDummy ? $dummy['institucion'] : null]);
 })->name('institucion.modificar');
-Route::get('/institucion/modificar/calificacion', function () {
-    return view('institucion-modificar');
+Route::get('/institucion/modificar/calificacion', function () use ($dummy) {
+    $putDummy = true;
+    return view('configuracion.modificar', ['configuracion' => $putDummy ? $dummy['configuracion'] : null]);
 })->name('institucion.modificar.calificacion');
 
 Route::get('/institucion/crear', function () {

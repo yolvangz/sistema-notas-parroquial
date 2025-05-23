@@ -65,17 +65,17 @@
                     <dl class="row">
                         <dt class="col-md-3"><small class="text-muted">Calificación Mínima</small></dt>
                         <dd class="col-md-9 d-inline-flex align-items-center">
-                            <div class="h6 mb-0" style="vertical-align: middle;">{{$institucion->configuracion->calificacionNumericaMinima}}</div>
+                            <div class="h6 mb-0" style="vertical-align: middle;">{{$configuracion->calificacionNumericaMinima}}</div>
                         </dd>
 
                         <dt class="col-md-3"><small class="text-muted">Calificación Máxima</small></dt>
                         <dd class="col-md-9 d-inline-flex align-items-center">
-                            <div class="h6 mb-0" style="vertical-align: middle;">{{$institucion->configuracion->calificacionNumericaMaxima}}</div>
+                            <div class="h6 mb-0" style="vertical-align: middle;">{{$configuracion->calificacionNumericaMaxima}}</div>
                         </dd>
 
                         <dt class="col-md-3"><small class="text-muted">Calificación Aprobatoria</small></dt>
                         <dd class="col-md-9 d-inline-flex align-items-center">
-                            <div class="h6 mb-0" style="vertical-align: middle;">{{$institucion->configuracion->calificacionNumericaAprobatoria}}</div>
+                            <div class="h6 mb-0" style="vertical-align: middle;">{{$configuracion->calificacionNumericaAprobatoria}}</div>
                         </dd>
                     </dl>
                     <h6>Método cualitativo</h6>
@@ -83,7 +83,7 @@
                         <dt class="col-md-3"><small class="text-muted">Literales</small></dt>
                         <dd class="col-md-9">
                             <ul class="list-group">
-                                @foreach ($institucion->configuracion->calificacionCualitativaLiterales as $literal)
+                                @foreach ($configuracion->calificacionCualitativaLiterales as $literal)
                                     <li class="list-group-item">{{$literal->literal}} ({{$literal->descripcion}})</li>
                                 @endforeach
                             </ul>
@@ -91,7 +91,7 @@
 
                         <dt class="col-md-3"><small class="text-muted">Calificación Aprobatoria</small></dt>
                         <dd class="col-md-9 d-inline-flex align-items-center">
-                            <div class="h6 mb-0" style="vertical-align: middle;">{{$institucion->configuracion->calificacionCualitativaAprobatoria}}</div>
+                            <div class="h6 mb-0" style="vertical-align: middle;">{{$configuracion->calificacionCualitativaAprobatoria}}</div>
                         </dd>
                     </dl>
                     <div>
@@ -102,7 +102,7 @@
                     <x-slot name="footerSlot">
                         <div class="row">
                             <div class="col-sm-12">
-                                <small class="text-muted">Fecha de última modificación: {{ date('d/m/Y h:i A', strtotime($institucion->fechaModificacion)) }}</small>
+                                <small class="text-muted">Fecha de última modificación: {{ date('d/m/Y h:i A', strtotime($configuracion->fechaModificacion)) }}</small>
                             </div>
                         </div>
                     </x-slot>

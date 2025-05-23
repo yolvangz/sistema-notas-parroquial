@@ -1,4 +1,4 @@
-<!-- Because you are alive, everything is possible. - Thich Nhat Hanh -->
+<!-- The biggest battle is the war against ignorance. - Mustafa Kemal Atatürk -->
 @extends('layouts.app')
 
 @section('plugins.inputmask', true)
@@ -12,45 +12,16 @@
 
 @php
     $referencias = [
-        'calificacionCualitativaAprobatoria' => ''
-    ];    
+        'calificacionCualitativaAprobatoria' => $configuracion->calificacionCualitativaAprobatoria
+    ];
 @endphp
 
 @section('content_body')
-    <form method="POST" action="{{ route('institucion') }}" enctype="multipart/form-data">
-        @method('POST')
+    <form method="POST" action="{{ route('institucion') }}">
+        @method('PUT')
         @csrf
         <div class="row">
-            <div class="col-md-6">
-                <x-adminlte-card theme="dark" theme-mode="outline" title="Datos de la institución">
-                    <div class="d-flex flex-column justify-content-between pb-2">
-                        <dl class="row">
-                            <dt class="col-md-3"><small class="text-muted">Nombre</small></dt>
-                            <dd class="col-md-9">
-                                <x-adminlte-input name="nombre" class="border rounded px-2" required/>
-                            </dd>
-                            <dt class="col-md-3"><small class="text-muted">RIF</small></dt>
-                            <dd class="col-md-9 row">
-                                <div class="col-4">
-                                    <x-form.letra-rif />
-                                </div>
-                                <div class="col px-0">
-                                    <x-adminlte-input name="numeroRif" class="border rounded px-2" required data-inputmask="'mask': '9999999999'"/>
-                                </div>
-                            </dd>
-                            <dt class="col-md-3"><small class="text-muted">Teléfono</small></dt>
-                            <dd class="col-md-9">
-                                <x-adminlte-input name="telefono" class="border rounded px-2" required data-inputmask="'mask': '+58 999-9999999'"/>
-                            </dd>
-                            <dt class="col-md-3"><small class="text-muted">Logo de la institución</small></dt>
-                            <dd class="col-md-9">
-                                <x-adminlte-input-file name="logo" accept="image/*" />
-                            </dd>
-                        </dl>
-                    </div>                    
-                </x-adminlte-card>
-            </div>
-            <div class="col-md-6">
+            <div class="col-12 col-sm-8 col-md-6 mx-auto">
                 <x-adminlte-card theme="dark" theme-mode="outline" title="Métodos de calificación">
                     <h6>Método cuantitativo</h6>
                     <dl class="row">
@@ -63,7 +34,8 @@
                                 max="100" 
                                 step="0.01" 
                                 class="border rounded px-2" 
-                                required 
+                                required
+                                value="{{ $configuracion->calificacionNumericaMinima }}"
                             />
                         </dd>
 
@@ -76,7 +48,8 @@
                                 max="100" 
                                 step="0.01" 
                                 class="border rounded px-2" 
-                                required 
+                                required
+                                value="{{ $configuracion->calificacionNumericaMaxima }}"
                             />
                         </dd>
 
@@ -89,7 +62,8 @@
                                 max="100" 
                                 step="0.01" 
                                 class="border rounded px-2" 
-                                required 
+                                required
+                                value="{{ $configuracion->calificacionNumericaAprobatoria }}"
                             />
                         </dd>
                     </dl>
@@ -97,7 +71,7 @@
                     <dl class="row">
                         <dt class="col-md-3"><small class="text-muted">Literales</small></dt>
                         <dd class="col-md-9">
-                            <x-form.literales-input :$referencias />
+                            <x-form.literales-input :$referencias :literales="$configuracion->calificacionCualitativaLiterales" />
                         </dd>
 
 
@@ -113,11 +87,14 @@
                             </x-adminlte-select>
                         </dd>
                     </dl>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar datos</button>
+                    </div>
+                    <x-slot name="footerSlot">
+                        <a href="{{ route('institucion') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
+                    </x-slot>
                 </x-adminlte-card>
             </div>
-        </div>
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar institución</button>
         </div>
     </form>
 @endsection
