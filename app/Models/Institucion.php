@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Institucion extends Model
@@ -40,7 +41,7 @@ class Institucion extends Model
      */
     protected $fillable = [
         'nombre',
-        'letraRif',
+        'letraRifID',
         'numeroRif',
         'direccion',
         'telefono',
@@ -50,9 +51,9 @@ class Institucion extends Model
     /**
      * Get the related LetraCedula model.
      */
-    public function letraCedula()
+    public function letraRif()
     {
-        return $this->belongsTo(LetraCedula::class, 'letraRif', 'IDLetraCedula');
+        return $this->belongsTo(LetraCedula::class, 'letraRifID', 'IDLetraCedula');
     }
 
     /**
@@ -63,8 +64,10 @@ class Institucion extends Model
         return $this->hasOne(Configuracion::class, 'IDConfiguracion', 'IDInstitucion');
     }
 
-    public function getRif()
+    public function rif() : Attribute
     {
-        return $this->letraCedula->letra . '-' . str_pad($this->numeroRif, 8, '0', STR_PAD_LEFT);
+        return Attribute::make(
+            get: fn() => $this->letraRif->letra . '-' . str_pad($this->numeroRif, 8, '0', STR_PAD_LEFT),
+        );
     }
 }

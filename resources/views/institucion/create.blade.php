@@ -27,7 +27,7 @@
                         <dl class="row">
                             <dt class="col-md-3"><small class="text-muted">Nombre</small></dt>
                             <dd class="col-md-9">
-                                <x-adminlte-input name="nombre" class="border rounded px-2" required/>
+                                <x-adminlte.form.input name="nombre" class="border rounded px-2" required/>
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">RIF</small></dt>
                             <dd class="col-md-9 row">
@@ -35,12 +35,12 @@
                                     <x-form.letra-rif />
                                 </div>
                                 <div class="col px-0">
-                                    <x-adminlte-input name="numeroRif" class="border rounded px-2" required data-inputmask="'mask': '9999999999'"/>
+                                    <x-adminlte.form.input name="numeroRif" class="border rounded px-2" required data-inputmask="'mask': '9999999999'"/>
                                 </div>
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">Teléfono</small></dt>
                             <dd class="col-md-9">
-                                <x-adminlte-input name="telefono" class="border rounded px-2" required data-inputmask="'mask': '+58 999-9999999'"/>
+                                <x-adminlte.form.input name="telefono" class="border rounded px-2" required data-inputmask="'mask': '+58 999-9999999'"/>
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">Logo de la institución</small></dt>
                             <dd class="col-md-9">
@@ -56,7 +56,7 @@
                     <dl class="row">
                         <dt class="col-md-3"><small class="text-muted">Calificación Mínima</small></dt>
                         <dd class="col-md-9">
-                            <x-adminlte-input 
+                            <x-adminlte.form.input 
                                 name="calificacionNumericaMinima" 
                                 type="number" 
                                 min="0" 
@@ -69,7 +69,7 @@
 
                         <dt class="col-md-3"><small class="text-muted">Calificación Máxima</small></dt>
                         <dd class="col-md-9">
-                            <x-adminlte-input 
+                            <x-adminlte.form.input 
                                 name="calificacionNumericaMaxima" 
                                 type="number" 
                                 min="0" 
@@ -82,7 +82,7 @@
 
                         <dt class="col-md-3"><small class="text-muted">Calificación Aprobatoria</small></dt>
                         <dd class="col-md-9">
-                            <x-adminlte-input 
+                            <x-adminlte.form.input 
                                 name="calificacionNumericaAprobatoria" 
                                 type="number" 
                                 min="0" 

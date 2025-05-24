@@ -21,20 +21,24 @@
                         <dl class="row">
                             <dt class="col-md-3"><small class="text-muted">Nombre</small></dt>
                             <dd class="col-md-9">
-                                <x-adminlte-input name="nombre" class="border rounded px-2" required value="{!! $institucion->nombre !!}" />
+                                <x-adminlte.form.input name="nombre" class="border rounded px-2" required :value="$institucion->nombre" />
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">RIF</small></dt>
                             <dd class="col-md-9 row">
                                 <div class="col-4">
-                                    <x-form.letra-rif selected="{{$institucion->letraCedula->letra}}" />
+                                    <x-form.letra-rif :selected="$institucion->letraRif" />
                                 </div>
                                 <div class="col px-0">
-                                    <x-adminlte-input name="numeroRif" class="border rounded px-2" required data-inputmask="'mask': '999999999'" value="{{$institucion->numeroRif}}" />
+                                    <x-adminlte.form.input name="numeroRif" class="border rounded px-2" required data-inputmask="'mask': '999999999'" value="{{$institucion->numeroRif}}" />
                                 </div>
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">Teléfono</small></dt>
                             <dd class="col-md-9">
-                                <x-adminlte-input name="telefono" class="border rounded px-2" required data-inputmask="'mask': '+58 999-9999999'" value="{{$institucion->telefono}}" />
+                                <x-adminlte.form.input name="telefono" class="border rounded px-2" required data-inputmask="'mask': '+58 999-9999999'" value="{{$institucion->telefono}}" />
+                            </dd>
+                            <dt class="col-md-3"><small class="text-muted">Dirección</small></dt>
+                            <dd class="col-md-9">
+                                <x-adminlte-textarea name="direccion" rows=3 required class="border rounded px-2">{{ $institucion->direccion }}</x-adminlte-textarea>
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">Logo de la institución</small></dt>
                             <dd class="col-md-9">
@@ -52,4 +56,4 @@
             </div>
         </div>
     </form>
-@endsection
+@endsectiongit

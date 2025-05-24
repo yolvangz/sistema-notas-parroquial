@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Configuracion;
 use App\Models\Institucion;
+use App\Models\LetraCedula;
 
 class InstitucionController extends Controller
 {
@@ -17,7 +18,7 @@ class InstitucionController extends Controller
      */
     public function show() 
     {
-        $institucion = Institucion::with('letraCedula', 'configuracion')->find(1);
+        $institucion = Institucion::with('letraRif', 'configuracion')->find(1);
         
         return view('institucion.show', [
             'institucion' => $institucion,
@@ -31,7 +32,7 @@ class InstitucionController extends Controller
      */
     public function edit() : View
     {
-        $institucion = Institucion::with('letraCedula', 'configuracion')->find(1);
+        $institucion = Institucion::with('letraRif', 'configuracion')->find(1);
 
         return view('institucion.edit', [
             'institucion' => $institucion,
@@ -44,26 +45,32 @@ class InstitucionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request) : RedirectResponse
+    public function update(Request $request)
     {
         $institucion = Institucion::find(1);
 
         if (!$institucion) {
             return redirect()->route('institucion.edit')->with('error', 'Institución no encontrada.');
         }
-
         $validatedData = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'letraRif' => 'required|string|max:1',
-            'numeroRif' => 'required|numeric',
-            'direccion' => 'nullable|string|max:500',
-            'telefono' => 'nullable|string|max:20',
-            'logoPath' => 'nullable|string|max:255',
+            'nombre' => ['required','string','max:255'],
+            'letraRif' => ['required','string','max:1'],
+            'numeroRif' => ['required','numeric'],
+            'direccion' => ['required','string','max:500'],
+            'telefono' => ['required','string','regex:/^\+58 \d{3}-\d{7}$/'],
+            'logoPath' => ['nullable','string','max:255'],
         ]);
+
+        $validatedData['letraRifID'] = LetraCedula::where('letra', $validatedData['letraRif'])->value('IDLetraCedula');
+        if (!$validatedData['letraRifID']) {
+            return redirect()->route('institucion.edit')->with('error', 'La letra del RIF no es válida.');
+        }
+        
+        $validatedData['letraRif'] = null; // Remove letraRif from the validated data
 
         $institucion->update($validatedData);
 
-        return redirect()->route('institucion.edit')->with('success', 'Institución actualizada correctamente.');
+        return redirect()->route('institucion.show')->with('success', 'Institución actualizada correctamente.');
     }
     public function configuracionEdit() : View
     {

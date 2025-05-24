@@ -32,7 +32,7 @@
                                 </dd>
                                 <dt class="col-md-3"><small class="text-muted">RIF</small></dt>
                                 <dd class="col-md-9">
-                                    <div class="form-control-plaintext border rounded px-2">{{ $institucion->letraCedula->letra }}-{{ $institucion->numeroRif }}</div>
+                                    <div class="form-control-plaintext border rounded px-2">{{ $institucion->rif }}</div>
                                 </dd>
                                 <dt class="col-md-3"><small class="text-muted">Teléfono</small></dt>
                                 <dd class="col-md-9">
@@ -123,11 +123,3 @@
     @endif
     
 @endsection
-
-@push('js')
-@endpush
-@push('js')
-    <script>
-        console.log({{Js::from($institucion->configuracion)}});
-    </script>
-@endpush

@@ -21,7 +21,6 @@
             const referencias = {{ Js::from($referencias) }};
             const selectsFromReferencias = Object.keys(referencias).map(referencia => document.getElementById(referencia));
             const literalesInicial = {{ Js::from($literales) }};
-            console.log(literalesInicial);
             const list = document.getElementById('literales-list');
             const input = document.getElementById('literales-input');
             const addButton = document.getElementById('add-literal');
