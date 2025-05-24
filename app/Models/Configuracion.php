@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Configuracion extends Model
@@ -53,6 +54,9 @@ class Configuracion extends Model
      * @var array
      */
     protected $casts = [
+        'calificacionNumericaMinima' => 'decimal:2',
+        'calificacionNumericaMaxima' => 'decimal:2',
+        'calificacionNumericaAprobatoria' => 'decimal:2',
         'calificacionCualitativaLiterales' => 'json:unicode',
     ];
 
@@ -64,12 +68,31 @@ class Configuracion extends Model
         return $this->belongsTo(Institucion::class, 'IDConfiguracion', 'IDInstitucion');
     }
 
-    /**
-     * Get the califiacionCualitativaAprobatoria attribute.
-     */
-    public function getCalificacionCualitativaAprobatoriaAttribute($value)
-    {
-        return $this->calificacionCualitativaLiterales[$value - 1]['literal'];
-    }
 
+    /**
+     * Get and set the califiacionCualitativaLiterales attribute.
+     */
+    public function calificacionCualitativaLiteralesAttribute() : Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                // Decode the JSON string into an array
+                $calificacionCualitativaLiterales = json_decode($value, true);
+
+                // Ensure the decoded value is an array
+                if (!is_array($calificacionCualitativaLiterales)) {
+                    return [];
+                }
+                // Return the decoded array
+                return $calificacionCualitativaLiterales;
+            },
+            set: fn ($value) => json_encode($value, true),
+        );
+    }
+    public function calificacionCualitativaAprobatoria () : Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->calificacionCualitativaLiterales[$value - 1]['letra'],
+        );
+    }
 }

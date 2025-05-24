@@ -17,8 +17,8 @@ return new class extends Migration
             $table->bigInteger('profesorID')->unsigned();
 
             // Registro modificaciones
-            $table->timestampTz('fechaCreado')->nullable();
-            $table->timestampTz('fechaModificado')->nullable();
+            $table->dateTimeTz('fechaCreado')->nullable();
+            $table->dateTimeTz('fechaModificado')->nullable();
             $table->softDeletesTz();
 
             $table->foreign('seccionID')->references('IDSeccion')->on('Secciones')->cascadeOnDelete();

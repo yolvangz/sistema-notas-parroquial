@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('telefono', 13);
             $table->string('logoPath', 255)->nullable();
             // Registro modificaciones
-            $table->timestampTz('fechaCreado')->nullable();
-            $table->timestampTz('fechaModificado')->nullable();
+            $table->dateTimeTz('fechaCreado')->nullable();
+            $table->dateTimeTz('fechaModificado')->nullable();
         });
     }
 

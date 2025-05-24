@@ -17,8 +17,8 @@ return new class extends Migration
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
             // Registro modificaciones
-            $table->timestampTz('fechaCreado')->nullable();
-            $table->timestampTz('fechaModificado')->nullable();
+            $table->dateTimeTz('fechaCreado')->nullable();
+            $table->dateTimeTz('fechaModificado')->nullable();
             $table->softDeletesTz();
         });
     }

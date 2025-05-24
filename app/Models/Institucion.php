@@ -50,7 +50,7 @@ class Institucion extends Model
     /**
      * Get the related LetraCedula model.
      */
-    public function letraRif()
+    public function letraCedula()
     {
         return $this->belongsTo(LetraCedula::class, 'letraRif', 'IDLetraCedula');
     }
@@ -61,5 +61,10 @@ class Institucion extends Model
     public function configuracion()
     {
         return $this->hasOne(Configuracion::class, 'IDConfiguracion', 'IDInstitucion');
+    }
+
+    public function getRif()
+    {
+        return $this->letraCedula->letra . '-' . str_pad($this->numeroRif, 8, '0', STR_PAD_LEFT);
     }
 }

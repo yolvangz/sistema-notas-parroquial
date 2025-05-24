@@ -11,7 +11,7 @@
                 <!-- Dynamic list items will be rendered here -->
             </ul>
         </div>
-        <input type="hidden" name="literales" id="literales-input" value="[]">
+        <input type="hidden" name="calificacionCualitativaLiterales" id="literales-input" value="[]">
     </div>
 </div>
     
@@ -21,6 +21,7 @@
             const referencias = {{ Js::from($referencias) }};
             const selectsFromReferencias = Object.keys(referencias).map(referencia => document.getElementById(referencia));
             const literalesInicial = {{ Js::from($literales) }};
+            console.log(literalesInicial);
             const list = document.getElementById('literales-list');
             const input = document.getElementById('literales-input');
             const addButton = document.getElementById('add-literal');
@@ -42,7 +43,7 @@
                     const selectedValue = select.value;
 
                     // Update the options
-                    select.innerHTML = literales.reduce((content, literal) => 
+                    select.innerHTML = literales.reduce((content, literal, ) => 
                         content + `<option value="${literal.letra}">${literal.letra}${literal.descripcion ? ' (' + literal.descripcion + ')' : ''}</option>`, 
                     '');
 
@@ -74,7 +75,7 @@
 
                 listItem.innerHTML = `
                     <input type="text" class="form-control form-control-sm literal-value-letter mr-2" value="${letra}" placeholder="Letra" style="flex-basis:20%">
-                    <input type="text" class="form-control form-control-sm literal-value-description mr-2" value="${descripcion}" placeholder="Descripcion" style="flex-grow:1">
+                    <input type="text" class="form-control form-control-sm literal-value-description mr-2" value="${descripcion ?? ''}" placeholder="Descripcion" style="flex-grow:1">
                     <div class="d-inline-flex">
                         <button type="button" class="mr-1 btn btn-success btn-sm move-up"><span style="font-size: 0.75rem; vertical-align: middle;"><i class="fas fa-arrow-up"></i></span></button>
                         <button type="button" class="mr-1 btn btn-warning btn-sm move-down"><span style="font-size: 0.75rem; vertical-align: middle;"><i class="fas fa-arrow-down"></i></span></button>
@@ -128,7 +129,7 @@
                 list.appendChild(empty);
             } else {
                 for (const literal of literalesInicial) {
-                    addNewListItem(literal.literal, literal.descripcion);
+                    addNewListItem(literal.letra, literal.descripcion);
                 }
             }
             for (const select of selectsFromReferencias) {

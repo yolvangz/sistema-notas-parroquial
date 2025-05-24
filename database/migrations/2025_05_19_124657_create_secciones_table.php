@@ -20,8 +20,8 @@ return new class extends Migration
             $table->bigInteger('componenteID')->unsigned();
             $table->bigInteger('profesorGuiaID')->unsigned()->nullable();
             // Registro modificaciones
-            $table->timestampTz('fechaCreado')->nullable();
-            $table->timestampTz('fechaModificado')->nullable();
+            $table->dateTimeTz('fechaCreado')->nullable();
+            $table->dateTimeTz('fechaModificado')->nullable();
             $table->softDeletesTz();
 
             // Claves foráneas

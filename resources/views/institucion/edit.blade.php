@@ -11,7 +11,7 @@
 @section('content_header_subtitle', 'Modificar institución')
 
 @section('content_body')
-    <form method="POST" action="{{ route('institucion') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('institucion.update') }}" enctype="multipart/form-data">
         @method('PUT')
         @csrf
         <div class="row">
@@ -21,12 +21,12 @@
                         <dl class="row">
                             <dt class="col-md-3"><small class="text-muted">Nombre</small></dt>
                             <dd class="col-md-9">
-                                <x-adminlte-input name="nombre" class="border rounded px-2" required value="{{$institucion->nombre}}"/>
+                                <x-adminlte-input name="nombre" class="border rounded px-2" required value="{!! $institucion->nombre !!}" />
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">RIF</small></dt>
                             <dd class="col-md-9 row">
                                 <div class="col-4">
-                                    <x-form.letra-rif selected="{{$institucion->letraRif}}" />
+                                    <x-form.letra-rif selected="{{$institucion->letraCedula->letra}}" />
                                 </div>
                                 <div class="col px-0">
                                     <x-adminlte-input name="numeroRif" class="border rounded px-2" required data-inputmask="'mask': '999999999'" value="{{$institucion->numeroRif}}" />
@@ -46,7 +46,7 @@
                         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar cambios</button>
                     </div>
                     <x-slot name="footerSlot">
-                        <a href="{{ route('institucion') }}" class="text-decoration-none text-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
+                        <a href="{{ route('institucion.show') }}" class="text-decoration-none text-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
                     </x-slot>
                 </x-adminlte-card>
             </div>

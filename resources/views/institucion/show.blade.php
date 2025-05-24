@@ -32,7 +32,7 @@
                                 </dd>
                                 <dt class="col-md-3"><small class="text-muted">RIF</small></dt>
                                 <dd class="col-md-9">
-                                    <div class="form-control-plaintext border rounded px-2">{{ $institucion->letraRif }}-{{ $institucion->numeroRif }}</div>
+                                    <div class="form-control-plaintext border rounded px-2">{{ $institucion->letraCedula->letra }}-{{ $institucion->numeroRif }}</div>
                                 </dd>
                                 <dt class="col-md-3"><small class="text-muted">Teléfono</small></dt>
                                 <dd class="col-md-9">
@@ -53,7 +53,7 @@
                     <x-slot name="footerSlot">
                         <div class="row">
                             <div class="col-sm-12">
-                                <small class="text-muted">Fecha de última modificación: {{ date('d/m/Y h:i A', strtotime($institucion->fechaModificacion)) }}</small>
+                                <small class="text-muted">Fecha de última modificación: {{ $institucion->fechaModificado? $institucion->fechaModificado->format('d/m/Y h:i A') : 'ninguno' }}</small>
                             </div>
                         </div>
                     </x-slot>
@@ -84,7 +84,11 @@
                         <dd class="col-md-9">
                             <ul class="list-group">
                                 @foreach ($institucion->configuracion->calificacionCualitativaLiterales as $literal)
-                                    <li class="list-group-item">{{$literal['literal']}} ({{$literal['descripcion']}})</li>
+                                    <li class="list-group-item">{{$literal['letra']}}
+                                        @if ($literal['descripcion'] != null)
+                                        ({{$literal['descripcion']}})
+                                        @endif
+                                    </li>
                                 @endforeach
                             </ul>
                         </dd>
@@ -102,7 +106,7 @@
                     <x-slot name="footerSlot">
                         <div class="row">
                             <div class="col-sm-12">
-                                <small class="text-muted">Fecha de última modificación: {{ date('d/m/Y h:i A', strtotime($institucion->configuracion->fechaModificacion)) }}</small>
+                                <small class="text-muted">Fecha de última modificación: {{ $institucion->configuracion->fechaModificado ? $institucion->configuracion->fechaModificado->format('d/m/Y h:i A') : 'ninguno' }}</small>
                             </div>
                         </div>
                     </x-slot>
@@ -121,4 +125,9 @@
 @endsection
 
 @push('js')
+@endpush
+@push('js')
+    <script>
+        console.log({{Js::from($institucion->configuracion)}});
+    </script>
 @endpush

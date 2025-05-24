@@ -19,7 +19,7 @@ class ParroquialConfiguracionSeeder extends Seeder
                 'letraRif' => DB::table('LetrasCedula')->where('letra', 'J')->value('IDLetraCedula'),
                 'numeroRif' => 123456789,
                 'direccion' => 'Calle Zamora, Punta Cardón',
-                'telefono' => '0212-1234567',
+                'telefono' => '212-1234567',
                 'logoPath' => null,
             ], ['IDInstitucion'], ['nombre', 'letraRif', 'numeroRif', 'direccion', 'telefono', 'logoPath']);
             DB::table('Configuraciones')->upsert([
@@ -28,10 +28,10 @@ class ParroquialConfiguracionSeeder extends Seeder
                 'calificacionNumericaMaxima' => 20,
                 'calificacionNumericaAprobatoria' => 10,
                 'calificacionCualitativaLiterales' => json_encode([
-                    ['literal' => 'A', 'descripcion' => null],
-                    ['literal' => 'B', 'descripcion' => null],
-                    ['literal' => 'C', 'descripcion' => null],
-                    ['literal' => 'D', 'descripcion' => null],
+                    ['letra' => 'A', 'descripcion' => null],
+                    ['letra' => 'B', 'descripcion' => null],
+                    ['letra' => 'C', 'descripcion' => null],
+                    ['letra' => 'D', 'descripcion' => null],
                 ]),
                 'calificacionCualitativaAprobatoria' => 1,
             ], ['IDConfiguracion'], [ 

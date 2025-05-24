@@ -23,8 +23,8 @@ return new class extends Migration
             $table->json('calificacionCualitativaLiterales');
             $table->integer('calificacionCualitativaAprobatoria')->unsigned();
             // Registro modificaciones
-            $table->timestampTz('fechaCreado')->nullable();
-            $table->timestampTz('fechaModificado')->nullable();
+            $table->dateTimeTz('fechaCreado')->nullable();
+            $table->dateTimeTz('fechaModificado')->nullable();
 
             $table->foreign('institucionID')
                 ->references('IDInstitucion')
