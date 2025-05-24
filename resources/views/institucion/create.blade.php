@@ -17,7 +17,7 @@
 @endphp
 
 @section('content_body')
-    <form method="POST" action="{{ route('institucion') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('institucion.store') }}" enctype="multipart/form-data">
         @method('POST')
         @csrf
         <div class="row">
@@ -35,12 +35,16 @@
                                     <x-form.letra-rif />
                                 </div>
                                 <div class="col px-0">
-                                    <x-adminlte.form.input name="numeroRif" class="border rounded px-2" required data-inputmask="'mask': '9999999999'"/>
+                                    <x-adminlte.form.input name="numeroRif" class="border rounded px-2" required data-inputmask="'mask': '999999999'"/>
                                 </div>
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">Teléfono</small></dt>
                             <dd class="col-md-9">
                                 <x-adminlte.form.input name="telefono" class="border rounded px-2" required data-inputmask="'mask': '+58 999-9999999'"/>
+                            </dd>
+                            <dt class="col-md-3"><small class="text-muted">Dirección</small></dt>
+                            <dd class="col-md-9">
+                                <x-adminlte-textarea name="direccion" rows=3 required class="border rounded px-2" />
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">Logo de la institución</small></dt>
                             <dd class="col-md-9">

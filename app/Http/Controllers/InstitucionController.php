@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Configuracion;
 use App\Models\Institucion;
 use App\Models\LetraCedula;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class InstitucionController extends Controller
 {
@@ -26,13 +28,112 @@ class InstitucionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for creating a new resource.
      *
      * @return \Illuminate\View\View
      */
-    public function edit() : View
+    public function create()
+    {
+        // Check if an institution already exists
+        if (Institucion::exists()) {
+            return redirect()->route('institucion.show')->with('error', 'Ya existe una institución registrada.');
+        }
+
+        return view('institucion.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        // Decode the JSON string into an array
+        $calificacionCualitativaLiterales = json_decode($request->input('calificacionCualitativaLiterales'), true);
+
+        // Ensure the decoded value is an array
+        if (!is_array($calificacionCualitativaLiterales)) {
+            return redirect()->route('institucion.create')->with('error', 'El formato de calificacionCualitativaLiterales no es válido.');
+        }
+        // Check if calificacionCualitativaAprobatoria is inside letra property of one of the elements
+        $aprobarEncontrado = false;
+        foreach ($calificacionCualitativaLiterales as $index => $item) {
+            // Convert empty descripcion strings into null
+            if (empty($item['descripcion'])) {
+                $calificacionCualitativaLiterales[$index]['descripcion'] = null;
+            }
+            if ($item['letra'] === $request->input('calificacionCualitativaAprobatoria')) {
+                $aprobarEncontrado = true;
+                $request->merge(['calificacionCualitativaAprobatoria' => $index + 1]);
+                break;
+            }
+        }
+        if (!$aprobarEncontrado) {
+            return redirect()->route('institucion.create')->with('error', 'La calificación aprobatoria debe estar asociada a una letra existente.');
+        }
+        // Check that minimo < aprobatoria < maximo
+        if ($request->input('calificacionNumericaMinima') >= $request->input('calificacionNumericaAprobatoria') || $request->input('calificacionNumericaAprobatoria') >= $request->input('calificacionNumericaMaxima')) {
+            return redirect()->route('institucion.create')->with('error', 'La calificación mínima debe ser menor que la calificación aprobatoria y la calificación aprobatoria debe ser menor que la calificación máxima.');
+        }
+        
+        // Merge the decoded array back into the request data
+        $request->merge(['calificacionCualitativaLiterales' => $calificacionCualitativaLiterales]);
+
+
+        $validatedConfiguracionData = $request->validate([
+            'calificacionNumericaMinima' => 'required|numeric|min:0|max:9999.99',
+            'calificacionNumericaMaxima' => 'required|numeric|min:0|max:9999.99',
+            'calificacionNumericaAprobatoria' => 'required|numeric|min:0|max:9999.99',
+            'calificacionCualitativaLiterales' => 'required|array',
+            'calificacionCualitativaLiterales.*.letra' => 'required|string|max:1',
+            'calificacionCualitativaLiterales.*.descripcion' => 'nullable|string|max:255',
+            'calificacionCualitativaAprobatoria' => 'required|numeric|min:1|max:'.count($calificacionCualitativaLiterales),
+        ]);
+        
+        $validatedInstitucionData = $request->validate([
+            'nombre' => ['required', 'string', 'max:255'],
+            'letraRif' => ['required', 'string', 'max:1'],
+            'numeroRif' => ['required', 'numeric'],
+            'direccion' => ['required', 'string', 'max:255'],
+            'telefono' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
+            'logoPath' => ['nullable', 'string', 'max:255'],
+        ]);
+        $validatedInstitucionData['letraRifID'] = LetraCedula::where('letra', $validatedInstitucionData['letraRif'])->value('IDLetraCedula');
+        if (!$validatedInstitucionData['letraRifID']) {
+            return redirect()->route('institucion.create')->with('error', 'La letra del RIF no es válida.');
+        }
+        
+        $validatedInstitucionData['letraRif'] = null; // Remove letraRif from the validated data
+        
+        DB::transaction(function () use ($validatedInstitucionData, $validatedConfiguracionData) {
+            try {
+                $institucion = Institucion::create($validatedInstitucionData);
+                $validatedConfiguracionData['institucionID'] = $institucion->IDInstitucion;
+                Configuracion::create($validatedConfiguracionData);
+            } catch (QueryException $e) {
+                DB::rollBack();
+                throw $e;
+            } catch(\Throwable $e) {
+                DB::rollBack();
+                throw $e;
+            }
+        });
+
+        return redirect()->route('institucion.show')->with('success', 'Institución creada correctamente.');
+    }
+
+    /**
+     * Display the form for editing the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit()
     {
         $institucion = Institucion::with('letraRif', 'configuracion')->find(1);
+
+        if (!$institucion) return redirect()->route('institucion.show');
 
         return view('institucion.edit', [
             'institucion' => $institucion,
@@ -50,7 +151,7 @@ class InstitucionController extends Controller
         $institucion = Institucion::find(1);
 
         if (!$institucion) {
-            return redirect()->route('institucion.edit')->with('error', 'Institución no encontrada.');
+            return redirect()->route('institucion.show');
         }
         $validatedData = $request->validate([
             'nombre' => ['required','string','max:255'],
@@ -72,9 +173,13 @@ class InstitucionController extends Controller
 
         return redirect()->route('institucion.show')->with('success', 'Institución actualizada correctamente.');
     }
-    public function configuracionEdit() : View
+    public function configuracionEdit()
     {
         $configuracion = configuracion::where('IDConfiguracion', 1)->first();
+
+        if (!$configuracion) {
+            return redirect()->route('institucion.show');
+        }
 
         return view('configuracion.edit', [
             'configuracion' => $configuracion,
@@ -85,7 +190,7 @@ class InstitucionController extends Controller
         $configuracion = configuracion::where('IDConfiguracion', 1)->first();
 
         if (!$configuracion) {
-            return redirect()->route('institucion.configuracion.edit')->with('error', 'Configuración no encontrada.');
+            return redirect()->route('institucion.show');
         }
 
         // Decode the JSON string into an array
@@ -110,6 +215,10 @@ class InstitucionController extends Controller
         }
         if (!$aprobarEncontrado) {
             return redirect()->route('institucion.configuracion.edit')->with('error', 'La calificación aprobatoria debe estar asociada a una letra existente.');
+        }
+        // Check that minimo < aprobatoria < maximo
+        if ($request->input('calificacionNumericaMinima') >= $request->input('calificacionNumericaAprobatoria') || $request->input('calificacionNumericaAprobatoria') >= $request->input('calificacionNumericaMaxima')) {
+            return redirect()->route('institucion.configuracion.edit')->with('error', 'La calificación mínima debe ser menor que la calificación aprobatoria y la calificación aprobatoria debe ser menor que la calificación máxima.');
         }
         
         // Merge the decoded array back into the request data

@@ -118,7 +118,7 @@
             <h1 class="display-4">No se ha creado una configuración todavía.</h1>
             <p class="lead">Por favor, haga clic en el botón a continuación para crear una nueva institución.</p>
             <hr class="my-4">
-            <a class="btn btn-primary btn-lg" href="{{ route('institucion.crear') }}" role="button">Crear nueva institución</a>
+            <a class="btn btn-primary btn-lg" href="{{ route('institucion.create') }}" role="button">Crear nueva institución</a>
         </x-adminlte-card>
     @endif
     

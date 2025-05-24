@@ -49,6 +49,7 @@ Route::prefix('institucion')->group(function () {
             Route::post('/', 'store')->name('store');
             Route::put('/', 'update')->name('update');
             // Rutas para la configuracion
+            Route::get('/configuracion', fn() => redirect()->route('institucion.show'));
             Route::get('/configuracion/editar', 'configuracionEdit')->name('configuracion.edit');
             Route::put('/configuracion', 'configuracionUpdate')->name('configuracion.update');
         });
