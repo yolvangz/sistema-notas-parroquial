@@ -28,8 +28,8 @@ return new class extends Migration
             $table->string('fotoPerfilPath', 255)->nullable();
             $table->string('cedulaPath', 255)->nullable();
             // Registro modificaciones
-            $table->timestampTz('fechaCreado')->nullable();
-            $table->timestampTz('fechaModificado')->nullable();
+            $table->dateTimeTz('fechaCreado')->nullable();
+            $table->dateTimeTz('fechaModificado')->nullable();
             $table->softDeletesTz();
 
             // llaves foraneas

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('AuxInscripciones', function (Blueprint $table) {
             $table->bigInteger('seccionID')->unsigned();
             $table->bigInteger('estudianteID')->unsigned();
-            $table->dateTimeTz('fechaInscripcion')->nullable();
+            $table->dateTime('fechaInscripcion')->nullable();
 
             // Registro modificaciones
-            $table->timestampTz('fechaModificado')->nullable();
+            $table->dateTimeTz('fechaModificado')->nullable();
             $table->softDeletesTz();
             
             $table->foreign('seccionID')->references('IDSeccion')->on('Secciones')->cascadeOnDelete();

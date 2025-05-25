@@ -21,9 +21,9 @@ class DatabaseSeeder extends Seeder
         ]);
         $this->call([
             LetrasCedulaSeeder::class,
-            ParroquialConfiguracionSeeder::class,
-            MediaGeneralSeeder::class,
-            PeriodoAcademicoSeeder::class,
+            // ParroquialConfiguracionSeeder::class,
+            // MediaGeneralSeeder::class,
+            // PeriodoAcademicoSeeder::class,
         ]);
     }
 }

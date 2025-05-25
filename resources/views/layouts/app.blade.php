@@ -44,7 +44,21 @@
 
 @section('content')
     <div class="px-2">
-        @yield('content_body')
+        @if ($errors->any())
+            <x-adminlte-alert title="Error" theme="danger" dismissable>
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
+            </x-adminlte-alert>
+        @endif
+        @if (session('error'))
+            <x-adminlte-alert title="Error" theme="danger" dismissable>{{session('error')}}</x-adminlte-alert>
+        @elseif(session('success'))
+            <x-adminlte-alert theme="success" dismissable>{{session('success')}}</x-adminlte-alert>
+        @endif
+        <div class="py-2">
+            @yield('content_body')
+        </div>
     </div>
 @endsection
 
@@ -68,5 +82,14 @@
 
 @push('css')
 <style type="text/css">
+    .ratio {
+        object-fit: cover;
+    }
+    .ratio.ratio-1x1{
+        aspect-ratio: 1;
+    }
+    .ratio.ratio-3x4{
+        aspect-ratio: 3 / 4;
+    }
 </style>
 @endpush

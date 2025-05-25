@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('Instituciones', function (Blueprint $table) {
             $table->tinyIncrements('IDInstitucion');
             $table->string('nombre', 250);
-            $table->tinyInteger('letraRif')->unsigned();
+            $table->tinyInteger('letraRifID')->unsigned();
             $table->bigInteger('numeroRif')->unsigned()->unique();
             $table->string('direccion', 150);
-            $table->string('telefono', 13);
+            $table->string('telefono', 15);
             $table->string('logoPath', 255)->nullable();
             // Registro modificaciones
-            $table->timestampTz('fechaCreado')->nullable();
-            $table->timestampTz('fechaModificado')->nullable();
+            $table->dateTimeTz('fechaCreado')->nullable();
+            $table->dateTimeTz('fechaModificado')->nullable();
         });
     }
 

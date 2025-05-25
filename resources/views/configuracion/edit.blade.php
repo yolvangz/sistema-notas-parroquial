@@ -8,7 +8,7 @@
 
 @section('content_header_title', 'Institución')
 
-@section('content_header_subtitle', 'Crear nueva institución')
+@section('content_header_subtitle', 'Modificar la configuración')
 
 @php
     $referencias = [
@@ -17,7 +17,7 @@
 @endphp
 
 @section('content_body')
-    <form method="POST" action="{{ route('institucion') }}">
+    <form method="POST" action="{{ route('institucion.configuracion.update') }}">
         @method('PUT')
         @csrf
         <div class="row">
@@ -91,7 +91,7 @@
                         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar datos</button>
                     </div>
                     <x-slot name="footerSlot">
-                        <a href="{{ route('institucion') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
+                        <a href="{{ route('institucion.show') }}" class="text-decoration-none text-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
                     </x-slot>
                 </x-adminlte-card>
             </div>

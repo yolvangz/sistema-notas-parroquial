@@ -16,18 +16,23 @@ class ParroquialConfiguracionSeeder extends Seeder
         DB::transaction(function () {
             DB::table('Instituciones')->upsert([
                 'nombre' => 'Unidad Educativa Colegio "Parroquial Punta Cardón"',
-                'letraRif' => DB::table('LetrasCedula')->where('letra', 'J')->value('IDLetraCedula'),
+                'letraRifID' => DB::table('LetrasCedula')->where('letra', 'J')->value('IDLetraCedula'),
                 'numeroRif' => 123456789,
                 'direccion' => 'Calle Zamora, Punta Cardón',
-                'telefono' => '0212-1234567',
+                'telefono' => '212-1234567',
                 'logoPath' => null,
-            ], ['IDInstitucion'], ['nombre', 'letraRif', 'numeroRif', 'direccion', 'telefono', 'logoPath']);
+            ], ['IDInstitucion'], ['nombre', 'letraRifID', 'numeroRif', 'direccion', 'telefono', 'logoPath']);
             DB::table('Configuraciones')->upsert([
                 'institucionID' => 1,
                 'calificacionNumericaMinima' => 0,
                 'calificacionNumericaMaxima' => 20,
                 'calificacionNumericaAprobatoria' => 10,
-                'calificacionCualitativaLiterales' => json_encode(['A', 'B', 'C', 'D']),
+                'calificacionCualitativaLiterales' => json_encode([
+                    ['letra' => 'A', 'descripcion' => null],
+                    ['letra' => 'B', 'descripcion' => null],
+                    ['letra' => 'C', 'descripcion' => null],
+                    ['letra' => 'D', 'descripcion' => null],
+                ]),
                 'calificacionCualitativaAprobatoria' => 1,
             ], ['IDConfiguracion'], [ 
                 'institucionID',
