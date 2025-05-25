@@ -15,7 +15,7 @@ class Profesor extends Model
 
     protected $table = 'Profesores';
     protected $primaryKey = 'IDProfesor';
-    public $timestamps = false;
+    public $timestamps = true;
 
     const CREATED_AT = 'fechaCreado';
     const UPDATED_AT = 'fechaModificado';
@@ -30,8 +30,17 @@ class Profesor extends Model
         'fechaIngreso',
         'direccion',
         'telefonoPrincipal',
+        'telefonoSecundario',
         'email',
     ];
+    protected $casts = [
+        'fechaNacimiento' => 'date:Y-m-d',
+        'fechaIngreso' => 'date:Y-m-d',
+        'fechaCreado' => 'datetime:Y-m-d H:i:s',
+        'fechaModificado' => 'datetime:Y-m-d H:i:s',
+        'deleted_at' => 'datetime:Y-m-d H:i:s',
+    ];
+    
     public function letraCedula() : BelongsTo
     {
         return $this->belongsTo(LetraCedula::class, 'cedulaLetra', 'IDLetraCedula');
@@ -47,8 +56,25 @@ class Profesor extends Model
     {
         return explode(' ', $this->nombres)[0];
     }
+    public function getPrimerApellidoAttribute() : string
+    {
+        return explode(' ', $this->apellidos)[0];
+    }
+    public function getNombreSimpleAttribute() : string
+    {
+        return $this->primerNombre.' '.$this->primerApellido;
+    }
     public function getNombreCompletoAttribute() : string
     {
         return $this->nombres . ' ' . $this->apellidos;
+    }
+    public function genero () : Attribute
+    {
+        return Attribute::make(
+            get: fn() => [
+                "letra" => $this->attributes['genero'],
+                "descripcion" => $this->attributes['genero'] == 'M' ? 'Masculino' : 'Femenino',
+            ],
+        );
     }
 }

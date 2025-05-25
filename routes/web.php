@@ -43,7 +43,7 @@ Route::controller(InstitucionController::class)->group(function () {
     Route::prefix('institucion')->group(function () {
         Route::name('institucion.')->group(function () {
             Route::get('/', 'show')->name('show');
-            Route::get('/crear', 'create')->name('create');
+            Route::get('/nuevo', 'create')->name('create');
             Route::get('/editar', 'edit')->name('edit');
             Route::post('/', 'store')->name('store');
             Route::put('/', 'update')->name('update');
@@ -57,7 +57,7 @@ Route::controller(InstitucionController::class)->group(function () {
 
 Route::controller(ProfesorController::class)->group(function () {
     Route::prefix('profesores')->group(function () {
-        Route::name('profesores.')->group(function () {
+        Route::name('profesor.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/nuevo', 'create')->name('create');
             Route::get('/{profesor}', 'show')->name('show');

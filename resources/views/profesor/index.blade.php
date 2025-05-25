@@ -1,6 +1,5 @@
 <!-- Well begun is half done. - Aristotle -->
 
-{{-- resources/views/profesores/index.blade.php --}}
 @extends('layouts.app')
 
 @section('subtitle', 'Todos los profesores')
@@ -9,7 +8,7 @@
 
 @section('content_header_actions')
     <div class="mt-3">
-        <a href="{{ route('profesores.create') }}" class="btn btn-success">
+        <a href="{{ route('profesor.create') }}" class="btn btn-success">
             <i class="fas fa-plus"></i> Agregar Profesor
         </a>
     </div>
@@ -36,7 +35,7 @@
             <table class="table table-hover text-nowrap">
                 <thead>
                     <tr>
-                        <th>Nombre Completo</th>
+                        <th>Nombre</th>
                         <th>Fecha de Ingreso</th>
                         <th>Cédula</th>
                         <th>Acciones</th>
@@ -50,11 +49,11 @@
                     @else
                         @foreach($profesores as $profesor)
                             <tr>
-                                <td>{{ $profesor->nombreCompleto }}</td>
-                                <td>{{ Carbon::parse($profesor->fechaIngreso)->format('d/m/Y') }}</td>
-                                <td>{{ $profesor->cedulaLetra }}-{{ $profesor->cedulaNumero }}</td>
+                                <td>{{ $profesor->nombreSimple }}</td>
+                                <td>{{ $profesor->fechaIngreso->format('d/m/Y') }}</td>
+                                <td>{{ $profesor->letraCedula->letra }}-{{ $profesor->cedulaNumero }}</td>
                                 <td>
-                                    <a href="{{ $profesor->url }}" class="btn btn-sm btn-primary">
+                                    <a href="{{ route('profesor.show', $profesor) }}" class="btn btn-sm btn-primary">
                                         <i class="fas fa-eye"></i> Ver
                                     </a>
                                 </td>

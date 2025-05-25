@@ -22,8 +22,8 @@ return new class extends Migration
             $table->date('fechaNacimiento');
             $table->string('direccion', 255);
             $table->string('email', 320);
-            $table->char('telefonoPrincipal', 13);
-            $table->char('telefonoSecundario', 13)->nullable();
+            $table->char('telefonoPrincipal', 15);
+            $table->char('telefonoSecundario', 15)->nullable();
             // Rutas de los archivos subidos
             $table->string('fotoPerfilPath', 255)->nullable();
             $table->string('cedulaPath', 255)->nullable();

@@ -77,14 +77,14 @@
 
                         <dt class="col-md-3"><small class="text-muted">Calificación Aprobatoria</small></dt>
                         <dd class="col-md-9">
-                            <x-adminlte-select 
+                            <x-adminlte-select2 
                                 id="calificacionCualitativaAprobatoria" 
                                 name="calificacionCualitativaAprobatoria" 
                                 class="border rounded px-2" 
                                 placeholder="Seleccione un literal"
                                 required
                             >
-                            </x-adminlte-select>
+                            </x-adminlte-select2>
                         </dd>
                     </dl>
                     <div class="text-center">

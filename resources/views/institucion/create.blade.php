@@ -32,15 +32,16 @@
                             <dt class="col-md-3"><small class="text-muted">RIF</small></dt>
                             <dd class="col-md-9 row">
                                 <div class="col-4">
-                                    <x-form.letra-rif />
+                                    <x-form.letra-documento name="letraRif" id="letraRif" />
                                 </div>
                                 <div class="col px-0">
                                     <x-adminlte.form.input name="numeroRif" class="border rounded px-2" required data-inputmask="'mask': '999999999'"/>
                                 </div>
                             </dd>
+                            sdfsdfg
                             <dt class="col-md-3"><small class="text-muted">Teléfono</small></dt>
                             <dd class="col-md-9">
-                                <x-adminlte.form.input name="telefono" class="border rounded px-2" required data-inputmask="'mask': '+58 999-9999999'"/>
+                                <x-form.input-telefono name="telefono" id="telefono" required />
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">Dirección</small></dt>
                             <dd class="col-md-9">

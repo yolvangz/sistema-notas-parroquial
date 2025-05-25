@@ -322,12 +322,12 @@ return [
             'submenu' => [
                 [
                     'text' => 'Ver Profesores',
-                    'route' => 'profesores.index',
+                    'route' => 'profesor.index',
                     'icon' => 'fas fa-list',
                 ],
                 [
                     'text' => 'Crear Nuevo Profesor',
-                    'route' => 'profesores.create',
+                    'route' => 'profesor.create',
                     'icon' => 'fas fa-user-plus',
                 ],
             ],
@@ -412,6 +412,11 @@ return [
                     'type' => 'css',
                     'asset' => true,
                     'location' => 'vendor/select2/css/select2.min.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css',
                 ],
             ],
         ],
