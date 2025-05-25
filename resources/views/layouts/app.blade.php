@@ -64,6 +64,8 @@
             @yield('content_body')
         </div>
     </div>
+    @stack('modals')
+    
 @endsection
 
 {{-- Create a common footer --}}

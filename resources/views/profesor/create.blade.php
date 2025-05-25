@@ -3,7 +3,7 @@
 @extends('layouts.app')
 
 @section('plugins.inputmask', true)
-@section('plugins.BsCustomFileInput', true)
+@section('plugins.BsCustomFileInp`ut', true)
 
 @section('subtitle', 'Crear Profesor')
 
@@ -17,7 +17,7 @@
         @csrf
         @method('POST')
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-md-10 col-xl-8 mx-auto">
                 <x-adminlte-card theme="dark" theme-mode="outline" title="Datos del Profesor">
                     <div class="row">
                         <div class="col-md-6 col-lg-4">

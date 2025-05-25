@@ -19,7 +19,7 @@
         @method('PUT')
         @csrf
         <div class="row">
-            <div class="col-12 col-sm-8 col-md-6 mx-auto">
+            <div class="col-md-10 col-xl-8 mx-auto">
                 <x-adminlte-card theme="dark" theme-mode="outline" title="Datos de la institución">
                     <div class="d-flex flex-column justify-content-between pb-2">
                         <dl class="row">

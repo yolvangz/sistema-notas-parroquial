@@ -38,7 +38,6 @@
                                     <x-adminlte.form.input name="numeroRif" class="border rounded px-2" required data-inputmask="'mask': '999999999'"/>
                                 </div>
                             </dd>
-                            sdfsdfg
                             <dt class="col-md-3"><small class="text-muted">Teléfono</small></dt>
                             <dd class="col-md-9">
                                 <x-form.input-telefono name="telefono" id="telefono" required />
@@ -130,7 +129,7 @@
 @push('js')
     <script>
         $(document).ready(function () {
-            bsCustomFileInput.init()
-            })
+            bsCustomFileInput.init();
+        });
     </script>
 @endpush

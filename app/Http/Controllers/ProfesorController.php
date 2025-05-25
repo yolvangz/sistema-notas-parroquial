@@ -31,7 +31,7 @@ class ProfesorController extends Controller
     public function create()
     {
         $letrasCedula = LetraCedula::all();
-        return view('profesor.create', compact('letrasCedula'));
+        return view('profesor.create');
     }
     
     public function store(Request $request)
@@ -66,5 +66,51 @@ class ProfesorController extends Controller
         $profesor->save();
     
         return redirect()->route('profesor.index')->with('success', 'Profesor creado con éxito');
+    }
+    
+    public function edit(Profesor $profesor): View
+    {        
+        return view('profesor.edit', ['profesor' => $profesor]);
+    }
+    
+    public function update(Request $request, Profesor $profesor): RedirectResponse
+    {
+        $letraCedulaID = LetraCedula::where('letra', $request->input('cedulaLetra'))->value('IDLetraCedula');
+        
+        
+        $request->merge(['cedulaLetra' => $letraCedulaID]);
+
+        $validatedData = $request->validate([
+            'nombres' => ['required', 'string', 'max:100'],
+            'apellidos' => ['required', 'string', 'max:100'],
+            'cedulaLetra' => ['required', 'exists:LetrasCedula,IDLetraCedula'],
+            'cedulaNumero' => ['required', 'numeric', 'unique:App\Models\Profesor,cedulaNumero,' . $profesor->id],
+            'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
+            'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
+            'email' => ['required', 'email', 'unique:App\Models\Profesor,email,' . $profesor->id, 'max:320'],
+            'direccion' => ['required', 'string', 'max:255'],
+            'fechaNacimiento' => ['required', 'date', 'before:today'],
+            'fechaIngreso' => ['required', 'date', 'before:today'],
+        ]);
+               
+        $profesor->nombres = $validatedData['nombres'];
+        $profesor->apellidos = $validatedData['apellidos'];
+        $profesor->cedulaLetra = $validatedData['cedulaLetra'];
+        $profesor->cedulaNumero = $validatedData['cedulaNumero'];
+        $profesor->telefonoPrincipal = $validatedData['telefonoPrincipal'];
+        $profesor->telefonoSecundario = $validatedData['telefonoSecundario'];
+        $profesor->email = $validatedData['email'];
+        $profesor->direccion = $validatedData['direccion'];
+        $profesor->fechaNacimiento = $validatedData['fechaNacimiento'];
+        $profesor->fechaIngreso = $validatedData['fechaIngreso'];
+        $profesor->save();
+    
+        return redirect()->route('profesor.show', ['profesor' => $profesor])->with('success', 'Profesor actualizado con éxito');
+    }
+
+    public function destroy(Profesor $profesor): RedirectResponse
+    {
+        $profesor->delete();
+        return redirect()->route('profesor.index')->with('success', 'Profesor eliminado con éxito');
     }
 }
