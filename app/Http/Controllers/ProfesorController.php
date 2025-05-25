@@ -6,41 +6,111 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Profesor;
+use App\Models\LetraCedula;
 
 class ProfesorController extends Controller
 {
-    public function index() : View
+    public function index(Request $request) : View
     {
+        $search = $request->input('search');
+    
         $profesores = Profesor::with('letraCedula')
-        ->orderBy('apellidos')
-        ->get()
-        ->map(function ($profesor) {
-            $profesor->url = route('profesores.show', ['profesor' => $profesor->id]);
-            return $profesor;
-        });
-
-        return view('profesores.index', ['profesores' => $profesores]);
+            ->when($search, function ($query, $search) {
+                $query->where('nombres', 'like', "%{$search}%")
+                    ->orWhere('apellidos', 'like', "%{$search}%")
+                    ->orWhere('cedulaNumero', 'like', "%{$search}%");
+            })
+            ->orderBy('apellidos')
+            ->paginate(10);
+        return view('profesor.index', ['profesores' => $profesores]);
     }
     public function show(Profesor $profesor) : View
     {
-        return view('profesores.show', ['profesor' => $profesor]);
+        return view('profesor.show', ['profesor' => $profesor]);
     }
-    public function create() : RedirectResponse
+    public function create()
     {
-        $dummyProfesor = [
-            'nombres' => 'Pedro',
-            'apellidos' => 'Perez',
-            'cedulaLetra' => 1,
-            'genero' => 'M',
-            'cedulaNumero' => '87654321',
-            'fechaNacimiento' => '1992-01-01',
-            'fechaIngreso' => '2024-06-10',
-            'direccion' => '345 Second St',
-            'telefonoPrincipal' => '+585434654320',
-            'email'=> 'user2@example.com'
-        ];
+        $letrasCedula = LetraCedula::all();
+        return view('profesor.create');
+    }
+    
+    public function store(Request $request)
+    {
+        $letraCedulaID = LetraCedula::where('letra', $request->input('cedulaLetra'))->value('IDLetraCedula');
 
-        Profesor::create($dummyProfesor);
-        return redirect()->route('profesores.index');
+        $request->merge(['cedulaLetra' => $letraCedulaID]);
+
+        $validatedData = $request->validate([
+            'nombres' => ['required', 'string', 'max:100'],
+            'apellidos' => ['required', 'string', 'max:100'],
+            'cedulaLetra' => ['required', 'exists:LetrasCedula,IDLetraCedula'],
+            'cedulaNumero' => ['required', 'numeric', 'unique:Profesores'],
+            'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
+            'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
+            'email' => ['required', 'email', 'unique:Profesores', 'max:320'],
+            'direccion' => ['required', 'string', 'max:255'],
+            'fechaNacimiento' => ['required', 'date', 'before:today'],
+            'fechaIngreso' => ['required', 'date', 'before:today'],
+        ]);
+    
+        $profesor = new Profesor();
+        $profesor->nombres = $validatedData['nombres'];
+        $profesor->apellidos = $validatedData['apellidos'];
+        $profesor->cedulaLetra = $validatedData['cedulaLetra'];
+        $profesor->cedulaNumero = $validatedData['cedulaNumero'];
+        $profesor->telefonoPrincipal = $validatedData['telefonoPrincipal'];
+        $profesor->email = $validatedData['email'];
+        $profesor->direccion = $validatedData['direccion'];
+        $profesor->fechaNacimiento = $validatedData['fechaNacimiento'];
+        $profesor->fechaIngreso = $validatedData['fechaIngreso'];
+        $profesor->save();
+    
+        return redirect()->route('profesor.index')->with('success', 'Profesor creado con éxito');
+    }
+    
+    public function edit(Profesor $profesor): View
+    {        
+        return view('profesor.edit', ['profesor' => $profesor]);
+    }
+    
+    public function update(Request $request, Profesor $profesor): RedirectResponse
+    {
+        $letraCedulaID = LetraCedula::where('letra', $request->input('cedulaLetra'))->value('IDLetraCedula');
+        
+        
+        $request->merge(['cedulaLetra' => $letraCedulaID]);
+
+        $validatedData = $request->validate([
+            'nombres' => ['required', 'string', 'max:100'],
+            'apellidos' => ['required', 'string', 'max:100'],
+            'cedulaLetra' => ['required', 'exists:LetrasCedula,IDLetraCedula'],
+            'cedulaNumero' => ['required', 'numeric', 'unique:App\Models\Profesor,cedulaNumero,' . $profesor->id],
+            'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
+            'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
+            'email' => ['required', 'email', 'unique:App\Models\Profesor,email,' . $profesor->id, 'max:320'],
+            'direccion' => ['required', 'string', 'max:255'],
+            'fechaNacimiento' => ['required', 'date', 'before:today'],
+            'fechaIngreso' => ['required', 'date', 'before:today'],
+        ]);
+               
+        $profesor->nombres = $validatedData['nombres'];
+        $profesor->apellidos = $validatedData['apellidos'];
+        $profesor->cedulaLetra = $validatedData['cedulaLetra'];
+        $profesor->cedulaNumero = $validatedData['cedulaNumero'];
+        $profesor->telefonoPrincipal = $validatedData['telefonoPrincipal'];
+        $profesor->telefonoSecundario = $validatedData['telefonoSecundario'];
+        $profesor->email = $validatedData['email'];
+        $profesor->direccion = $validatedData['direccion'];
+        $profesor->fechaNacimiento = $validatedData['fechaNacimiento'];
+        $profesor->fechaIngreso = $validatedData['fechaIngreso'];
+        $profesor->save();
+    
+        return redirect()->route('profesor.show', ['profesor' => $profesor])->with('success', 'Profesor actualizado con éxito');
+    }
+
+    public function destroy(Profesor $profesor): RedirectResponse
+    {
+        $profesor->delete();
+        return redirect()->route('profesor.index')->with('success', 'Profesor eliminado con éxito');
     }
 }

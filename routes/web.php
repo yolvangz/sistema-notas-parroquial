@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\InstitucionController;
-use App\Http\Controllers\ConfiguracionController;
 use Illuminate\Support\Facades\DB;
 
 $dummy = [
@@ -40,11 +39,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::prefix('institucion')->group(function () {
-    Route::name('institucion.')->group(function () {
-        Route::controller(InstitucionController::class)->group(function () {
+Route::controller(InstitucionController::class)->group(function () {
+    Route::prefix('institucion')->group(function () {
+        Route::name('institucion.')->group(function () {
             Route::get('/', 'show')->name('show');
-            Route::get('/crear', 'create')->name('create');
+            Route::get('/nuevo', 'create')->name('create');
             Route::get('/editar', 'edit')->name('edit');
             Route::post('/', 'store')->name('store');
             Route::put('/', 'update')->name('update');
@@ -56,6 +55,20 @@ Route::prefix('institucion')->group(function () {
     });
 });
 
+Route::controller(ProfesorController::class)->group(function () {
+    Route::prefix('profesores')->group(function () {
+        Route::name('profesor.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/nuevo', 'create')->name('create');
+            Route::get('/{profesor}', 'show')->name('show');
+            Route::get('/{profesor}/editar', 'edit')->name('edit');
+            Route::post('/', 'store')->name('store');
+            Route::put('/{profesor}', 'update')->name('update');
+            Route::delete('/{profesor}', 'destroy')->name('destroy');
+        });
+    });
+});
+
 // RUTAS DE PRUEBA
 
 
@@ -63,20 +76,6 @@ Route::prefix('pruebas')->group(function () {
     Route::get('/letras-cedula', function () {
         $letrasCedula = App\Models\LetraCedula::orderBy('IDLetraCedula')->select('IDLetraCedula as id', 'letra', 'nombre')->get();
         return view('letrasCedula', ['letrasCedula' => $letrasCedula]);
-    });
-    
-    Route::controller(ProfesorController::class)->group(function () {
-        Route::prefix('profesores')->group(function () {
-            Route::name('profesores.')->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/nuevo', 'create')->name('create');
-                Route::get('/{profesor}', 'show')->name('show');
-                Route::get('/{profesor}/editar', 'edit')->name('edit');
-                Route::post('/', 'store')->name('store');
-                Route::put('/{profesor}', 'update')->name('update');
-                Route::delete('/{profesor}', 'destroy')->name('destroy');
-            });
-        });
     });
     
     Route::get('/configuracion', function () {

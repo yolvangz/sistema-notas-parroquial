@@ -4,11 +4,11 @@
 @section('plugins.inputmask', true)
 @section('plugins.BsCustomFileInput', true)
 
-@section('subtitle', 'Instituciones')
+@section('subtitle', 'Modificar la institución')
 
 @section('content_header_title', 'Institución')
 
-@section('content_header_subtitle', 'Modificar institución')
+@section('content_header_subtitle', 'Modificar la institución')
 
 @php
     $logoFilename = pathinfo($institucion->logoPath)['basename'];
@@ -19,18 +19,18 @@
         @method('PUT')
         @csrf
         <div class="row">
-            <div class="col-12 col-sm-8 col-md-6 mx-auto">
+            <div class="col-md-10 col-xl-8 mx-auto">
                 <x-adminlte-card theme="dark" theme-mode="outline" title="Datos de la institución">
                     <div class="d-flex flex-column justify-content-between pb-2">
                         <dl class="row">
                             <dt class="col-md-3"><small class="text-muted">Nombre</small></dt>
                             <dd class="col-md-9">
-                                <x-adminlte.form.input name="nombre" class="border rounded px-2" required :value="$institucion->nombre" />
+                                <x-adminlte.form.input name="nombre" class="border rounded px-2" required value="{{$institucion->nombre}}" />
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">RIF</small></dt>
                             <dd class="col-md-9 row">
                                 <div class="col-4">
-                                    <x-form.letra-rif :selected="$institucion->letraRif" />
+                                    <x-form.letra-documento name="letraRif" id="letraRif" :selected="$institucion->letraRif" />
                                 </div>
                                 <div class="col px-0">
                                     <x-adminlte.form.input name="numeroRif" class="border rounded px-2" required data-inputmask="'mask': '999999999'" value="{{$institucion->numeroRif}}" />
@@ -38,7 +38,7 @@
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">Teléfono</small></dt>
                             <dd class="col-md-9">
-                                <x-adminlte.form.input name="telefono" class="border rounded px-2" required data-inputmask="'mask': '+58 999-9999999'" value="{{$institucion->telefono}}" />
+                                <x-form.input-telefono name="telefono" id="telefono" required value="{{ $institucion->telefono }}" />
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">Dirección</small></dt>
                             <dd class="col-md-9">

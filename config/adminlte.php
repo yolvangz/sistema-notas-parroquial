@@ -316,6 +316,22 @@ return [
             'route' => 'institucion.show',
             'icon' => 'fas fa-school',
         ],
+        [
+            'text' => 'Profesores',
+            'icon' => 'fas fa-chalkboard-teacher',
+            'submenu' => [
+                [
+                    'text' => 'Ver Profesores',
+                    'route' => 'profesor.index',
+                    'icon' => 'fas fa-list',
+                ],
+                [
+                    'text' => 'Crear Nuevo Profesor',
+                    'route' => 'profesor.create',
+                    'icon' => 'fas fa-user-plus',
+                ],
+            ],
+        ],
         
     ],
 
@@ -396,6 +412,11 @@ return [
                     'type' => 'css',
                     'asset' => true,
                     'location' => 'vendor/select2/css/select2.min.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css',
                 ],
             ],
         ],

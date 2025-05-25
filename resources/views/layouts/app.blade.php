@@ -26,18 +26,22 @@
 
 {{-- Contenido del cabecero --}}
 @section('content_header')
-	@hasSection('content_header_title')
-		<h1>
-			@yield('content_header_title')
-
-			@hasSection('content_header_subtitle')
-				<small class="text-dark">
-					<i class="fas fa-xs fa-angle-right text-muted"></i>
-					@yield('content_header_subtitle')
-				</small>
-			@endif
-		</h1>
-	@endif
+    <div class="d-flex justify-content-between">
+        @hasSection('content_header_title')
+            <h1>
+                @yield('content_header_title')
+                @hasSection('content_header_subtitle')
+                    <small class="text-dark">
+                        <i class="fas fa-xs fa-angle-right text-muted"></i>
+                        @yield('content_header_subtitle')
+                    </small>
+                @endif
+            </h1>
+        @endif
+        @hasSection('content_header_actions')
+            @yield('content_header_actions')
+        @endif
+    </div>
 @endsection
 
 {{-- Rename section content to content_body --}}
@@ -60,6 +64,8 @@
             @yield('content_body')
         </div>
     </div>
+    @stack('modals')
+    
 @endsection
 
 {{-- Create a common footer --}}
