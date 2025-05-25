@@ -316,6 +316,22 @@ return [
             'route' => 'institucion.show',
             'icon' => 'fas fa-school',
         ],
+        [
+            'text' => 'Profesores',
+            'icon' => 'fas fa-chalkboard-teacher',
+            'submenu' => [
+                [
+                    'text' => 'Ver Profesores',
+                    'route' => 'profesores.index',
+                    'icon' => 'fas fa-list',
+                ],
+                [
+                    'text' => 'Crear Nuevo Profesor',
+                    'route' => 'profesores.create',
+                    'icon' => 'fas fa-user-plus',
+                ],
+            ],
+        ],
         
     ],
 

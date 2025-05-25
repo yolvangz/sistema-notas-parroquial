@@ -4,11 +4,11 @@
 @section('plugins.inputmask', true)
 @section('plugins.BsCustomFileInput', true)
 
-@section('subtitle', 'Instituciones')
+@section('subtitle', 'Modificar la institución')
 
 @section('content_header_title', 'Institución')
 
-@section('content_header_subtitle', 'Modificar institución')
+@section('content_header_subtitle', 'Modificar la institución')
 
 @php
     $logoFilename = pathinfo($institucion->logoPath)['basename'];

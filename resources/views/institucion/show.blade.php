@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('subtitle', 'Instituciones')
+@section('subtitle', 'Datos de la institución')
 
 @section('content_header_title', 'Datos de la institución')
 

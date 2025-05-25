@@ -4,7 +4,7 @@
 @section('plugins.inputmask', true)
 @section('plugins.BsCustomFileInput', true)
 
-@section('subtitle', 'Instituciones')
+@section('subtitle', 'Crear nueva institución')
 
 @section('content_header_title', 'Institución')
 

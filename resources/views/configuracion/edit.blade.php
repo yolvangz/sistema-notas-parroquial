@@ -4,7 +4,7 @@
 @section('plugins.inputmask', true)
 @section('plugins.BsCustomFileInput', true)
 
-@section('subtitle', 'Instituciones')
+@section('subtitle', 'Modificar la configuración')
 
 @section('content_header_title', 'Institución')
 

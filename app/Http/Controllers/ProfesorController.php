@@ -9,16 +9,19 @@ use App\Models\Profesor;
 
 class ProfesorController extends Controller
 {
-    public function index() : View
+    public function index(Request $request) : View
     {
+        $search = $request->input('search');
+    
         $profesores = Profesor::with('letraCedula')
-        ->orderBy('apellidos')
-        ->get()
-        ->map(function ($profesor) {
-            $profesor->url = route('profesores.show', ['profesor' => $profesor->id]);
-            return $profesor;
-        });
-
+            ->when($search, function ($query, $search) {
+                $query->where('nombres', 'like', "%{$search}%")
+                    ->orWhere('apellidos', 'like', "%{$search}%")
+                    ->orWhere('cedulaNumero', 'like', "%{$search}%");
+            })
+            ->orderBy('apellidos')
+            ->paginate(10);
+    
         return view('profesores.index', ['profesores' => $profesores]);
     }
     public function show(Profesor $profesor) : View
