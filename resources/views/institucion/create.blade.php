@@ -48,7 +48,7 @@
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">Logo de la institución</small></dt>
                             <dd class="col-md-9">
-                                <x-adminlte-input-file name="logo" accept="image/*" />
+                                <x-adminlte-input-file name="logo" accept="image/*" legend="Buscar imagen" />
                             </dd>
                         </dl>
                     </div>                    
@@ -125,3 +125,11 @@
         </div>
     </form>
 @endsection
+
+@push('js')
+    <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+            })
+    </script>
+@endpush

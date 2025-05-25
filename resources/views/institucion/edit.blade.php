@@ -10,6 +10,10 @@
 
 @section('content_header_subtitle', 'Modificar institución')
 
+@php
+    $logoFilename = pathinfo($institucion->logoPath)['basename'];
+@endphp
+
 @section('content_body')
     <form method="POST" action="{{ route('institucion.update') }}" enctype="multipart/form-data">
         @method('PUT')
@@ -42,7 +46,8 @@
                             </dd>
                             <dt class="col-md-3"><small class="text-muted">Logo de la institución</small></dt>
                             <dd class="col-md-9">
-                                <x-adminlte-input-file name="logo" accept="image/*" />
+                                <x-adminlte-input-file name="logo" accept="image/*" legend="Buscar imagen" />
+                            </dd>
                             </dd>
                         </dl>
                     </div>
@@ -56,4 +61,12 @@
             </div>
         </div>
     </form>
-@endsectiongit
+@endsection
+
+@push('js')
+    <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+            })
+    </script>
+@endpush

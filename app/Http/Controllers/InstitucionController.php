@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Configuracion;
 use App\Models\Institucion;
 use App\Models\LetraCedula;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
 
 class InstitucionController extends Controller
 {
@@ -98,8 +99,13 @@ class InstitucionController extends Controller
             'numeroRif' => ['required', 'numeric'],
             'direccion' => ['required', 'string', 'max:255'],
             'telefono' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
-            'logoPath' => ['nullable', 'string', 'max:255'],
+            'logo' => ['nullable','image'],
         ]);
+
+        if ($request->hasFile('logo')) {
+            $logoPath = Storage::putFileAs('institucion', $request->file('logo'),'logo.'.''.$request->file('logo')->extension());
+            $validatedInstitucionData['logoPath'] = $logoPath;
+        }
         $validatedInstitucionData['letraRifID'] = LetraCedula::where('letra', $validatedInstitucionData['letraRif'])->value('IDLetraCedula');
         if (!$validatedInstitucionData['letraRifID']) {
             return redirect()->route('institucion.create')->with('error', 'La letra del RIF no es válida.');
@@ -159,9 +165,14 @@ class InstitucionController extends Controller
             'numeroRif' => ['required','numeric'],
             'direccion' => ['required','string','max:500'],
             'telefono' => ['required','string','regex:/^\+58 \d{3}-\d{7}$/'],
-            'logoPath' => ['nullable','string','max:255'],
+            'logo' => ['nullable','image'],
         ]);
 
+        if ($request->hasFile('logo')) {
+            if ($institucion->logoPath) Storage::disk('public')->delete($institucion->logoPath);
+            $logoPath = Storage::putFileAs('institucion', $request->file('logo'),'logo.'.''.$request->file('logo')->extension());
+            $validatedData['logoPath'] = $logoPath;
+        }
         $validatedData['letraRifID'] = LetraCedula::where('letra', $validatedData['letraRif'])->value('IDLetraCedula');
         if (!$validatedData['letraRifID']) {
             return redirect()->route('institucion.edit')->with('error', 'La letra del RIF no es válida.');

@@ -82,5 +82,14 @@
 
 @push('css')
 <style type="text/css">
+    .ratio {
+        object-fit: cover;
+    }
+    .ratio.ratio-1x1{
+        aspect-ratio: 1;
+    }
+    .ratio.ratio-3x4{
+        aspect-ratio: 3 / 4;
+    }
 </style>
 @endpush
