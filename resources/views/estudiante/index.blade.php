@@ -52,7 +52,7 @@
                             <tr>
                                 <td>{{ $estudiante->nombreSimple }}</td>
                                 <td>{{ $estudiante->letraCedula->letra ?? 'N/A' }}-{{ $estudiante->cedulaNumero }}</td>
-                                <td>{{ $estudiante->fechaNacimiento->format('d/m/Y') }}</td>
+                                <td>{{ $estudiante->fechaNacimiento->format('d/m/Y') }} ({{ $estudiante->edad }} año{{ $estudiante->edad > 1 ? 's' : '' }})</td>
                                 <td>{{ $estudiante->direccion }}</td>
                                 <td>
                                     <a href="{{ route('estudiante.show', $estudiante) }}" class="btn btn-sm btn-primary">
