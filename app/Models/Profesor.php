@@ -29,9 +29,9 @@ class Profesor extends Model
         'fechaNacimiento',
         'fechaIngreso',
         'direccion',
+        'email',
         'telefonoPrincipal',
         'telefonoSecundario',
-        'email',
     ];
     protected $casts = [
         'fechaNacimiento' => 'date:Y-m-d',
@@ -71,7 +71,7 @@ class Profesor extends Model
     public function genero () : Attribute
     {
         return Attribute::make(
-            get: fn() => [
+            get: fn() => (object) [
                 "letra" => $this->attributes['genero'],
                 "descripcion" => $this->attributes['genero'] == 'M' ? 'Masculino' : 'Femenino',
             ],

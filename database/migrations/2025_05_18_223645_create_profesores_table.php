@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('fechaNacimiento');
             $table->date('fechaIngreso');
             $table->string('direccion', 255);
-            $table->string('email', 320);
+            $table->string('email', 320)->unique();
             $table->char('telefonoPrincipal', 15);
             $table->char('telefonoSecundario', 15)->nullable();
             // Rutas de los archivos subidos

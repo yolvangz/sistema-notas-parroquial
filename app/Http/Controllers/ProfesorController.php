@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\Profesor;
 use App\Models\LetraCedula;
 
@@ -45,6 +46,7 @@ class ProfesorController extends Controller
             'apellidos' => ['required', 'string', 'max:100'],
             'cedulaLetra' => ['required', 'exists:LetrasCedula,IDLetraCedula'],
             'cedulaNumero' => ['required', 'numeric', 'unique:Profesores'],
+            'genero' => ['required', Rule::in(['M', 'F'])],
             'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
             'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
             'email' => ['required', 'email', 'unique:Profesores', 'max:320'],
@@ -58,6 +60,7 @@ class ProfesorController extends Controller
         $profesor->apellidos = $validatedData['apellidos'];
         $profesor->cedulaLetra = $validatedData['cedulaLetra'];
         $profesor->cedulaNumero = $validatedData['cedulaNumero'];
+        $profesor->genero = $validatedData['genero'];
         $profesor->telefonoPrincipal = $validatedData['telefonoPrincipal'];
         $profesor->email = $validatedData['email'];
         $profesor->direccion = $validatedData['direccion'];
@@ -85,6 +88,7 @@ class ProfesorController extends Controller
             'apellidos' => ['required', 'string', 'max:100'],
             'cedulaLetra' => ['required', 'exists:LetrasCedula,IDLetraCedula'],
             'cedulaNumero' => ['required', 'numeric', 'unique:App\Models\Profesor,cedulaNumero,' . $profesor->id],
+            'genero' => ['required', Rule::in(['M', 'F'])],
             'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
             'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
             'email' => ['required', 'email', 'unique:App\Models\Profesor,email,' . $profesor->id, 'max:320'],
@@ -97,6 +101,7 @@ class ProfesorController extends Controller
         $profesor->apellidos = $validatedData['apellidos'];
         $profesor->cedulaLetra = $validatedData['cedulaLetra'];
         $profesor->cedulaNumero = $validatedData['cedulaNumero'];
+        $profesor->genero = $validatedData['genero'];
         $profesor->telefonoPrincipal = $validatedData['telefonoPrincipal'];
         $profesor->telefonoSecundario = $validatedData['telefonoSecundario'];
         $profesor->email = $validatedData['email'];

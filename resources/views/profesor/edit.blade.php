@@ -47,6 +47,10 @@
                                     <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$profesor->letraCedula" />
                                     <x-adminlte.form.input name="cedulaNumero" value="{{ $profesor->cedulaNumero }}" placeholder="Número de Cédula" />
                                 </dd>
+                                <dt class="col-md-3"><small class="text-muted"><label for="genero">Género</label></small></dt>
+                                <dd class="col-md-9">
+                                    <x-form.genero :selected="$profesor->genero" />
+                                </dd>
                                 <dt class="col-md-3"><small class="text-muted">Teléfono Principal</small></dt>
                                 <dd class="col-md-9">
                                     <x-form.input-telefono name="telefonoPrincipal" id="telefonoPrincipal" value="{{ $profesor->telefonoPrincipal }}" placeholder="Teléfono Principal" />
