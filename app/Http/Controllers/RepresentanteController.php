@@ -91,8 +91,8 @@ class RepresentanteController extends Controller
      */
     public function edit(Representante $representante): View
     {
-        $letrasCedula = LetraCedula::all();
-        return view('representante.edit', compact('representante', 'letrasCedula'));
+        $representante->load('letraCedula');
+        return view('representante.edit', ['representante' => $representante]);
     }
 
     /**
@@ -123,11 +123,11 @@ class RepresentanteController extends Controller
             'email' => ['required', 'string', 'email', 'max:320', Rule::unique('Representantes', 'email')->ignore($representante->IDRepresentante, 'IDRepresentante')],
             'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'], // Adjusted regex
             'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'], // Adjusted regex
-            'fotoPerfilPath' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'cedulaPath' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,svg,pdf', 'max:2048'],
+            // 'fotoPerfilPath' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            // 'cedulaPath' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,svg,pdf', 'max:2048'],
         ]);
 
-        if ($request->hasFile('fotoPerfilPath')) {
+        /* if ($request->hasFile('fotoPerfilPath')) {
             if ($representante->fotoPerfilPath && Storage::disk('public')->exists($representante->fotoPerfilPath)) {
                 Storage::disk('public')->delete($representante->fotoPerfilPath);
             }
@@ -139,7 +139,7 @@ class RepresentanteController extends Controller
                 Storage::disk('public')->delete($representante->cedulaPath);
             }
             $validatedData['cedulaPath'] = $request->file('cedulaPath')->store('representantes/cedulas', 'public');
-        }
+        } */
         
         $validatedData['cedulaLetra'] = $validatedData['cedulaLetra_validated_id'];
         unset($validatedData['cedulaLetra_validated_id']);

@@ -6,7 +6,7 @@
 
 @section('content_header_title', 'Representantes')
 @section('content_header_subtitle', 'Ver')
-
+w
 @section('content_body')
     <div class="row">
         <div class="col-md-10 col-xl-8 mx-auto">
