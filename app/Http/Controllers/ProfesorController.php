@@ -47,12 +47,12 @@ class ProfesorController extends Controller
             'cedulaLetra' => ['required', 'exists:LetrasCedula,IDLetraCedula'],
             'cedulaNumero' => ['required', 'numeric', 'unique:Profesores'],
             'genero' => ['required', Rule::in(['M', 'F'])],
-            'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
-            'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
-            'email' => ['required', 'email', 'unique:Profesores', 'max:320'],
-            'direccion' => ['required', 'string', 'max:255'],
             'fechaNacimiento' => ['required', 'date', 'before:today'],
             'fechaIngreso' => ['required', 'date', 'before:today'],
+            'direccion' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:320', Rule::unique('Representantes', 'email')],
+            'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
+            'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
         ]);
     
         $profesor = new Profesor();

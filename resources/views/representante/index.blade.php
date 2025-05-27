@@ -16,17 +16,6 @@
 @endsection
 
 @section('content_body')
-    @if(session('success'))
-        <x-adminlte-alert theme="success" title="Éxito" dismissable>
-            {{ session('success') }}
-        </x-adminlte-alert>
-    @endif
-    @if(session('error'))
-        <x-adminlte-alert theme="danger" title="Error" dismissable>
-            {{ session('error') }}
-        </x-adminlte-alert>
-    @endif
-
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Lista de Representantes</h3>

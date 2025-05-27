@@ -33,8 +33,6 @@ class Representante extends Model
         'email',
         'telefonoPrincipal',
         'telefonoSecundario',
-        'fotoPerfilPath',
-        'cedulaPath',
     ];
 
     protected $casts = [

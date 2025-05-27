@@ -33,6 +33,15 @@ class RepresentanteController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(Representante $representante): View
+    {
+        $representante->load('letraCedula');
+        return view('representante.show', ['representante' => $representante]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create(): View
@@ -46,19 +55,14 @@ class RepresentanteController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        dd($request->all());
-        $letraCedulaInput = $request->input('cedulaLetra');
-        $letraCedula = is_numeric($letraCedulaInput) ? LetraCedula::find($letraCedulaInput) : LetraCedula::where('letra', $letraCedulaInput)->first();
-        $letraCedulaID = $letraCedula ? $letraCedula->IDLetraCedula : null;
+        $letraCedulaID = LetraCedula::where('letra', $request->input('cedulaLetra'))->value('IDLetraCedula');
 
-        if ($letraCedulaID && !is_numeric($letraCedulaInput)) {
-            $request->merge(['cedulaLetra' => $letraCedulaID]);
-        }
+        $request->merge(['cedulaLetraID' => $letraCedulaID]);
         
         $validatedData = $request->validate([
             'nombres' => ['required', 'string', 'max:100'],
             'apellidos' => ['required', 'string', 'max:100'],
-            'cedulaLetra' => ['required', 'exists:LetrasCedula,IDLetraCedula'],
+            'cedulaLetraID' => ['required', 'exists:LetrasCedula,IDLetraCedula'],
             'cedulaNumero' => [
                 'required',
                 'numeric',
@@ -67,36 +71,19 @@ class RepresentanteController extends Controller
                 })
             ],
             'genero' => ['required', Rule::in(['M', 'F'])],
-            'fechaNacimiento' => ['required', 'date', 'before_or_equal:today'],
+            'fechaNacimiento' => ['required', 'date', 'before:today'],
             'direccion' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:320', Rule::unique('Representantes', 'email')],
             'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'], // Adjusted regex
             'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'], // Adjusted regex
-            'fotoPerfilPath' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'cedulaPath' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,svg,pdf', 'max:2048'],
         ]);
-
-        if ($request->hasFile('fotoPerfilPath')) {
-            $validatedData['fotoPerfilPath'] = $request->file('fotoPerfilPath')->store('representantes/fotos_perfil', 'public');
-        }
-        if ($request->hasFile('cedulaPath')) {
-            $validatedData['cedulaPath'] = $request->file('cedulaPath')->store('representantes/cedulas', 'public');
-        }
-
+        $validatedData['cedulaLetra'] = $letraCedulaID;
+        $validatedData['cedulaLetraID'] = null;
+        
         $representante = new Representante($validatedData);
-        $representante->cedulaLetra = $letraCedulaID;
         $representante->save();
-
+        
         return redirect()->route('representante.index')->with('success', 'Representante creado con éxito.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Representante $representante): View
-    {
-        $representante->load('letraCedula', 'estudiantes');
-        return view('representante.show', ['representante' => $representante]);
     }
 
     /**
