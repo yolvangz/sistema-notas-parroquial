@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('PlanesDeEstudios', function (Blueprint $table) {
             $table->id('IDPlanEstudio');
             $table->string('nombre', 100);
-            $table->string('codigo', 50);
+            $table->string('codigo', 50)->unique();
             $table->string('descripcion', 255)->nullable();
             $table->boolean('activo')->default(true);
 
