@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\InstitucionController;
 use App\Http\Controllers\RepresentanteController;
+use App\Http\Controllers\EstudianteController;
 use Illuminate\Support\Facades\DB;
 
 $dummy = [
@@ -80,6 +81,20 @@ Route::controller(RepresentanteController::class)->group(function () {
             Route::post('/', 'store')->name('store');
             Route::put('/{representante}', 'update')->name('update');
             Route::delete('/{representante}', 'destroy')->name('destroy');
+        });
+    });
+});
+
+Route::controller(EstudianteController::class)->group(function () {
+    Route::prefix('estudiantes')->group(function () {
+        Route::name('estudiante.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/nuevo', 'create')->name('create');
+            Route::get('/{estudiante}', 'show')->name('show');
+            Route::get('/{estudiante}/editar', 'edit')->name('edit');
+            Route::post('/', 'store')->name('store');
+            Route::put('/{estudiante}', 'update')->name('update');
+            Route::delete('/{estudiante}', 'destroy')->name('destroy');
         });
     });
 });
