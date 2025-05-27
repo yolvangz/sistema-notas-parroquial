@@ -36,7 +36,7 @@ w
                             <dd class="col-sm-8 col-md-9">{{ $representante->letraCedula->letra ?? 'N/A' }}-{{ $representante->cedulaNumero }}</dd>
 
                             <dt class="col-sm-4 col-md-3"><small class="text-muted">Género</small></dt>
-                            <dd class="col-sm-8 col-md-9">{{ $representante->genero['descripcion'] ?? 'N/A' }}</dd>
+                            <dd class="col-sm-8 col-md-9">{{ $representante->genero->descripcion ?? 'N/A' }}</dd>
 
                             <dt class="col-sm-4 col-md-3"><small class="text-muted">Fecha de Nacimiento</small></dt>
                             <dd class="col-sm-8 col-md-9">{{ $representante->fechaNacimiento ? $representante->fechaNacimiento->format('d/m/Y') : 'N/A' }}</dd>

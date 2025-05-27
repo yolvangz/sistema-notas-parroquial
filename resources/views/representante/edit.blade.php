@@ -1,5 +1,4 @@
 <!-- Simplicity is the essence of happiness. - Cedric Bledsoe -->
-{{-- resources/views/representante/edit.blade.php --}}
 
 @extends('layouts.app')
 
@@ -56,7 +55,7 @@
                         </div>
 
                         <div class="col-md-6 col-lg-4">
-                            <x-form.genero required />
+                            <x-form.genero required selected="{{old('genero', $representante->genero->letra)}}" />
                         </div>
                         <div class="col-md-6 col-lg-4">
                              <x-adminlte-input-date name="fechaNacimiento" label="Fecha de Nacimiento" placeholder="Seleccione fecha" fgroup-class="col-12" value="{{ old('fechaNacimiento', $representante->fechaNacimiento ? $representante->fechaNacimiento->format('Y-m-d') : '') }}" required>

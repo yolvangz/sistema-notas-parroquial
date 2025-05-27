@@ -78,7 +78,7 @@ class Estudiante extends Model
     public function genero() : Attribute
     {
         return Attribute::make(
-            get: fn($value) => [ // The $value passed here is $this->attributes['genero']
+            get: fn($value) => (object) [ // The $value passed here is $this->attributes['genero']
                 "letra" => $value,
                 "descripcion" => $value == 'M' ? 'Masculino' : 'Femenino',
             ],

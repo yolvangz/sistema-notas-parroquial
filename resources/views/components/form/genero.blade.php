@@ -4,8 +4,9 @@
         "placeholder" => "Seleccione el género...",
         "allowClear" => true,
     ];
-    $selected = $attributes->get('selected')->letra ?? '';
+    $selected = $attributes->get('selected') ?? '';
     $attributes = $attributes->except('selected');
+
 @endphp
 <div>
     <x-adminlte-select2 id="genero" name="genero" :config="$config" {{ $attributes }}>

@@ -139,7 +139,7 @@ class EstudianteController extends Controller
                 })->ignore($estudiante->IDEstudiante, 'IDEstudiante')
             ],
             'genero' => ['required', Rule::in(['M', 'F'])],
-            'fechaNacimiento' => ['required', 'date', 'before_or_equal:today'],
+            'fechaNacimiento' => ['required', 'date', 'before:today'],
             'direccion' => ['required', 'string', 'max:255'],
             'fotoPerfilPath' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'cedulaPath' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,svg,pdf', 'max:2048'],
