@@ -79,9 +79,7 @@
 {{-- Add common Javascript/Jquery code --}}
 
 @push('js')
-<script>
-  if (window.Inputmask) Inputmask().mask(document.querySelectorAll("input[data-inputmask]"));
-</script>
+
 @endpush
 
 {{-- Add common CSS customizations --}}

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\InstitucionController;
+use App\Http\Controllers\RepresentanteController;
 use Illuminate\Support\Facades\DB;
 
 $dummy = [
@@ -65,6 +66,20 @@ Route::controller(ProfesorController::class)->group(function () {
             Route::post('/', 'store')->name('store');
             Route::put('/{profesor}', 'update')->name('update');
             Route::delete('/{profesor}', 'destroy')->name('destroy');
+        });
+    });
+});
+
+Route::controller(RepresentanteController::class)->group(function () {
+    Route::prefix('representantes')->group(function () {
+        Route::name('representante.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/nuevo', 'create')->name('create');
+            Route::get('/{representante}', 'show')->name('show');
+            Route::get('/{representante}/editar', 'edit')->name('edit');
+            Route::post('/', 'store')->name('store');
+            Route::put('/{representante}', 'update')->name('update');
+            Route::delete('/{representante}', 'destroy')->name('destroy');
         });
     });
 });

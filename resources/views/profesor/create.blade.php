@@ -3,13 +3,13 @@
 @extends('layouts.app')
 
 @section('plugins.inputmask', true)
-@section('plugins.BsCustomFileInp`ut', true)
+@section('plugins.BsCustomFileInput', true)
 
 @section('subtitle', 'Crear Profesor')
 
 @section('content_header_title', 'Profesores')
 
-@section('content_header_subtitle', 'crear nuevo')
+@section('content_header_subtitle', 'Crear Representante')
 
 
 @section('content')

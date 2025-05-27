@@ -42,7 +42,7 @@
                                 <dd class="col-md-9">
                                     <x-adminlte.form.input name="apellidos" value="{{ $profesor->apellidos }}" placeholder="Apellidos" />
                                 </dd>
-                                <dt class="col-md-3"><small class="text-muted">Identificación</small></dt>
+                                <dt class="col-md-3"><small class="text-muted">Cédula de Identidad</small></dt>
                                 <dd class="col-md-9">
                                     <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$profesor->letraCedula" />
                                     <x-adminlte.form.input name="cedulaNumero" value="{{ $profesor->cedulaNumero }}" placeholder="Número de Cédula" />
@@ -51,22 +51,6 @@
                                 <dd class="col-md-9">
                                     <x-form.genero :selected="$profesor->genero" />
                                 </dd>
-                                <dt class="col-md-3"><small class="text-muted">Teléfono Principal</small></dt>
-                                <dd class="col-md-9">
-                                    <x-form.input-telefono name="telefonoPrincipal" id="telefonoPrincipal" value="{{ $profesor->telefonoPrincipal }}" placeholder="Teléfono Principal" />
-                                </dd>
-                                <dt class="col-md-3"><small class="text-muted">Teléfono Secundario</small></dt>
-                                <dd class="col-md-9">
-                                    <x-form.input-telefono name="telefonoSecundario" id="telefonoSecundario" value="{{ $profesor->telefonoSecundario }}" placeholder="Teléfono Secundario" />
-                                </dd>
-                                <dt class="col-md-3"><small class="text-muted">Correo</small></dt>
-                                <dd class="col-md-9">
-                                    <x-adminlte.form.input name="email" value="{{ $profesor->email }}" placeholder="Correo Electrónico" />
-                                </dd>
-                                <dt class="col-md-3"><small class="text-muted">Dirección</small></dt>
-                                <dd class="col-md-9">
-                                    <x-adminlte.form.input name="direccion" value="{{ $profesor->direccion }}" placeholder="Dirección" />
-                                </dd>
                                 <dt class="col-md-3"><small class="text-muted">Fecha de Nacimiento</small></dt>
                                 <dd class="col-md-9">
                                     <x-adminlte.form.input name="fechaNacimiento" value="{{ $profesor->fechaNacimiento->format('Y-m-d') }}" placeholder="Fecha de Nacimiento" type="date" />
@@ -74,6 +58,22 @@
                                 <dt class="col-md-3"><small class="text-muted">Fecha de Ingreso</small></dt>
                                 <dd class="col-md-9">
                                     <x-adminlte.form.input name="fechaIngreso" value="{{ $profesor->fechaIngreso->format('Y-m-d') }}" placeholder="Fecha de Ingreso" type="date" />
+                                </dd>
+                                <dt class="col-md-3"><small class="text-muted">Dirección</small></dt>
+                                <dd class="col-md-9">
+                                    <x-adminlte.form.input name="direccion" value="{{ $profesor->direccion }}" placeholder="Dirección" />
+                                </dd>
+                                <dt class="col-md-3"><small class="text-muted">Correo Electrónico</small></dt>
+                                <dd class="col-md-9">
+                                    <x-adminlte.form.input name="email" value="{{ $profesor->email }}" placeholder="Correo Electrónico" />
+                                </dd>
+                                <dt class="col-md-3"><small class="text-muted">Teléfono Principal</small></dt>
+                                <dd class="col-md-9">
+                                    <x-form.input-telefono name="telefonoPrincipal" id="telefonoPrincipal" value="{{ $profesor->telefonoPrincipal }}" placeholder="Teléfono Principal" />
+                                </dd>
+                                <dt class="col-md-3"><small class="text-muted">Teléfono Secundario (opcional)</small></dt>
+                                <dd class="col-md-9">
+                                    <x-form.input-telefono name="telefonoSecundario" id="telefonoSecundario" value="{{ $profesor->telefonoSecundario }}" placeholder="Teléfono Secundario" />
                                 </dd>
                             </dl>
                         </div>

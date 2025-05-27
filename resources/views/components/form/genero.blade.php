@@ -7,7 +7,9 @@
     $selected = $attributes->get('selected')->letra ?? '';
     $attributes = $attributes->except('selected');
 @endphp
-<x-adminlte-select2 id="genero" name="genero" :config="$config" fgroup-class="col-12" {{ $attributes }}>
-    <option value="M" @selected($selected === 'M')>Masculino</option>
-    <option value="F" @selected($selected === 'F')>Femenino</option>
-</x-adminlte-select2>
+<div>
+    <x-adminlte-select2 id="genero" name="genero" :config="$config" {{ $attributes }}>
+        <option value="M" @selected($selected === 'M')>Masculino</option>
+        <option value="F" @selected($selected === 'F')>Femenino</option>
+    </x-adminlte-select2>
+</div>
