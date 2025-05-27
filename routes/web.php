@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\ComponenteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\InstitucionController;
+use App\Http\Controllers\MateriaController;
+use App\Http\Controllers\PlanEstudioController;
 use App\Http\Controllers\RepresentanteController;
 use Illuminate\Support\Facades\DB;
 
@@ -83,6 +86,43 @@ Route::controller(RepresentanteController::class)->group(function () {
         });
     });
 });
+
+Route::prefix('planes-estudio')->group(function () {
+    Route::controller(PlanEstudioController::class)->group(function () {
+        Route::name('planEstudio.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/nuevo', 'create')->name('create');
+            Route::get('/{planEstudio}', 'show')->name('show');
+            Route::get('/{planEstudio}/editar', 'edit')->name('edit');
+            Route::post('/', 'store')->name('store');
+            Route::put('/{planEstudio}', 'update')->name('update');
+            Route::delete('/{planEstudio}', 'destroy')->name('destroy');
+        });
+    });
+    Route::controller(ComponenteController::class)->group(function () {
+        Route::name('componente.')->group(function () {
+            Route::get('/componentes', 'index')->name('index');
+            Route::get('/{planEstudio}/nuevo-componente', 'create')->name('create');
+            Route::get('/{planEstudio}/{componente}', 'show')->name('show');
+            Route::get('/{planEstudio}/{componente}/editar', 'edit')->name('edit');
+            Route::post('/', 'store')->name('store');
+            Route::put('/{planEstudio}/{componente}', 'update')->name('update');
+            Route::delete('/{planEstudio}/{componente}', 'destroy')->name('destroy');
+        });
+    });
+    Route::controller(MateriaController::class)->group(function () {
+        Route::name('materia.')->group(function () {
+            Route::get('/materias', 'index')->name('index');
+            Route::get('/{planEstudio}/{componente}/nueva-materia', 'create')->name('create');
+            Route::get('/{planEstudio}/{componente}/{materia}', 'show')->name('show');
+            Route::get('/{planEstudio}/{componente}/{materia}/editar', 'edit')->name('edit');
+            Route::post('/', 'store')->name('store');
+            Route::put('/{planEstudio}/{componente}/{materia}', 'update')->name('update');
+            Route::delete('/{planEstudio}/{componente}/{materia}', 'destroy')->name('destroy');
+        });
+    });
+});
+
 
 // RUTAS DE PRUEBA
 

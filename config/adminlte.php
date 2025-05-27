@@ -351,6 +351,30 @@ return [
                 ],
             ],
         ],
+        [
+            'header' => 'Control Académico',
+        ],
+        [
+            'text' => 'Planes de Estudio',
+            'icon' => 'fas fa-book',
+            'submenu' => [
+                [
+                    'text' => 'Ver Planes',
+                    'route' => 'planEstudio.index',
+                    'icon' => 'fas fa-list',
+                ],
+                [
+                    'text' => 'Ver Componentes',
+                    'route' => 'componente.index',
+                    'icon' => 'fas fa-layer-group',
+                ],
+                [
+                    'text' => 'Ver Materias',
+                    'route' => 'materia.index',
+                    'icon' => 'fas fa-book-open',
+                ],
+            ],
+        ],
         
     ],
 
