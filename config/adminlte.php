@@ -317,6 +317,9 @@ return [
             'icon' => 'fas fa-school',
         ],
         [
+            'header' => 'Administración',
+        ],
+        [
             'text' => 'Profesores',
             'icon' => 'fas fa-chalkboard-teacher',
             'submenu' => [
@@ -326,8 +329,24 @@ return [
                     'icon' => 'fas fa-list',
                 ],
                 [
-                    'text' => 'Crear Nuevo Profesor',
+                    'text' => 'Nuevo Profesor',
                     'route' => 'profesor.create',
+                    'icon' => 'fas fa-user-plus',
+                ],
+            ],
+        ],
+        [
+            'text' => 'Representantes',
+            'icon' => 'fas fa-user-friends',
+            'submenu' => [
+                [
+                    'text' => 'Ver Representantes',
+                    'route' => 'representante.index',
+                    'icon' => 'fas fa-list',
+                ],
+                [
+                    'text' => 'Nuevo Representante',
+                    'route' => 'representante.create',
                     'icon' => 'fas fa-user-plus',
                 ],
             ],

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\Profesor;
 use App\Models\LetraCedula;
 
@@ -45,12 +46,13 @@ class ProfesorController extends Controller
             'apellidos' => ['required', 'string', 'max:100'],
             'cedulaLetra' => ['required', 'exists:LetrasCedula,IDLetraCedula'],
             'cedulaNumero' => ['required', 'numeric', 'unique:Profesores'],
-            'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
-            'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
-            'email' => ['required', 'email', 'unique:Profesores', 'max:320'],
-            'direccion' => ['required', 'string', 'max:255'],
+            'genero' => ['required', Rule::in(['M', 'F'])],
             'fechaNacimiento' => ['required', 'date', 'before:today'],
             'fechaIngreso' => ['required', 'date', 'before:today'],
+            'direccion' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:320', Rule::unique('Representantes', 'email')],
+            'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
+            'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
         ]);
     
         $profesor = new Profesor();
@@ -58,6 +60,7 @@ class ProfesorController extends Controller
         $profesor->apellidos = $validatedData['apellidos'];
         $profesor->cedulaLetra = $validatedData['cedulaLetra'];
         $profesor->cedulaNumero = $validatedData['cedulaNumero'];
+        $profesor->genero = $validatedData['genero'];
         $profesor->telefonoPrincipal = $validatedData['telefonoPrincipal'];
         $profesor->email = $validatedData['email'];
         $profesor->direccion = $validatedData['direccion'];
@@ -85,6 +88,7 @@ class ProfesorController extends Controller
             'apellidos' => ['required', 'string', 'max:100'],
             'cedulaLetra' => ['required', 'exists:LetrasCedula,IDLetraCedula'],
             'cedulaNumero' => ['required', 'numeric', 'unique:App\Models\Profesor,cedulaNumero,' . $profesor->id],
+            'genero' => ['required', Rule::in(['M', 'F'])],
             'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
             'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
             'email' => ['required', 'email', 'unique:App\Models\Profesor,email,' . $profesor->id, 'max:320'],
@@ -97,6 +101,7 @@ class ProfesorController extends Controller
         $profesor->apellidos = $validatedData['apellidos'];
         $profesor->cedulaLetra = $validatedData['cedulaLetra'];
         $profesor->cedulaNumero = $validatedData['cedulaNumero'];
+        $profesor->genero = $validatedData['genero'];
         $profesor->telefonoPrincipal = $validatedData['telefonoPrincipal'];
         $profesor->telefonoSecundario = $validatedData['telefonoSecundario'];
         $profesor->email = $validatedData['email'];

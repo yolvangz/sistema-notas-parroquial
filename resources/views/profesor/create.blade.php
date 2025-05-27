@@ -3,13 +3,13 @@
 @extends('layouts.app')
 
 @section('plugins.inputmask', true)
-@section('plugins.BsCustomFileInp`ut', true)
+@section('plugins.BsCustomFileInput', true)
 
 @section('subtitle', 'Crear Profesor')
 
 @section('content_header_title', 'Profesores')
 
-@section('content_header_subtitle', 'crear nuevo')
+@section('content_header_subtitle', 'Crear Representante')
 
 
 @section('content')
@@ -21,10 +21,10 @@
                 <x-adminlte-card theme="dark" theme-mode="outline" title="Datos del Profesor">
                     <div class="row">
                         <div class="col-md-6 col-lg-4">
-                            <x-adminlte.form.input label="Nombres" name="nombres" id="nombres" class="form-control rounded px-2" maxlength="100" required/>
+                            <x-adminlte.form.input label="Nombres" name="nombres" id="nombres" class="px-2" maxlength="100" required/>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <x-adminlte.form.input label="Apellidos" name="apellidos" id="apellidos" class="form-control rounded px-2" maxlength="100" required/>
+                            <x-adminlte.form.input label="Apellidos" name="apellidos" id="apellidos" class="px-2" maxlength="100" required/>
                         </div>
                         <div class="col-md-6 col-lg-4">
                             <label for="cedulaLetra">Cédula de Identidad</label>
@@ -33,28 +33,25 @@
                                     <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" />
                                 </div>
                                 <div class="ml-2 flex-grow-1">
-                                    <x-adminlte.form.input type="text" name="cedulaNumero" id="cedulaNumero" class="form-control rounded px-2" data-inputmask="'mask': '9{7,15}'" required/>
+                                    <x-adminlte.form.input type="text" name="cedulaNumero" id="cedulaNumero" class="px-2" data-inputmask="'mask': '9{7,15}'" required/>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <x-adminlte-select2 label="Género" name="genero" id="genero" class="form-control rounded px-2" required>
-                                <option value="M">Masculino</option>
-                                <option value="F">Femenino</option>
-                            </x-adminlte-select2>
+                            <x-form.genero label="Género" required />
                         </div>
                         <div class=".col-md-6 col-lg-4">
-                            <x-form.input-telefono label="Teléfono Principal" class="form-control rounded px-2" name="telefonoPrincipal" id="telefonoPrincipal" required />
+                            <x-form.input-telefono label="Teléfono Principal" class="px-2" name="telefonoPrincipal" id="telefonoPrincipal" required />
                         </div>
                         <div class=".col-md-6 col-lg-4">
                             <label for="telefonoSecundario">Teléfono Secundario</label>
-                            <x-form.input-telefono class="form-control rounded px-2" name="telefonoSecundario" id="telefonoSecundario" />
+                            <x-form.input-telefono class="px-2" name="telefonoSecundario" id="telefonoSecundario" />
                         </div>
                         <div class=".col-md-6 col-lg-4">
-                            <x-adminlte.form.input label="Correo Electrónico" type="email" name="email" id="email" class="form-control rounded px-2" required/>
+                            <x-adminlte.form.input label="Correo Electrónico" type="email" name="email" id="email" class="px-2" required/>
                         </div>
                         <div class=".col-md-6 col-lg-4">
-                            <x-adminlte.form.input label="Dirección" type="text" name="direccion" id="direccion" class="form-control rounded px-2" required/>
+                            <x-adminlte.form.input label="Dirección" type="text" name="direccion" id="direccion" class="px-2" required/>
                         </div>
                         <div class=".col-md-6 col-lg-4">
                             <div class="form-group">

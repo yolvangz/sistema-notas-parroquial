@@ -39,6 +39,18 @@
                             <dd class="col-md-9">
                                 <div class="form-control-plaintext border rounded px-2">{{ $profesor->letraCedula->letra }}-{{ $profesor->cedulaNumero }}</div>
                             </dd>
+                            <dt class="col-md-3"><small class="text-muted">Género</small></dt>
+                            <dd class="col-md-9">
+                                <div class="form-control-plaintext border rounded px-2">
+                                    @switch($profesor->genero->letra)
+                                        @case('M')
+                                            Masculino
+                                            @break
+                                        @case('F')
+                                            Femenino
+                                            @break
+                                    @endswitch
+                                </div>
                             <dt class="col-md-3"><small class="text-muted">Teléfono</small></dt>
                             <dd class="col-md-9">
                                 <div class="form-control-plaintext border rounded px-2">{{ $profesor->telefonoPrincipal }}</div>
