@@ -104,7 +104,7 @@ w
                     </button>
                 </div>
                 <div class="modal-body">
-                    ¿Está seguro de que desea eliminar al representante <strong>{{ $representante->nombreCompleto }}</strong>? Esta acción no se puede deshacer.
+                    ¿Está seguro de que desea eliminar al representante <strong>{{ $representante->nombreCompleto }}</strong>?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
