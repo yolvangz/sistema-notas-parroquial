@@ -364,14 +364,9 @@ return [
                     'icon' => 'fas fa-list',
                 ],
                 [
-                    'text' => 'Ver Componentes',
-                    'route' => 'componente.index',
-                    'icon' => 'fas fa-layer-group',
-                ],
-                [
-                    'text' => 'Ver Materias',
-                    'route' => 'materia.index',
-                    'icon' => 'fas fa-book-open',
+                    'text' => 'Nuevo Plan',
+                    'route' => 'planEstudio.create',
+                    'icon' => 'fas fa-plus',
                 ],
             ],
         ],

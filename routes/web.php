@@ -87,40 +87,45 @@ Route::controller(RepresentanteController::class)->group(function () {
     });
 });
 
-Route::prefix('planes-estudio')->group(function () {
-    Route::controller(PlanEstudioController::class)->group(function () {
-        Route::name('planEstudio.')->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/nuevo', 'create')->name('create');
-            Route::get('/{planEstudio}', 'show')->name('show');
-            Route::get('/{planEstudio}/editar', 'edit')->name('edit');
-            Route::post('/', 'store')->name('store');
-            Route::put('/{planEstudio}', 'update')->name('update');
-            Route::delete('/{planEstudio}', 'destroy')->name('destroy');
-        });
-    });
-    Route::controller(ComponenteController::class)->group(function () {
-        Route::name('componente.')->group(function () {
-            Route::get('/componentes', 'index')->name('index');
-            Route::get('/{planEstudio}/nuevo-componente', 'create')->name('create');
-            Route::get('/{planEstudio}/{componente}', 'show')->name('show');
-            Route::get('/{planEstudio}/{componente}/editar', 'edit')->name('edit');
-            Route::post('/', 'store')->name('store');
-            Route::put('/{planEstudio}/{componente}', 'update')->name('update');
-            Route::delete('/{planEstudio}/{componente}', 'destroy')->name('destroy');
-        });
-    });
-    Route::controller(MateriaController::class)->group(function () {
-        Route::name('materia.')->group(function () {
-            Route::get('/materias', 'index')->name('index');
-            Route::get('/{planEstudio}/{componente}/nueva-materia', 'create')->name('create');
-            Route::get('/{planEstudio}/{componente}/{materia}', 'show')->name('show');
-            Route::get('/{planEstudio}/{componente}/{materia}/editar', 'edit')->name('edit');
-            Route::post('/', 'store')->name('store');
-            Route::put('/{planEstudio}/{componente}/{materia}', 'update')->name('update');
-            Route::delete('/{planEstudio}/{componente}/{materia}', 'destroy')->name('destroy');
-        });
-    });
+// --- Plan de Estudio Routes ---
+// Prefix: /planes-estudio
+// Name prefix: planEstudio.
+Route::prefix('planes-estudio')->name('planEstudio.')->controller(PlanEstudioController::class)->group(function () {
+    Route::get('/', 'index')->name('index');                      // GET /planes-estudio
+    Route::get('/nuevo', 'create')->name('create');                // GET /planes-estudio/nuevo
+    Route::post('/', 'store')->name('store');                      // POST /planes-estudio
+    Route::get('/{planEstudio}', 'show')->name('show');            // GET /planes-estudio/{planEstudio}
+    Route::get('/{planEstudio}/editar', 'edit')->name('edit');    // GET /planes-estudio/{planEstudio}/editar
+    Route::put('/{planEstudio}', 'update')->name('update');        // PUT /planes-estudio/{planEstudio}
+    Route::delete('/{planEstudio}', 'destroy')->name('destroy');  // DELETE /planes-estudio/{planEstudio}
+});
+
+// --- Componente Routes ---
+// Prefix: /planes-estudio/{planEstudio}/componentes
+// Name prefix: componente.
+Route::prefix('planes-estudio/{planEstudio}/componentes')->name('componente.')->controller(ComponenteController::class)->group(function () {
+    Route::get('/', 'index')->name('index');                                    // GET /planes-estudio/{planEstudio}/componentes
+    Route::get('/nuevo', 'create')->name('create');                             // GET /planes-estudio/{planEstudio}/componentes/nuevo
+    Route::post('/', 'store')->name('store');                                   // POST /planes-estudio/{planEstudio}/componentes
+    Route::get('/{componente}', 'show')->name('show');                          // GET /planes-estudio/{planEstudio}/componentes/{componente}
+    Route::get('/{componente}/editar', 'edit')->name('edit');                   // GET /planes-estudio/{planEstudio}/componentes/{componente}/editar
+    Route::put('/{componente}', 'update')->name('update');                      // PUT /planes-estudio/{planEstudio}/componentes/{componente}
+    Route::delete('/{componente}', 'destroy')->name('destroy');                 // DELETE /planes-estudio/{planEstudio}/componentes/{componente}
+});
+
+// --- Materia Routes ---
+// Original problematic paths: /materias (index) and / (store)
+// Resolved by nesting under a specific planEstudio and componente.
+// Prefix: /planes-estudio/{planEstudio}/componentes/{componente}/materias
+// Name prefix: materia.
+Route::prefix('planes-estudio/{planEstudio}/componentes/{componente}/materias')->name('materia.')->controller(MateriaController::class)->group(function () {
+    Route::get('/', 'index')->name('index');                                             // GET /planes-estudio/{planEstudio}/componentes/{componente}/materias
+    Route::get('/nueva', 'create')->name('create');                                      // GET /planes-estudio/{planEstudio}/componentes/{componente}/materias/nueva
+    Route::post('/', 'store')->name('store');                                            // POST /planes-estudio/{planEstudio}/componentes/{componente}/materias
+    Route::get('/{materia}', 'show')->name('show');                                      // GET /planes-estudio/{planEstudio}/componentes/{componente}/materias/{materia}
+    Route::get('/{materia}/editar', 'edit')->name('edit');                               // GET /planes-estudio/{planEstudio}/componentes/{componente}/materias/{materia}/editar
+    Route::put('/{materia}', 'update')->name('update');                                  // PUT /planes-estudio/{planEstudio}/componentes/{componente}/materias/{materia}
+    Route::delete('/{materia}', 'destroy')->name('destroy');                             // DELETE /planes-estudio/{planEstudio}/componentes/{componente}/materias/{materia}
 });
 
 

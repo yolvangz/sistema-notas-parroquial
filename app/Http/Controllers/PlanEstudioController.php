@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PlanEstudio;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class PlanEstudioController extends Controller
@@ -10,9 +11,17 @@ class PlanEstudioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request) : View
     {
-        //
+        $search = $request->input('search');
+
+        $planesEstudio = PlanEstudio::when($search, function ($query, $search) {
+            $query->where('nombre', 'like', "%{$search}%")
+                ->orWhere('codigo', 'like', "%{$search}%");
+        })
+        ->orderBy('nombre');
+
+        return view('planEstudio.index', ['planesEstudio' => $planesEstudio]);
     }
 
     /**
@@ -36,7 +45,7 @@ class PlanEstudioController extends Controller
      */
     public function show(PlanEstudio $planEstudio)
     {
-        //
+        dd('materia.show');
     }
 
     /**

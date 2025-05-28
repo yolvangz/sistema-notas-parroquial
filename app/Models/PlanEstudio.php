@@ -13,7 +13,7 @@ class PlanEstudio extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $table = 'PlanesEstudio';
+    protected $table = 'PlanesDeEstudios';
     protected $primaryKey = 'IDPlanEstudio';
     public $timestamps = true;
 

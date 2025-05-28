@@ -4,15 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Materia;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
 
 class MateriaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request) : View
     {
-        //
+        $search = $request->input('search');
+
+        $materias = Materia::when($search, function ($query, $search) {
+            $query->where('nombre', 'like', "%{$search}%")
+                ->orWhere('codigo', 'like', "%{$search}%");
+        })
+        ->orderBy('nombre');
+
+        return view('materia.index', ['materias' => $materias]);
     }
 
     /**
@@ -36,7 +45,7 @@ class MateriaController extends Controller
      */
     public function show(Materia $materia)
     {
-        //
+        dd('materia.show');
     }
 
     /**
