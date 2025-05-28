@@ -10,16 +10,16 @@
 @php
     $listado = [];
     if ($planesEstudio->count() > 0) {
-        foreach ($planesEstudio as $plan) {
-            dd('si son');
+        $planesEstudio->each(function ($plan) use (&$listado) {
             $listado[] = (object) [
                 'titulo' => $plan->nombre,
+                'descripcion' => $plan->descripcion,
                 'links' => (object) [
-                    'ver' => route('planEstudio.show'),
-                    'editar' => route('planEstudio.edit'),
+                    'ver' => route('planEstudio.show', ['planEstudio' => $plan]),
+                    'editar' => route('planEstudio.edit', ['planEstudio' => $plan]),
                 ],
             ];
-        }
+        });
     }
 @endphp
 
@@ -34,7 +34,7 @@
 @section('content_body')
     <div class="row">
         <x-app.buscador-principal class="col-md-8 col-lg-6 mx-auto" placeholder="Buscar Plan de Estudio" />
-        <x-app.listado-principal :listado :config="
+        <x-app.listado-principal :listado="$listado" :config="
             (object) [
                 'singular' => 'plan de estudio',
                 'plural' => 'planes de estudio',

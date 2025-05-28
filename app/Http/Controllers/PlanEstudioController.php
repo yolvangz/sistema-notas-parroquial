@@ -27,9 +27,9 @@ class PlanEstudioController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create() : View
     {
-        //
+        return view('planEstudio.create');
     }
 
     /**
@@ -37,7 +37,19 @@ class PlanEstudioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => ['required', 'string'],
+            'codigo' => ['required', 'regex:/^[a-z0-9-]+$/i', 'unique:App\Models\PlanEstudio,codigo'],
+            'descripcion' => ['nullable', 'string'],
+        ]);
+
+        $planEstudio = new PlanEstudio();
+        $planEstudio->nombre = $request->nombre;
+        $planEstudio->codigo = $request->codigo;
+        $planEstudio->descripcion = $request->descripcion;
+        $planEstudio->save();
+
+        return redirect()->route('planEstudio.show', ['planEstudio' => $planEstudio])->with('success', 'Plan de estudio creado exitosamente.');
     }
 
     /**
@@ -45,7 +57,7 @@ class PlanEstudioController extends Controller
      */
     public function show(PlanEstudio $planEstudio)
     {
-        dd('materia.show');
+        return view('planEstudio.show', ['planEstudio' => $planEstudio]);
     }
 
     /**
