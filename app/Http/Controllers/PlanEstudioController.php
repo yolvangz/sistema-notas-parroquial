@@ -66,7 +66,7 @@ class PlanEstudioController extends Controller
      */
     public function edit(PlanEstudio $planEstudio) : View
     {
-        return view('');
+        return view('planEstudio.edit', ['planEstudio' => $planEstudio]);
     }
 
     /**
@@ -74,7 +74,18 @@ class PlanEstudioController extends Controller
      */
     public function update(Request $request, PlanEstudio $planEstudio) : RedirectResponse
     {
-        return redirect('');
+        $validatedData = $request->validate([
+            'nombre' => ['required', 'string'],
+            'codigo' => [
+                'required',
+                'regex:/^[a-z0-9-]+$/i',
+                // 'unique:App\Models\PlanEstudio,codigo'
+            ],
+            'descripcion' => ['nullable', 'string'],
+        ]);
+
+        $planEstudio->update($validatedData);
+        return redirect()->route('planEstudio.show', $planEstudio)->with('success', 'Plan de estudio actuailizado con éxito.');
     }
 
     /**
