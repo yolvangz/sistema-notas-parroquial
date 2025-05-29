@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PlanEstudio;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PlanEstudioController extends Controller
@@ -35,7 +36,7 @@ class PlanEstudioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request) : RedirectResponse
     {
         $request->validate([
             'nombre' => ['required', 'string'],
@@ -55,7 +56,7 @@ class PlanEstudioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PlanEstudio $planEstudio)
+    public function show(PlanEstudio $planEstudio) : View
     {
         return view('planEstudio.show', ['planEstudio' => $planEstudio]);
     }
@@ -63,24 +64,24 @@ class PlanEstudioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PlanEstudio $planEstudio)
+    public function edit(PlanEstudio $planEstudio) : View
     {
-        //
+        return view('');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PlanEstudio $planEstudio)
+    public function update(Request $request, PlanEstudio $planEstudio) : RedirectResponse
     {
-        //
+        return redirect('');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PlanEstudio $planEstudio)
+    public function destroy(PlanEstudio $planEstudio) : RedirectResponse
     {
-        //
+        return redirect('');
     }
 }
