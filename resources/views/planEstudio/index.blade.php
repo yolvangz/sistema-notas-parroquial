@@ -18,11 +18,12 @@
                     'ver' => route('planEstudio.show', ['planEstudio' => $plan]),
                     'editar' => route('planEstudio.edit', ['planEstudio' => $plan]),
                 ],
+                'tags' => [
+                    (object) ['text' => $plan->componentes->count().' '.Str::plural('componente', $plan->componentes->count()), 'theme' => 'info'],
+                ],
             ];
             if (!$plan->activo) {
-                $listado[count($listado) - 1]->tags = [
-                    (object) ['text' => 'Inactivo', 'theme' => 'secondary',]
-                ];
+                $listado[count($listado) - 1]->tags[] = (object) ['text' => 'Inactivo', 'theme' => 'secondary'];
             }
         });
     }

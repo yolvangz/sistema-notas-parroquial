@@ -21,7 +21,7 @@
                                 @foreach($planEstudio->componentes as $componente)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <a href="{{ route('componente.show', ['planEstudio' => $planEstudio, 'componente' => $componente]) }}">{{ $componente->nombre }}</a>
-                                        <span class="badge bg-primary rounded-pill">{{ $componente->materias->count() }} {{ Str::plural('materia', $componente->materias->count()) }}</span>
+                                        <span class="badge bg-primary">{{ $componente->materias->count() }} {{ Str::plural('materia', $componente->materias->count()) }}</span>
                                     </li>
                                 @endforeach
                             </ul>
