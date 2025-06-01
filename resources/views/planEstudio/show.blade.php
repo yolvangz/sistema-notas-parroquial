@@ -15,17 +15,18 @@
                     <a href="{{route('componente.create', ['planEstudio' => $planEstudio])}}" class="btn btn-success mb-3">
                         <i class="fas fa-plus"></i> Añadir componente
                     </a>
-                    <div class="border rounded py-3">
+                    <div class="border rounded">
                         @if($planEstudio->componentes && $planEstudio->componentes->count() > 0)
                             <ul class="list-group list-group-flush">
                                 @foreach($planEstudio->componentes as $componente)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <a href="{{ route('componente.show', ['planEstudio' => $planEstudio, 'componente' => $componente]) }}">{{ $componente->nombre }}</a>
+                                        <span class="badge bg-primary rounded-pill">{{ $componente->materias->count() }} {{ Str::plural('materia', $componente->materias->count()) }}</span>
                                     </li>
                                 @endforeach
                             </ul>
                         @else
-                            <p class="mb-0 text-center text-muted">No hay componentes creados.</p>
+                            <p class="mb-0 py-3 text-center text-muted">No hay componentes creados.</p>
                         @endif
                     </div>
                 </section>
@@ -38,6 +39,13 @@
                 </div>
                 <div class="card-body">
                     <p class="text-center">{{$planEstudio->descripcion}}</p>
+                    <p class="text-center"><small class="text-muted">Estado: </small>
+                        @if($planEstudio->activo)
+                            <span class="badge bg-success">Activo</span>
+                        @else
+                            <span class="badge bg-secondary">Inactivo</span>
+                        @endif
+                    </p>
                     <p class="text-center">
                         <small class="text-muted">Registrado: {{ $planEstudio->fechaCreado ? $planEstudio->fechaCreado->format('d/m/Y h:i A') : 'N/A' }}</small><br>
                         <small class="text-muted">Últ. Modificación: {{ $planEstudio->fechaModificado ? $planEstudio->fechaModificado->format('d/m/Y h:i A') : 'N/A' }}</small>

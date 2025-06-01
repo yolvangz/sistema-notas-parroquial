@@ -43,48 +43,36 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::controller(InstitucionController::class)->group(function () {
-    Route::prefix('institucion')->group(function () {
-        Route::name('institucion.')->group(function () {
-            Route::get('/', 'show')->name('show');
-            Route::get('/nuevo', 'create')->name('create');
-            Route::get('/editar', 'edit')->name('edit');
-            Route::post('/', 'store')->name('store');
-            Route::put('/', 'update')->name('update');
-            // Rutas para la configuracion
-            Route::get('/configuracion', fn() => redirect()->route('institucion.show'));
-            Route::get('/configuracion/editar', 'configuracionEdit')->name('configuracion.edit');
-            Route::put('/configuracion', 'configuracionUpdate')->name('configuracion.update');
-        });
-    });
+Route::prefix('institucion')->name('institucion.')->controller(InstitucionController::class)->group(function () {
+    Route::get('/', 'show')->name('show');
+    Route::get('/nuevo', 'create')->name('create');
+    Route::get('/editar', 'edit')->name('edit');
+    Route::post('/', 'store')->name('store');
+    Route::put('/', 'update')->name('update');
+    // Rutas para la configuracion
+    Route::get('/configuracion', fn() => redirect()->route('institucion.show'));
+    Route::get('/configuracion/editar', 'configuracionEdit')->name('configuracion.edit');
+    Route::put('/configuracion', 'configuracionUpdate')->name('configuracion.update');
 });
 
-Route::controller(ProfesorController::class)->group(function () {
-    Route::prefix('profesores')->group(function () {
-        Route::name('profesor.')->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/nuevo', 'create')->name('create');
-            Route::get('/{profesor}', 'show')->name('show');
-            Route::get('/{profesor}/editar', 'edit')->name('edit');
-            Route::post('/', 'store')->name('store');
-            Route::put('/{profesor}', 'update')->name('update');
-            Route::delete('/{profesor}', 'destroy')->name('destroy');
-        });
-    });
+Route::prefix('profesores')->name('profesor.')->controller(ProfesorController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/nuevo', 'create')->name('create');
+    Route::get('/{profesor}', 'show')->name('show');
+    Route::get('/{profesor}/editar', 'edit')->name('edit');
+    Route::post('/', 'store')->name('store');
+    Route::put('/{profesor}', 'update')->name('update');
+    Route::delete('/{profesor}', 'destroy')->name('destroy');
 });
 
-Route::controller(RepresentanteController::class)->group(function () {
-    Route::prefix('representantes')->group(function () {
-        Route::name('representante.')->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/nuevo', 'create')->name('create');
-            Route::get('/{representante}', 'show')->name('show');
-            Route::get('/{representante}/editar', 'edit')->name('edit');
-            Route::post('/', 'store')->name('store');
-            Route::put('/{representante}', 'update')->name('update');
-            Route::delete('/{representante}', 'destroy')->name('destroy');
-        });
-    });
+Route::prefix('representantes')->name('representante.')->controller(RepresentanteController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/nuevo', 'create')->name('create');
+    Route::get('/{representante}', 'show')->name('show');
+    Route::get('/{representante}/editar', 'edit')->name('edit');
+    Route::post('/', 'store')->name('store');
+    Route::put('/{representante}', 'update')->name('update');
+    Route::delete('/{representante}', 'destroy')->name('destroy');
 });
 
 // --- Plan de Estudio Routes ---
@@ -114,15 +102,13 @@ Route::prefix('planes-estudio/{planEstudio:codigo}/componentes')->name('componen
 });
 
 // --- Materia Routes ---
-// Original problematic paths: /materias (index) and / (store)
-// Resolved by nesting under a specific planEstudio and componente.
 // Prefix: /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias
 // Name prefix: materia.
 Route::prefix('planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias')->name('materia.')->controller(MateriaController::class)->group(function () {
     Route::get('/', 'index')->name('index');                                             // GET /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias
     Route::get('/nueva', 'create')->name('create');                                      // GET /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/nueva
     Route::post('/', 'store')->name('store');                                            // POST /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias
-            Route::get('/{materia}', 'show')->name('show');                                      // GET /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}
+    Route::get('/{materia}', 'show')->name('show');                                      // GET /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}
     Route::get('/{materia}/editar', 'edit')->name('edit');                               // GET /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}/editar
     Route::put('/{materia}', 'update')->name('update');                                  // PUT /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}
     Route::delete('/{materia}', 'destroy')->name('destroy');                             // DELETE /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}

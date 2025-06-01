@@ -22,6 +22,13 @@
             @foreach ($listado as $elemento)
             <x-adminlte-card theme="dark" class="mb-3">
                 <h3>{{ $elemento->titulo }}</h3>
+                @if (isset($elemento->tags))
+                    <div class="mb-2">
+                        @foreach ($elemento->tags as $tag)
+                        <span class="badge badge-{{ $tag->theme }}">{{ $tag->text }}</span>
+                        @endforeach
+                    </div>
+                @endif
                 <p>{{ $elemento->descripcion }}</p>
                 <div class="d-flex justify-content-end">
                     <a href="{{ $elemento->links->ver }}" class="btn btn-primary mr-2">

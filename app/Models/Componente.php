@@ -47,7 +47,7 @@ class Componente extends Model
     }
     public function materias() : HasMany
     {
-        return $this->hasMany(Materia::class, 'IDComponente', 'IDComponente');
+        return $this->hasMany(Materia::class, 'IDComponente', 'componenteID');
     }
     public function prela() : BelongsTo
     {

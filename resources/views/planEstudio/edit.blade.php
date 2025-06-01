@@ -1,6 +1,7 @@
 <!-- An unexamined life is not worth living. - Socrates -->
 
 @extends('layouts.app')
+@section('plugins.BootstrapSwitch', true)
 
 @section('subtitle', 'Modificar plan de estudio '.$planEstudio->nombre)
 
@@ -21,9 +22,19 @@
                         <div class="col-sm-4 col-md-3"><small class="text-muted"><label style="font-weight: 400;" for="codigo">Código</label></small></div>
                         <div class="col-sm-8 col-md-9"><x-adminlte.form.input name="codigo" placeholder="Debe ser único y no tener espacios" maxlength="100" required value="{{ old('codigo', $planEstudio->codigo) }}" /></div>
                         
-                        <div class="col-sm-4 col-md-3"><small class="text-muted"><label style="font-weight: 400;" for="descripcion">Descripción</label></small></div>
+                        <div class="col-sm-4 col-md-3"><small class="text-muted"><label style="font-weight: 400;" for="descripcion">Descripción (opcional)</label></small></div>
                         <div class="col-sm-8 col-md-9">
-                            <x-adminlte.form.textarea name="descripcion" placeholder="Descripción del plan de estudio" rows="3" maxlength="500" required>{{ old('descripcion', $planEstudio->descripcion) }}</x-adminlte.form.textarea>
+                            <x-adminlte.form.textarea name="descripcion" placeholder="Descripción del plan de estudio" rows="3" maxlength="500">{{ old('descripcion', $planEstudio->descripcion) }}</x-adminlte.form.textarea>
+                        </div>
+                        
+                        <div class="col-sm-4 col-md-3"><small class="text-muted"><label style="font-weight: 400;" for="activo">¿Activo?</label></small></div>
+                        <div class="col-sm-8 col-md-9">
+                            <x-adminlte-input-switch name="activo" id="activo" :config="[
+                                'onText' => 'Sí',
+                                'offText' => 'No',
+                                'state' => (bool) $planEstudio->activo,
+                            ]"
+                            />
                         </div>
                     </div>
                     <div class="text-center">

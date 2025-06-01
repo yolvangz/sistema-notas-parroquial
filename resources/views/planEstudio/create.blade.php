@@ -2,8 +2,6 @@
 
 @extends('layouts.app')
 
-@section('plugins.inputmask', true)
-
 @section('subtitle', 'Crear Plan de Estudio')
 
 @section('content_header_title', 'Plan de Estudio')
@@ -23,9 +21,9 @@
                         <div class="col-sm-4 col-md-3"><small class="text-muted"><label style="font-weight: 400;" for="codigo">Código</label></small></div>
                         <div class="col-sm-8 col-md-9"><x-adminlte.form.input name="codigo" placeholder="Debe ser único y no tener espacios" maxlength="100" required value="{{ old('codigo') }}" /></div>
                         
-                        <div class="col-sm-4 col-md-3"><small class="text-muted"><label style="font-weight: 400;" for="descripcion">Descripción</label></small></div>
+                        <div class="col-sm-4 col-md-3"><small class="text-muted"><label style="font-weight: 400;" for="descripcion">Descripción (opcional)</label></small></div>
                         <div class="col-sm-8 col-md-9">
-                            <x-adminlte.form.textarea name="descripcion" placeholder="Descripción del plan de estudio" rows="3" maxlength="500" required>{{ old('descripcion') }}</x-adminlte.form.textarea>
+                            <x-adminlte.form.textarea name="descripcion" placeholder="Descripción del plan de estudio" rows="3" maxlength="500">{{ old('descripcion') }}</x-adminlte.form.textarea>
                         </div>
                     </div>
                     <div class="text-center">

@@ -19,6 +19,11 @@
                     'editar' => route('planEstudio.edit', ['planEstudio' => $plan]),
                 ],
             ];
+            if (!$plan->activo) {
+                $listado[count($listado) - 1]->tags = [
+                    (object) ['text' => 'Inactivo', 'theme' => 'secondary',]
+                ];
+            }
         });
     }
 @endphp

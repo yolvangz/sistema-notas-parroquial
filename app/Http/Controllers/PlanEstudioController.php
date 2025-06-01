@@ -74,6 +74,9 @@ class PlanEstudioController extends Controller
      */
     public function update(Request $request, PlanEstudio $planEstudio) : RedirectResponse
     {
+        $request->merge([
+            'activo' => ($request->has('activo')) ? true : false,
+        ]);
         $validatedData = $request->validate([
             'nombre' => ['required', 'string'],
             'codigo' => [
@@ -82,6 +85,7 @@ class PlanEstudioController extends Controller
                 // 'unique:App\Models\PlanEstudio,codigo'
             ],
             'descripcion' => ['nullable', 'string'],
+            'activo' => ['boolean'],
         ]);
 
         $planEstudio->update($validatedData);
