@@ -7,6 +7,10 @@
 @section('content_header_title', 'Planes de Estudio')
 @section('content_header_subtitle', $planEstudio->nombre)
 
+@php
+    // dd($planEstudio->componentes);
+@endphp
+
 @section('content_body')
     <div class="row">
         <div class="col-md-10 col-xl-8 mx-auto">

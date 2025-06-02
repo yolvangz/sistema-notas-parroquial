@@ -43,6 +43,6 @@ class PlanEstudio extends Model
     
     public function componentes() : HasMany
     {
-        return $this->hasMany(Componente::class, 'PlanEstudioID', 'IDPlanEstudio');
+        return $this->hasMany(Componente::class, 'planEstudioID', 'IDPlanEstudio');
     }
 }

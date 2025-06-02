@@ -20,7 +20,37 @@
                             <ul class="list-group list-group-flush">
                                 @foreach($componente->materias as $materia)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <a href="{{ route('materia.show', ['planEstudio' => $planEstudio, 'componente' => $componente, 'materia' => $materia]) }}">{{ $materia->nombre }}</a>
+                                        {{ $materia->nombre }}
+                                        <div>
+                                            <a href="{{ route('materia.edit', ['planEstudio' => $planEstudio, 'componente' => $componente, 'materia' => $materia]) }}" class="btn btn-warning"><i class="fas fa-edit"></i> Editar</a>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteMateriaModal{{$materia->id}}"><i class="fas fa-trash"></i> Eliminar</button>
+                                        </div>
+                                        @push('modals')
+                                            <!-- Confirmation Modal for Delete Materia -->
+                                            <div class="modal fade" id="deleteMateriaModal{{$materia->id}}" tabindex="-1" role="dialog" aria-labelledby="deleteMateriaModalLabel{{$materia->id}}" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteMateriaModalLabel{{$materia->id}}">Eliminar Materia</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            ¿Está seguro de eliminar la materia {{ $materia->nombre }}?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                            <form action="{{ route('materia.destroy', ['planEstudio' => $planEstudio, 'componente' => $componente, 'materia' => $materia]) }}" method="post" style="display: inline;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endpush
                                     </li>
                                 @endforeach
                             </ul>

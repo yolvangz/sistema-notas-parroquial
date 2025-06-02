@@ -9,7 +9,7 @@
 
 @section('content_body')
     @php
-        dd($planEstudio, $componente);
+        dd($planEstudio, $componente, $materia);
     @endphp
     <div class="row">
         <div class="col-xl-8 mx-auto">

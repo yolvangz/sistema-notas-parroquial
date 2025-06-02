@@ -18,11 +18,13 @@ class ComponenteController extends Controller
     {
         $search = $request->input('search');
 
-        $componentes = Componente::when($search, function ($query, $search) {
+        $componentes = Componente::with('materias')
+            ->when($search, function ($query, $search) {
             $query->where('nombre', 'like', "%{$search}%")
                 ->orWhere('codigo', 'like', "%{$search}%");
-        })
-        ->orderBy('nombre');
+            })
+            ->orderBy('nombre')
+            ->get();
 
         return view('componente.index', ['componentes' => $componentes]);
     }
@@ -58,6 +60,7 @@ class ComponenteController extends Controller
      */
     public function show(PlanEstudio $planEstudio, Componente $componente): View
     {
+        $componente->load('materias');
         return view('componente.show', ['planEstudio'=> $planEstudio, 'componente' => $componente]);
     }
 
