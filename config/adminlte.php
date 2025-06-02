@@ -351,6 +351,25 @@ return [
                 ],
             ],
         ],
+        [
+            'header' => 'Control Académico',
+        ],
+        [
+            'text' => 'Planes de Estudio',
+            'icon' => 'fas fa-book',
+            'submenu' => [
+                [
+                    'text' => 'Ver Planes',
+                    'route' => 'planEstudio.index',
+                    'icon' => 'fas fa-list',
+                ],
+                [
+                    'text' => 'Nuevo Plan',
+                    'route' => 'planEstudio.create',
+                    'icon' => 'fas fa-plus',
+                ],
+            ],
+        ],
         
     ],
 
@@ -481,6 +500,16 @@ return [
                     'type'=> 'js',
                     'asset' => true,
                     'location' => 'vendor/bs-custom-file-input/bs-custom-file-input.min.js',
+                ],
+            ],
+        ],
+        'BootstrapSwitch' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-switch/js/bootstrap-switch.min.js',
                 ],
             ],
         ],
