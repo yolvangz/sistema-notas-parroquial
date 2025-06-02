@@ -10,6 +10,8 @@ use App\Http\Controllers\RepresentanteController;
 use App\Http\Controllers\EstudianteController;
 use Illuminate\Support\Facades\DB;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 $dummy = [
     'institucion' => (object)[
         'nombre' => 'U.E.C. Parroquial Punta Cardón',
@@ -125,6 +127,13 @@ Route::prefix('planes-estudio/{planEstudio:codigo}/componentes/{componente}/mate
 // RUTAS DE PRUEBA
 
 
+// Route::get('/reporte', function() {
+//     $pdf = Pdf::loadView('layouts.reporte', []);
+//     return $pdf->stream();
+// });
+Route::get('/reporte', function() {
+    return view('layouts.reporte');
+});
 Route::prefix('pruebas')->group(function () {
     Route::get('/letras-cedula', function () {
         $letrasCedula = App\Models\LetraCedula::orderBy('IDLetraCedula')->select('IDLetraCedula as id', 'letra', 'nombre')->get();
