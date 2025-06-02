@@ -92,7 +92,6 @@ Route::prefix('planes-estudio')->name('planEstudio.')->controller(PlanEstudioCon
 // Prefix: /planes-estudio/{planEstudio:codigo}/componentes
 // Name prefix: componente.
 Route::prefix('planes-estudio/{planEstudio:codigo}/componentes')->name('componente.')->controller(ComponenteController::class)->group(function () {
-    Route::get('/', 'index')->name('index');                                    // GET /planes-estudio/{planEstudio:codigo}/componentes
     Route::get('/nuevo', 'create')->name('create');                             // GET /planes-estudio/{planEstudio:codigo}/componentes/nuevo
     Route::post('/', 'store')->name('store');                                   // POST /planes-estudio/{planEstudio:codigo}/componentes
     Route::get('/{componente}', 'show')->name('show');                          // GET /planes-estudio/{planEstudio:codigo}/componentes/{componente}
@@ -105,10 +104,8 @@ Route::prefix('planes-estudio/{planEstudio:codigo}/componentes')->name('componen
 // Prefix: /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias
 // Name prefix: materia.
 Route::prefix('planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias')->name('materia.')->controller(MateriaController::class)->group(function () {
-    Route::get('/', 'index')->name('index');                                             // GET /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias
     Route::get('/nueva', 'create')->name('create');                                      // GET /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/nueva
     Route::post('/', 'store')->name('store');                                            // POST /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias
-    Route::get('/{materia}', 'show')->name('show');                                      // GET /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}
     Route::get('/{materia}/editar', 'edit')->name('edit');                               // GET /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}/editar
     Route::put('/{materia}', 'update')->name('update');                                  // PUT /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}
     Route::delete('/{materia}', 'destroy')->name('destroy');                             // DELETE /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}

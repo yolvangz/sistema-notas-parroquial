@@ -12,24 +12,6 @@ use Illuminate\Validation\Rule;
 class ComponenteController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request): View
-    {
-        $search = $request->input('search');
-
-        $componentes = Componente::with('materias')
-            ->when($search, function ($query, $search) {
-            $query->where('nombre', 'like', "%{$search}%")
-                ->orWhere('codigo', 'like', "%{$search}%");
-            })
-            ->orderBy('nombre')
-            ->get();
-
-        return view('componente.index', ['componentes' => $componentes]);
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create(PlanEstudio $planEstudio): View

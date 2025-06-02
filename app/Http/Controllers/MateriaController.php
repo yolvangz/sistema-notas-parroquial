@@ -6,28 +6,12 @@ use App\Models\Materia;
 use App\Models\Componente;
 use App\Models\PlanEstudio;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class MateriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request): View
-    {
-        $search = $request->input('search');
-
-        $materias = Materia::when($search, function ($query, $search) {
-            $query->where('nombre', 'like', "%{$search}%")
-                ->orWhere('codigo', 'like', "%{$search}%");
-        })
-        ->orderBy('nombre');
-
-        return view('materia.index', ['materias' => $materias]);
-    }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -57,14 +41,6 @@ class MateriaController extends Controller
         Materia::create($validatedData);
         return redirect()->route('componente.show', ['planEstudio'=> $planEstudio, 'componente' => $componente])
             ->with('success', 'Materia creada exitosamente.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Materia $materia)
-    {
-        dd('materia.show');
     }
 
     /**
