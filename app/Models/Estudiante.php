@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Dom\Attr;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -77,10 +78,17 @@ class Estudiante extends Model
     public function genero() : Attribute
     {
         return Attribute::make(
-            get: fn($value) => [ // The $value passed here is $this->attributes['genero']
+            get: fn($value) => (object) [ // The $value passed here is $this->attributes['genero']
                 "letra" => $value,
                 "descripcion" => $value == 'M' ? 'Masculino' : 'Femenino',
             ],
+        );
+    }
+    
+    public function edad() : Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->fechaNacimiento ? (integer) abs(now()->diffInYears($this->fechaNacimiento)) : null,
         );
     }
 

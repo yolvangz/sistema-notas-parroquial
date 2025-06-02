@@ -7,6 +7,7 @@ use App\Http\Controllers\InstitucionController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\PlanEstudioController;
 use App\Http\Controllers\RepresentanteController;
+use App\Http\Controllers\EstudianteController;
 use Illuminate\Support\Facades\DB;
 
 $dummy = [
@@ -75,6 +76,16 @@ Route::prefix('representantes')->name('representante.')->controller(Representant
     Route::delete('/{representante}', 'destroy')->name('destroy');
 });
 
+Route::prefix('estudiantes')->name('estudiante.')->controller(EstudianteController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/nuevo', 'create')->name('create');
+    Route::get('/{estudiante}', 'show')->name('show');
+    Route::get('/{estudiante}/editar', 'edit')->name('edit');
+    Route::post('/', 'store')->name('store');
+    Route::put('/{estudiante}', 'update')->name('update');
+    Route::delete('/{estudiante}', 'destroy')->name('destroy');
+});
+
 // --- Plan de Estudio Routes ---
 // Prefix: /planes-estudio
 // Name prefix: planEstudio.
@@ -110,7 +121,6 @@ Route::prefix('planes-estudio/{planEstudio:codigo}/componentes/{componente}/mate
     Route::put('/{materia}', 'update')->name('update');                                  // PUT /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}
     Route::delete('/{materia}', 'destroy')->name('destroy');                             // DELETE /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}
 });
-
 
 // RUTAS DE PRUEBA
 

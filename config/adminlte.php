@@ -352,6 +352,22 @@ return [
             ],
         ],
         [
+            'text' => 'Estudiantes',
+            'icon' => 'fas fa-graduation-cap',
+            'submenu' => [
+                [
+                    'text' => 'Ver Estudiantes',
+                    'route' => 'estudiante.index',
+                    'icon' => 'fas fa-list',
+                ],
+                [
+                    'text' => 'Nuevo Estudiante',
+                    'route' => 'estudiante.create',
+                    'icon' => 'fas fa-user-plus',
+                ],
+            ],
+        ],
+        [
             'header' => 'Control Académico',
         ],
         [
@@ -370,7 +386,6 @@ return [
                 ],
             ],
         ],
-        
     ],
 
     /*
