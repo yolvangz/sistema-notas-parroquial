@@ -67,7 +67,7 @@ class Institucion extends Model
     public function rif() : Attribute
     {
         return Attribute::make(
-            get: fn() => $this->letraRif->letra . '-' . str_pad($this->numeroRif, 8, '0', STR_PAD_LEFT),
+            get: fn() => $this->letraRif->letra . '-' . substr($this->numeroRif, 0, -1) . '-' . substr($this->numeroRif, -1),
         );
     }
 }

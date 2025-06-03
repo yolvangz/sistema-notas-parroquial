@@ -79,7 +79,16 @@
 {{-- Add common Javascript/Jquery code --}}
 
 @push('js')
-
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        // Print functionality for printWindow class
+        $('.printWindow').on('click', function(event) {
+            event.preventDefault();
+            var url = $(this).attr('href');
+            var printWindow = window.open(url, '_blank');
+        });
+    });
+</script>
 @endpush
 
 {{-- Add common CSS customizations --}}

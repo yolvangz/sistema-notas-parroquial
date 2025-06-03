@@ -1,4 +1,21 @@
-<!-- Simplicity is the ultimate sophistication. - Leonardo da Vinci -->
+{{--  
+    La simplicidad es la máxima sofisticación. - Leonardo da Vinci
+
+    Esta plantilla Blade se utiliza para generar un diseño de reporte. Incluye secciones para 
+    detalles de la institución, título del reporte, descripción, número, fecha, contenido y comentarios.
+
+    Secciones disponibles para ser utilizadas:
+    - reporte_title: El título del reporte (para el nombre de archivo y titulo de pagina).
+    - reporte_titulo: El título del reporte.
+    - reporte_descripcion: Una descripción del reporte (opcional).
+    - reporte_numero: El número del reporte.
+    - reporte_fecha: La fecha de emisión del reporte.
+    - reporte_contenido: El contenido principal del reporte.
+    - reporte_comentarios: Cualquier comentario adicional relacionado con el reporte.
+--}}
+<!-- La simplicidad es la máxima sofisticación. - Leonardo da Vinci -->
+
+
 
 @php
 use App\Models\Institucion;
@@ -15,10 +32,20 @@ $institucion = Institucion::with('LetraRif')->find(1);
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Reporte</title>
+    <title>@yield('reporte_title')</title>
     <link rel="stylesheet" href="{{asset('vendor/fontawesome-free/css/all.min.css')}}">
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
     <style>
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            @page {
+                size: letter portrait;
+                margin: 5%;
+            }            
+        }
         body {
             font-size: 1.025rem;
         }
@@ -27,7 +54,7 @@ $institucion = Institucion::with('LetraRif')->find(1);
         }
     </style>
 </head>
-<body class="px-0 py-4">
+<body class="px-0">
     <header class="container-fluid mx-auto">
         <div class="d-flex justify-content-between">
             <div class="d-flex">
@@ -52,65 +79,37 @@ $institucion = Institucion::with('LetraRif')->find(1);
     <hr>
     <main>
         <div class="container-fluid">
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col-8">
-                    <h2>@yield('reporte_titulo') Título de reporte</h2>
-                    <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure tenetur, facilis, provident ipsam?</p>
+                    <h2>@yield('reporte_titulo')</h2>
+                    @hasSection ('reporte_descripcion')
+                        <p class="lead">@yield('reporte_descripcion')</p>
+                    @endif
                 </div>
                 <div class="col-4 d-flex flex-column justify-content-between text-right">
                     <div>
-                        <span class="d-block h4"><small>N. </small>#@yield('reporte_numero')0000001</span>
-                        <span class="d-block h5">Fecha de emisión: @yield('reporte_fecha')01/01/2025</span>
+                        @hasSection ('reporte_numero')
+                        <span class="d-block h4"><small>N. </small>#@yield('reporte_numero')</span>
+                        @endif
+                        @hasSection ('reporte_fecha')
+                        <span class="d-block h5">Fecha de emisión: @yield('reporte_fecha')</span>
+                        @else
+                        <span class="d-block h5">Fecha de emisión: {{ now()->format('d/m/Y') }}</span>
+                        @endif
                     </div>
                 </div>
             </div>
-        
-            <table class="table table-striped rounded">
-            <thead>
-                <tr>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-                <th>Precio Unitario</th>
-                <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                <td>Producto A</td>
-                <td>2</td>
-                <td>$50.00</td>
-                <td>$100.00</td>
-                </tr>
-                <tr>
-                <td>Producto B</td>
-                <td>1</td>
-                <td>$30.00</td>
-                <td>$30.00</td>
-                </tr>
-                <tr>
-                <td>Producto C</td>
-                <td>3</td>
-                <td>$20.00</td>
-                <td>$60.00</td>
-                </tr>
-                <tr>
-                <td>Producto D</td>
-                <td>1</td>
-                <td>$40.00</td>
-                <td>$40.00</td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                <td colspan="3" class="text-right"><strong>Total</strong></td>
-                <td><strong>$230.00</strong></td>
-                </tr>
-            </tfoot>
-            </table>
-            <h5>Comentarios:</h5>
-            <div>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati, quo!</p>
+            
+            <div class="content">
+                @yield('reporte_contenido')
             </div>
+            
+            @hasSection ('reporte_comentarios')
+                <h5>Comentarios:</h5>
+                <div>
+                    @yield('reporte_comentarios')
+                </div>
+            @endif
         </div>
     </main>
     <footer>
@@ -120,8 +119,11 @@ $institucion = Institucion::with('LetraRif')->find(1);
     </footer>
     <script>
         window.addEventListener('load', function() {
+            // Automatically print the report when the page loads
             window.print();
-            window.close();
+            setTimeout(function() {
+                window.close();
+            }, 0);
         });
     </script>
 </body>
