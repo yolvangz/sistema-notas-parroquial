@@ -31,12 +31,21 @@
                 @endif
                 <p>{{ $elemento->descripcion }}</p>
                 <div class="d-flex justify-content-end">
+                    @if (isset($elemento->links->ver))
                     <a href="{{ $elemento->links->ver }}" class="btn btn-primary mr-2">
                         <i class="fas fa-eye"></i> Ver
                     </a>
-                    <a href="{{ $elemento->links->editar }}" class="btn btn-warning">
+                    @endif
+                    @if (isset($elemento->links->editar))
+                    <a href="{{ $elemento->links->editar }}" class="btn btn-warning mr-2">
                         <i class="fas fa-edit"></i> Editar
                     </a>
+                    @endif
+                    @if (isset($elemento->links->imprimir))
+                    <a href="{{ $elemento->links->imprimir }}" class="printWindow btn btn-secondary">
+                        <i class="fas fa-print"></i> Imprimir
+                    </a>
+                    @endif
                 </div>
             </x-adminlte-card>
             @endforeach

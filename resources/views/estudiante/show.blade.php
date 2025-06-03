@@ -1,4 +1,4 @@
-<!-- Happiness is not something readymade. It comes from your own actions. - Dalai Lama -->
+    <!-- Happiness is not something readymade. It comes from your own actions. - Dalai Lama -->
 
 @extends('layouts.app')
 
@@ -76,7 +76,7 @@
                                 <button type="button" class="btn btn-danger mb-1" data-toggle="modal" data-target="#deleteModal">
                                     <i class="fas fa-trash"></i> Eliminar
                                 </button>
-                                <a href="{{ route('reporte.estudiante.show', $estudiante) }}" class="printWindow btn btn-secondary mb-1">
+                                <a href="{{ route('estudiante.reporte.show', $estudiante) }}" class="printWindow btn btn-secondary mb-1">
                                     <i class="fas fa-print"></i> Imprimir
                                 </a>
                             </div>

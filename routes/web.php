@@ -84,6 +84,11 @@ Route::prefix('estudiantes')->name('estudiante.')->controller(EstudianteControll
     Route::post('/', 'store')->name('store');
     Route::put('/{estudiante}', 'update')->name('update');
     Route::delete('/{estudiante}', 'destroy')->name('destroy');
+
+    // Reportes
+    Route::get('/estudiantes/imprimir', [EstudianteController::class, 'reporteIndex'])->name('reporte.index');
+    Route::post('/estudiantes/imprimir', [EstudianteController::class, 'reporteIndex'])->name('reporte.index');
+    Route::get('/estudiantes/{estudiante}/imprimir', [EstudianteController::class, 'reporteShow'])->name('reporte.show');
 });
 
 // --- Plan de Estudio Routes ---
@@ -97,6 +102,9 @@ Route::prefix('planes-estudio')->name('planEstudio.')->controller(PlanEstudioCon
     Route::get('/{planEstudio:codigo}/editar', 'edit')->name('edit');    // GET /planes-estudio/{planEstudio:codigo}/editar
     Route::put('/{planEstudio:codigo}', 'update')->name('update');        // PUT /planes-estudio/{planEstudio:codigo}
     Route::delete('/{planEstudio:codigo}', 'destroy')->name('destroy');  // DELETE /planes-estudio/{planEstudio:codigo}
+
+    // Reportes
+    Route::get('/{planEstudio:codigo}/imprimir', 'reporteShow')->name('reporte.show');            // GET /planes-estudio/{planEstudio:codigo}/imprimir
 });
 
 // --- Componente Routes ---
@@ -120,12 +128,6 @@ Route::prefix('planes-estudio/{planEstudio:codigo}/componentes/{componente}/mate
     Route::get('/{materia}/editar', 'edit')->name('edit');                               // GET /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}/editar
     Route::put('/{materia}', 'update')->name('update');                                  // PUT /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}
     Route::delete('/{materia}', 'destroy')->name('destroy');                             // DELETE /planes-estudio/{planEstudio:codigo}/componentes/{componente}/materias/{materia}
-});
-
-Route::prefix('reportes')->group(function () {
-    Route::get('/estudiantes', [EstudianteController::class, 'reporteIndex'])->name('reporte.estudiante.index');
-    Route::post('/estudiantes', [EstudianteController::class, 'reporteIndex'])->name('reporte.estudiante.index');
-    Route::get('/estudiantes/{estudiante}', [EstudianteController::class, 'reporteShow'])->name('reporte.estudiante.show');
 });
 
 // RUTAS DE PRUEBA

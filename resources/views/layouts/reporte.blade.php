@@ -13,8 +13,6 @@
     - reporte_contenido: El contenido principal del reporte.
     - reporte_comentarios: Cualquier comentario adicional relacionado con el reporte.
 --}}
-<!-- La simplicidad es la máxima sofisticación. - Leonardo da Vinci -->
-
 
 
 @php
@@ -83,7 +81,9 @@ $institucion = Institucion::with('LetraRif')->find(1);
                 <div class="col-8">
                     <h2>@yield('reporte_titulo')</h2>
                     @hasSection ('reporte_descripcion')
-                        <p class="lead">@yield('reporte_descripcion')</p>
+                        <div class="lead">
+                            @yield('reporte_descripcion')
+                        </div>
                     @endif
                 </div>
                 <div class="col-4 d-flex flex-column justify-content-between text-right">

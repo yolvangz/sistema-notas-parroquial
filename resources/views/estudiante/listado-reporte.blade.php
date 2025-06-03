@@ -8,38 +8,45 @@
 @section('content_header_subtitle', 'Imprimir listado')
 
 @section('content_body')
-    <x-adminlte-card theme="dark" theme-mode="outline" title="Parámetros de selección">
-        <form action="{{route('reporte.estudiante.index')}}">
-            @csrf
-            <div class="row">
-                <div class="col-md-6 col-xl-4">
-                    <div class="form-group">
-                        <label for="edad">Edad</label>
-                        <div class="row">
-                            <div class="col">
-                                <input type="range" name="edad_min" id="edad_min" class="form-control" min="0" max="100" value="{{ old('edad_min', $filtros->edad_min ?? 0) }}" step="1" oninput="">
-                                desde <output id="edadMinOutput"></output> años
+    <div class="row">
+        <div class="col-lg-10 col-xl-8 mx-auto">
+            <x-adminlte-card theme="dark" theme-mode="outline" title="Parámetros de selección">
+                <form action="{{route('estudiante.reporte.index')}}">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-6 col-xl-4">
+                            <div class="form-group">
+                                <label for="edad">Edad</label>
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="range" name="edad_min" id="edad_min" class="form-control" min="0" max="100" value="{{ old('edad_min', $filtros->edad_min ?? 0) }}" step="1" oninput="">
+                                        desde <output id="edadMinOutput"></output> años
+                                    </div>
+                                    <div class="col">
+                                        <input type="range" name="edad_max" id="edad_max" class="form-control" min="0" max="100" value="{{ old('edad_max', $filtros->edad_max ?? 18) }}" step="1" oninput="">
+                                        hasta <output id="edadMaxOutput"></output> años
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col">
-                                <input type="range" name="edad_max" id="edad_max" class="form-control" min="0" max="100" value="{{ old('edad_max', $filtros->edad_max ?? 18) }}" step="1" oninput="">
-                                hasta <output id="edadMaxOutput"></output> años
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="form-group">
+                                <label for="genero">Género</label>
+                                <x-form.genero selected="{{old('genero', $filtros->genero ?? '')}}" />
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-xl-4">
-                    <div class="form-group">
-                        <label for="genero">Género</label>
-                        <x-form.genero selected="{{old('genero', $filtros->genero ?? '')}}" />
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary" formmethod="GET"><i class="fas fa-search"></i> Filtrar</button>
+                        <button type="submit" class="btn btn-secondary" formmethod="POST" formtarget="_blank"><i class="fas fa-print"></i> Imprimir</button>
                     </div>
-                </div>
-            </div>
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary" formmethod="GET"><i class="fas fa-search"></i> Filtrar</button>
-                <button type="submit" class="btn btn-secondary" formmethod="POST" formtarget="_blank"><i class="fas fa-print"></i> Imprimir</button>
-            </div>
-        </form>
-    </x-adminlte-card>
+                </form>
+                <x-slot name="footerSlot">
+                    <a href="{{ route('estudiante.index') }}" class="text-decoration-none text-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
+                </x-slot>
+            </x-adminlte-card>
+        </div>
+    </div>
 
     <div class="card">
         <div class="card-header">

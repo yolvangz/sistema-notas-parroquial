@@ -99,4 +99,10 @@ class PlanEstudioController extends Controller
     {
         return redirect('');
     }
+
+    public function reporteShow(PlanEstudio $planEstudio) : View
+    {
+        $planEstudio->load('componentes.materias');
+        return view('planEstudio.reporte.show', ['planEstudio' => $planEstudio]);
+    }
 }

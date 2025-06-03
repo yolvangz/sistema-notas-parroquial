@@ -16,7 +16,7 @@
                 'descripcion' => $plan->descripcion,
                 'links' => (object) [
                     'ver' => route('planEstudio.show', ['planEstudio' => $plan]),
-                    'editar' => route('planEstudio.edit', ['planEstudio' => $plan]),
+                    'imprimir' => route('planEstudio.reporte.show', ['planEstudio' => $plan]),
                 ],
                 'tags' => [
                     (object) ['text' => $plan->componentes->count().' '.Str::plural('componente', $plan->componentes->count()), 'theme' => 'info'],

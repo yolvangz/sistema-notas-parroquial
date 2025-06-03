@@ -56,6 +56,7 @@
                     </p>
                     <div class="mt-4 text-center">
                         <a href="{{ route('planEstudio.edit', $planEstudio) }}" class="btn btn-primary"><i class="fas fa-edit"></i> Modificar información</a>
+                        <a href="{{ route('planEstudio.reporte.show', $planEstudio) }}" class="printWindow btn btn-secondary"><i class="fas fa-print"></i> Imprimir</a>
                     </div>
                 </div>
                 <div class="card-footer">

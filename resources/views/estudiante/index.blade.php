@@ -11,7 +11,7 @@
         <a href="{{ route('estudiante.create') }}" class="btn btn-success">
             <i class="fas fa-plus"></i> Agregar Estudiante
         </a>
-        <a href="{{ route('reporte.estudiante.index') }}" class="btn btn-secondary">
+        <a href="{{ route('estudiante.reporte.index') }}" class="btn btn-secondary">
             <i class="fas fa-clipboard-list"></i> Imprimir listado
         </a>
     </div>
