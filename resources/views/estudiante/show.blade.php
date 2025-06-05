@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <x-slot name="footerSlot">
-                    <a href="{{ route('representante.index') }}" class="text-decoration-none text-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
+                    <a href="{{ route('estudiante.index') }}" class="text-decoration-none text-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
                 </x-slot>
             </x-adminlte-card>
         </div>

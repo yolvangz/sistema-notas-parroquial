@@ -55,17 +55,7 @@ class ProfesorController extends Controller
             'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'],
         ]);
     
-        $profesor = new Profesor();
-        $profesor->nombres = $validatedData['nombres'];
-        $profesor->apellidos = $validatedData['apellidos'];
-        $profesor->cedulaLetra = $validatedData['cedulaLetra'];
-        $profesor->cedulaNumero = $validatedData['cedulaNumero'];
-        $profesor->genero = $validatedData['genero'];
-        $profesor->telefonoPrincipal = $validatedData['telefonoPrincipal'];
-        $profesor->email = $validatedData['email'];
-        $profesor->direccion = $validatedData['direccion'];
-        $profesor->fechaNacimiento = $validatedData['fechaNacimiento'];
-        $profesor->fechaIngreso = $validatedData['fechaIngreso'];
+        $profesor = new Profesor($validatedData);
         $profesor->save();
     
         return redirect()->route('profesor.index')->with('success', 'Profesor creado con éxito');
@@ -96,20 +86,10 @@ class ProfesorController extends Controller
             'fechaNacimiento' => ['required', 'date', 'before:today'],
             'fechaIngreso' => ['required', 'date', 'before:today'],
         ]);
-               
-        $profesor->nombres = $validatedData['nombres'];
-        $profesor->apellidos = $validatedData['apellidos'];
-        $profesor->cedulaLetra = $validatedData['cedulaLetra'];
-        $profesor->cedulaNumero = $validatedData['cedulaNumero'];
-        $profesor->genero = $validatedData['genero'];
-        $profesor->telefonoPrincipal = $validatedData['telefonoPrincipal'];
-        $profesor->telefonoSecundario = $validatedData['telefonoSecundario'];
-        $profesor->email = $validatedData['email'];
-        $profesor->direccion = $validatedData['direccion'];
-        $profesor->fechaNacimiento = $validatedData['fechaNacimiento'];
-        $profesor->fechaIngreso = $validatedData['fechaIngreso'];
+
+        $profesor->update($validatedData);
         $profesor->save();
-    
+               
         return redirect()->route('profesor.show', ['profesor' => $profesor])->with('success', 'Profesor actualizado con éxito');
     }
 
