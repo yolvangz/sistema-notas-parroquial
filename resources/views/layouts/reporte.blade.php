@@ -34,35 +34,59 @@ $institucion = Institucion::with('LetraRif')->find(1);
     <link rel="stylesheet" href="{{asset('vendor/fontawesome-free/css/all.min.css')}}">
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
     <style>
-        @media print {
-            body {
-                margin: 0;
-                padding: 0;
-            }
-            @page {
-                size: letter portrait;
-                margin: 5%;
-            }            
-        }
         body {
-            font-size: 1.025rem;
+            /* font-size: 1.025rem; */
+            margin: 0;
         }
         header .datos-empresa {
             line-height: 1.8;
         }
+        .page-header, .page-header-space {
+            height: 290px;
+        }
+
+        .page-footer, .page-footer-space {
+            height: 50px;
+        }
+
+        .page-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .page-header {
+            position: fixed;
+            top: 0mm;
+            width: 100%;
+        }
+
+        .page {
+            page-break-after: always;
+        }
+        
+        @media print {
+            thead {display: table-header-group;} 
+            tfoot {display: table-footer-group;}
+        
+            @page {
+                size: letter portrait;
+                margin: 10mm;
+            }            
+        }
     </style>
 </head>
-<body class="px-0">
-    <header class="container-fluid mx-auto">
-        <div class="d-flex justify-content-between">
+<body>
+    <div class="page-header">
+        <header class="container-fluid mx-auto border-bottom pb-3">
             <div class="d-flex">
                     @if($institucion->logoPath)
-                <div class="d-flex justify-content-center align-items-center mb-3 flex-shrink-0" style="max-width:500px;">
+                <div class="d-flex justify-content-center align-items-center flex-shrink-0" style="max-width:500px;">
                     <img src="{{ Storage::url($institucion->logoPath) }}" alt="Logo" class="img-fluid ratio ratio-3x4 border rounded">
                 </div>
                 @endif
                 <div class="datos-empresa pl-3">
-                    <h1>{{ $institucion->nombre }}</h1>
+                    <h1 class="h2">{{ $institucion->nombre }}</h1>
                     <p>
                         {{ $institucion->rif }}
                         <br>
@@ -72,14 +96,11 @@ $institucion = Institucion::with('LetraRif')->find(1);
                     </p>
                 </div>
             </div>
-        </div>
-    </header>
-    <hr>
-    <main>
-        <div class="container-fluid">
-            <div class="row mb-4">
+        </header>
+        <div class="pt-3 container-fluid">
+            <div class="row">
                 <div class="col-8">
-                    <h2>@yield('reporte_titulo')</h2>
+                    <h2 class="h3">@yield('reporte_titulo')</h2>
                     @hasSection ('reporte_descripcion')
                         <div class="lead">
                             @yield('reporte_descripcion')
@@ -99,20 +120,46 @@ $institucion = Institucion::with('LetraRif')->find(1);
                     </div>
                 </div>
             </div>
-            
-            <div class="content">
-                @yield('reporte_contenido')
-            </div>
-            
-            @hasSection ('reporte_comentarios')
-                <h5>Comentarios:</h5>
-                <div>
-                    @yield('reporte_comentarios')
-                </div>
-            @endif
         </div>
-    </main>
-    <footer>
+    </div>
+    <table class="w-100">
+        <thead>
+            <tr>
+                <td>
+                    <div class="page-header-space"></div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <main>
+                        <div class="container-fluid">
+                            
+                            <div class="content">
+                                @yield('reporte_contenido')
+                            </div>
+                            
+                            @hasSection ('reporte_comentarios')
+                                <h5>Comentarios:</h5>
+                                <div>
+                                    @yield('reporte_comentarios')
+                                </div>
+                            @endif
+                        </div>
+                    </main>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <div class="page-footer-space"></div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <footer class="page-footer">
         <div class="container-fluid text-center mt-4">
             <p class="text-muted">Este es un reporte generado por el sistema.</p>
         </div>
