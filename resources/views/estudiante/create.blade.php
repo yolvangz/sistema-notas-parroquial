@@ -32,10 +32,10 @@
                         <div class="col-sm-8 col-md-9">
                             <div class="d-flex flex-nowrap">
                                 <div class="w-25">
-                                    <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$letraCedulaModel" />
+                                    <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$letraCedulaModel" :except="['J']" />
                                 </div>
                                 <div class="ml-2 flex-grow-1">
-                                    <x-adminlte.form.input name="cedulaNumero" placeholder="Número de cédula" fgroup-class="flex-grow-1" data-inputmask="'mask': '9{7,10}'" required value="{{ old('cedulaNumero') }}" />
+                                    <x-adminlte.form.input name="cedulaNumero" placeholder="Número de cédula" fgroup-class="flex-grow-1" data-inputmask="'mask': '9{7,9}'" required value="{{ old('cedulaNumero') }}" />
                                 </div>
                             </div>
                         </div>

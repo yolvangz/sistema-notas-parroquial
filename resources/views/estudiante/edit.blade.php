@@ -9,6 +9,7 @@
 @section('subtitle', 'Editar Estudiante')
 
 @section('content_header_title', 'Estudiantes')
+
 @section('content_header_subtitle', 'Editar Información')
 
 @php
@@ -48,9 +49,9 @@
                             <label for="cedulaLetra">Cédula de Identidad</label>
                             <div class="input-group">
                                 <div style="max-width: 80px;">
-                                     <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$cedulaLetra" />
+                                     <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$cedulaLetra" :except="['J']" />
                                 </div>
-                                <x-adminlte-input name="cedulaNumero" placeholder="Número" fgroup-class="flex-grow-1" value="{{ old('cedulaNumero', $estudiante->cedulaNumero) }}" data-inputmask="'mask': '9{7,15}'" required/>
+                                <x-adminlte-input name="cedulaNumero" placeholder="Número" fgroup-class="flex-grow-1" value="{{ old('cedulaNumero', $estudiante->cedulaNumero) }}" data-inputmask="'mask': '9{7,9}'" required/>
                             </div>
                         </div>
 

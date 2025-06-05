@@ -50,7 +50,7 @@
                                 <div style="max-width: 80px;">
                                      <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$cedulaLetra" />
                                 </div>
-                                <x-adminlte-input name="cedulaNumero" placeholder="Número" fgroup-class="flex-grow-1" value="{{ old('cedulaNumero', $representante->cedulaNumero) }}" data-inputmask="'mask': '9{7,15}'" required/>
+                                <x-adminlte-input name="cedulaNumero" placeholder="Número" fgroup-class="flex-grow-1" value="{{ old('cedulaNumero', $representante->cedulaNumero) }}" data-inputmask="'mask': '9{7,9}'" required/>
                             </div>
                         </div>
 

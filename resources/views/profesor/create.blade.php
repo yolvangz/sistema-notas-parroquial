@@ -30,10 +30,10 @@
                             <label for="cedulaLetra">Cédula de Identidad</label>
                             <div class="d-flex flex-nowrap">
                                 <div class="w-25">
-                                    <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" />
+                                    <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :except="['J']" />
                                 </div>
                                 <div class="ml-2 flex-grow-1">
-                                    <x-adminlte.form.input type="text" name="cedulaNumero" id="cedulaNumero" class="px-2" data-inputmask="'mask': '9{7,15}'" required/>
+                                    <x-adminlte.form.input type="text" name="cedulaNumero" id="cedulaNumero" class="px-2" data-inputmask="'mask': '9{7,9}'" required/>
                                 </div>
                             </div>
                         </div>

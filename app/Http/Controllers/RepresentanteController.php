@@ -58,6 +58,7 @@ class RepresentanteController extends Controller
         $letraCedulaID = LetraCedula::where('letra', $request->input('cedulaLetra'))->value('IDLetraCedula');
 
         $request->merge(['cedulaLetraID' => $letraCedulaID]);
+        if ($request->get('telefonoSecundario') === '+58 ___-_______') $request->merge(['telefonoSecundario' => null]);
         
         $validatedData = $request->validate([
             'nombres' => ['required', 'string', 'max:100'],
@@ -105,6 +106,7 @@ class RepresentanteController extends Controller
         $letraCedulaID = $letraCedula ? $letraCedula->IDLetraCedula : $representante->cedulaLetra;
 
         $request->merge(['cedulaLetra_validated_id' => $letraCedulaID]);
+        if ($request->get('telefonoSecundario') === '+58 ___-_______') $request->merge(['telefonoSecundario' => null]);
 
         $validatedData = $request->validate([
             'nombres' => ['required', 'string', 'max:100'],
