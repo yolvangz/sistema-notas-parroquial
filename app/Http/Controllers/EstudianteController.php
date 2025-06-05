@@ -109,8 +109,8 @@ class EstudianteController extends Controller
      */
     public function edit(Estudiante $estudiante): View
     {
-        $letrasCedula = LetraCedula::all();
-        return view('estudiante.edit', compact('estudiante', 'letrasCedula'));
+        $estudiante->load('representantes');
+        return view('estudiante.edit', compact('estudiante'));
     }
 
     /**

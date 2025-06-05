@@ -120,16 +120,28 @@
             </div>
             <div class="col-xl-4 mx-auto">
                 <x-adminlte-card theme="dark" theme-mode="outline" title="Añadir representantes al Estudiante">
-                    <x-adminlte.form.input name="" id="buscarRepresentante" type="search" placeholder="Buscar Representante" class="form-control">
-                        <x-slot name="appendSlot">
-                            <div class="input-group-text">
-                                <i class="fas fa-search"></i>
-                            </div>
-                        </x-slot>
-                    </x-adminlte.form.input>
+                    <form action="" method="post">
+                        <x-adminlte.form.input name="" id="buscarRepresentante" type="search" placeholder="Buscar Representante" class="form-control">
+                            <x-slot name="appendSlot">
+                                <button type="submit" class="btn btn-dark"><i class="fas fa-search"></i></button>
+                            </x-slot>
+                        </x-adminlte.form.input>
+                    </form>
                     <hr>
                     <div id="listaRepresentantes" class="d-flex flex-column">
-                        <span class="text-center text-muted">Buscar representantes aquí</span>
+                        @forelse ($estudiante->representantes as $representante)
+                            <div class="border rounded p-2 mb-2 align-items-start">
+                                <input type="checkbox" name="representanteSeleccionado" checked class="mr-1">
+                                <em>{{$representante->letraCedula->letra.'-'.$representante->cedulaNumero}}</em>
+                                <div class="ml-4">
+                                    <span class="d-block">{{ $representante->nombreSimple }}</span>
+                                    <input type="radio" name="representantePrincipal" id="representante{{$representante->id}}" value="{{$representante->id}}" @checked($representante->pivot->representantePrincipal) />
+                                    <label for="representante{{$representante->id}}"><small class="text-muted">Representante principal</small></label>
+                                </div>
+                            </div>
+                        @empty
+                            <span class="text-center text-muted">No hay representantes añadidos</span>
+                        @endforelse
                     </div>
                 </x-adminlte-card>
             </div>
