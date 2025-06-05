@@ -61,7 +61,7 @@ class Institucion extends Model
      */
     public function configuracion()
     {
-        return $this->hasOne(Configuracion::class, 'IDConfiguracion', 'IDInstitucion');
+        return $this->hasOne(Configuracion::class, 'institucionID', 'IDInstitucion');
     }
 
     public function rif() : Attribute
