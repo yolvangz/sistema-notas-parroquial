@@ -4,7 +4,7 @@
 
 @section('plugins.inputmask', true)
 @section('plugins.BsCustomFileInput', true)
-@section('plugins.Select2', true)
+@section('plugins.tempusdominusBootstrap4', true)
 
 @section('subtitle', 'Editar Estudiante')
 
@@ -120,23 +120,21 @@
             </div>
             <div class="col-xl-4 mx-auto">
                 <x-adminlte-card theme="dark" theme-mode="outline" title="Añadir representantes al Estudiante">
-                    <form action="" method="post">
-                        <x-adminlte.form.input name="" id="buscarRepresentante" type="search" placeholder="Buscar Representante" class="form-control">
-                            <x-slot name="appendSlot">
-                                <button type="submit" class="btn btn-dark"><i class="fas fa-search"></i></button>
-                            </x-slot>
-                        </x-adminlte.form.input>
-                    </form>
+                    <x-adminlte.form.input name="" id="buscarRepresentante" type="search" placeholder="Buscar Representante" class="form-control">
+                        <x-slot name="appendSlot">
+                            <button id="sendBuscarRepresentante" class="btn btn-dark"><i class="fas fa-search"></i></button>
+                        </x-slot>
+                    </x-adminlte.form.input>
                     <hr>
                     <div id="listaRepresentantes" class="d-flex flex-column">
                         @forelse ($estudiante->representantes as $representante)
                             <div class="border rounded p-2 mb-2 align-items-start">
-                                <input type="checkbox" name="representanteSeleccionado" checked class="mr-1">
+                                <input type="checkbox" name="representantes[]" checked value="{{$representante->id}}" class="mr-1">
                                 <em>{{$representante->letraCedula->letra.'-'.$representante->cedulaNumero}}</em>
                                 <div class="ml-4">
-                                    <span class="d-block">{{ $representante->nombreSimple }}</span>
-                                    <input type="radio" name="representantePrincipal" id="representante{{$representante->id}}" value="{{$representante->id}}" @checked($representante->pivot->representantePrincipal) />
-                                    <label for="representante{{$representante->id}}"><small class="text-muted">Representante principal</small></label>
+                                    <span class="d-block">{{ $representante->nombreCompleto }}</span>
+                                    <input type="radio" name="representantePrincipal" id="representantePrincipal{{$representante->id}}" value="{{$representante->id}}" @checked($representante->pivot->representantePrincipal) required />
+                                    <label for="representantePrincipal{{$representante->id}}"><small class="text-muted">Representante principal</small></label>
                                 </div>
                             </div>
                         @empty
@@ -148,3 +146,87 @@
         </div>
     </form>
 @endsection
+
+@push('js')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buscarRepresentanteInput = document.getElementById('buscarRepresentante');
+        const sendBuscarRepresentanteButton = document.getElementById('sendBuscarRepresentante');
+        const listaRepresentantesDiv = document.getElementById('listaRepresentantes');
+
+        console.log('Initializing representante search functionality...');
+        const fetchRepresentantes = () => {
+            const search = buscarRepresentanteInput.value;
+            const checkedRepresentantes = Array.from(listaRepresentantesDiv.querySelectorAll('input[name="representantes[]"]:checked'))
+                .map(input => input.value);
+
+            fetch('{{ route('estudiante.buscarRepresentantes') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({ search, checkedRepresentantes }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                listaRepresentantesDiv.innerHTML = ''; // Clear the list
+
+                data.forEach(representante => {
+                    const representanteDiv = document.createElement('div');
+                    representanteDiv.className = 'border rounded p-2 mb-2 align-items-start';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.name = 'representantes[]';
+                    checkbox.value = representante.id;
+                    checkbox.checked = representante.checked;
+                    checkbox.className = 'mr-1';
+                    checkbox.addEventListener('change', fetchRepresentantes); // Re-fetch on change
+
+                    const em = document.createElement('em');
+                    em.textContent = `${representante.letraCedula}-${representante.cedulaNumero}`;
+
+                    const ml4Div = document.createElement('div');
+                    ml4Div.className = 'ml-4';
+
+                    const span = document.createElement('span');
+                    span.className = 'd-block';
+                    span.textContent = representante.nombreCompleto;
+
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = 'representantePrincipal';
+                    radio.id = `representantePrincipal${representante.id}`;
+                    radio.value = representante.id;
+                    radio.required = true;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `representantePrincipal${representante.id}`;
+                    label.innerHTML = '<small class="text-muted">Representante principal</small>';
+
+                    ml4Div.appendChild(span);
+                    ml4Div.appendChild(radio);
+                    ml4Div.appendChild(label);
+
+                    representanteDiv.appendChild(checkbox);
+                    representanteDiv.appendChild(em);
+                    representanteDiv.appendChild(ml4Div);
+
+                    listaRepresentantesDiv.appendChild(representanteDiv);
+                });
+            })
+            .catch(error => console.error('Error fetching representantes:', error));
+        };
+
+        // Add event listeners to existing checkboxes
+        const existingCheckboxes = listaRepresentantesDiv.querySelectorAll('input[name="representantes[]"]');
+        existingCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', fetchRepresentantes);
+        });
+
+        buscarRepresentanteInput.addEventListener('input', fetchRepresentantes);
+        sendBuscarRepresentanteButton.addEventListener('click', fetchRepresentantes);
+    });
+</script>
+@endpush

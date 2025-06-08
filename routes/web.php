@@ -95,6 +95,7 @@ Route::controller(EstudianteController::class)->group(function () {
             Route::post('/', 'store')->name('store');
             Route::put('/{estudiante}', 'update')->name('update');
             Route::delete('/{estudiante}', 'destroy')->name('destroy');
+            Route::post('/buscar-representantes', 'buscarRepresentantes')->name('buscarRepresentantes');
         });
     });
 });
