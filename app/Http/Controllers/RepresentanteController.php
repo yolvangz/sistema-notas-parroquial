@@ -154,12 +154,13 @@ class RepresentanteController extends Controller
 
         $representante->update($validatedData);
         if (array_key_exists('estudiantes', $validatedData) && !empty($validatedData['estudiantes'])) {
+            if (array_key_exists('representantePrincipal', $validatedData) && !empty($validatedData['representantePrincipal'])) {
             $validatedData['estudiantes'] = array_merge($validatedData['estudiantes'], 
-                    array_map(function($representante) {
-                        return ['representantePrincipal' => true];
-                    }, $validatedData['representantePrincipal']
-                )
-            );
+                array_map(function($representante) {
+                return ['representantePrincipal' => true];
+                }, $validatedData['representantePrincipal']
+            ));
+            }
             $representante->estudiantes()->sync($validatedData['estudiantes']);
         } else {
             $representante->estudiantes()->detach();
@@ -219,5 +220,14 @@ class RepresentanteController extends Controller
         ])->values();
 
         return response()->json($sortedEstudiantes);
+    }
+    /**
+     * Reporte de representante individual
+     */
+    public function reporteShow(Representante $representante): View
+    {
+        // Eager load relationships if needed in the view
+        $representante->load('letraCedula', 'estudiantes');
+        return view('representante.reporte.show', ['representante' => $representante]);
     }
 }
