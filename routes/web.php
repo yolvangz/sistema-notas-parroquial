@@ -75,6 +75,9 @@ Route::prefix('representantes')->name('representante.')->controller(Representant
     Route::put('/{representante}', 'update')->name('update');
     Route::delete('/{representante}', 'destroy')->name('destroy');
     Route::post('/buscar-estudiantes', 'buscarEstudiantes')->name('buscarEstudiantes');
+
+    // Reportes
+    Route::get('/{representante}/imprimir', 'reporteShow')->name('reporte.show');
 });
 
 Route::prefix('estudiantes')->name('estudiante.')->controller(EstudianteController::class)->group(function () {
@@ -86,6 +89,11 @@ Route::prefix('estudiantes')->name('estudiante.')->controller(EstudianteControll
     Route::put('/{estudiante}', 'update')->name('update');
     Route::delete('/{estudiante}', 'destroy')->name('destroy');
     Route::post('/buscar-representantes', 'buscarRepresentantes')->name('buscarRepresentantes');
+
+    // Reportes
+    Route::get('/imprimir', 'reporteIndex')->name('reporte.index');
+    Route::post('/imprimir', 'reporteIndex')->name('reporte.index');
+    Route::get('/{estudiante}/imprimir', 'reporteShow')->name('reporte.show');
 });
 
 // --- Plan de Estudio Routes ---
@@ -99,6 +107,9 @@ Route::prefix('planes-estudio')->name('planEstudio.')->controller(PlanEstudioCon
     Route::get('/{planEstudio:codigo}/editar', 'edit')->name('edit');    // GET /planes-estudio/{planEstudio:codigo}/editar
     Route::put('/{planEstudio:codigo}', 'update')->name('update');        // PUT /planes-estudio/{planEstudio:codigo}
     Route::delete('/{planEstudio:codigo}', 'destroy')->name('destroy');  // DELETE /planes-estudio/{planEstudio:codigo}
+
+    // Reportes
+    Route::get('/{planEstudio:codigo}/imprimir', 'reporteShow')->name('reporte.show');            // GET /planes-estudio/{planEstudio:codigo}/imprimir
 });
 
 // --- Componente Routes ---
@@ -125,7 +136,6 @@ Route::prefix('planes-estudio/{planEstudio:codigo}/componentes/{componente}/mate
 });
 
 // RUTAS DE PRUEBA
-
 
 Route::prefix('pruebas')->group(function () {
     Route::get('/letras-cedula', function () {

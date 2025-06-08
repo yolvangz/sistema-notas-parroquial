@@ -61,13 +61,13 @@ class Institucion extends Model
      */
     public function configuracion()
     {
-        return $this->hasOne(Configuracion::class, 'IDConfiguracion', 'IDInstitucion');
+        return $this->hasOne(Configuracion::class, 'institucionID', 'IDInstitucion');
     }
 
     public function rif() : Attribute
     {
         return Attribute::make(
-            get: fn() => $this->letraRif->letra . '-' . str_pad($this->numeroRif, 8, '0', STR_PAD_LEFT),
+            get: fn() => $this->letraRif->letra . '-' . substr($this->numeroRif, 0, -1) . '-' . substr($this->numeroRif, -1),
         );
     }
 }

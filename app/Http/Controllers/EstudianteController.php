@@ -201,7 +201,6 @@ class EstudianteController extends Controller
         $estudiante->delete();
         return redirect()->route('estudiante.index')->with('success', 'Estudiante eliminado con éxito.');
     }
-
     public function buscarRepresentantes(Request $request): JsonResponse
     {
         $request->validate([
@@ -244,5 +243,43 @@ class EstudianteController extends Controller
         ])->values();
 
         return response()->json($sortedRepresentantes);
+    }
+    /**
+     * Reporte de listado de estudiantes
+     */
+    public function reporteIndex(Request $request): View | RedirectResponse
+    {
+        $filtros = $request->only(['genero', 'edad_min', 'edad_max']);
+
+        $estudiantes = Estudiante::with('letraCedula')
+            ->when($filtros['genero'] ?? null, function ($query, $genero) {
+            return $query->where('genero', $genero);
+            })
+            ->when(isset($filtros['edad_min']), function ($query) use ($filtros) {
+            return $query->where('fechaNacimiento', '<=', now()->subYears($filtros['edad_min']));
+            })
+            ->when(isset($filtros['edad_max']), function ($query) use ($filtros) {
+            return $query->where('fechaNacimiento', '>=', now()->subYears($filtros['edad_max']));
+            })
+            ->orderBy('cedulaLetra')
+            ->orderBy('cedulaNumero')
+            ->get();
+
+        if ($request->method() === 'GET') {
+            return view('estudiante.listado-reporte', ['estudiantes' => $estudiantes, 'filtros' => (object) $filtros]);
+        }
+        if ($request->method() === 'POST') {
+            return view('estudiante.reporte.index', ['estudiantes' => $estudiantes, 'filtros' => (object) $filtros]);
+        }
+        return redirect()->route('estudiante.index')->with('error', 'Método no permitido para esta acción.');
+    }
+    /**
+     * Reporte de ficha de estudiante
+     */
+    public function reporteShow(Estudiante $estudiante): View
+    {
+        // Eager load relationships if needed in the view
+        $estudiante->load('letraCedula', 'representantes');
+        return view('estudiante.reporte.show', ['estudiante' => $estudiante]);
     }
 }

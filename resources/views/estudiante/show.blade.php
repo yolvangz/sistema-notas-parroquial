@@ -1,4 +1,4 @@
-<!-- Happiness is not something readymade. It comes from your own actions. - Dalai Lama -->
+    <!-- Happiness is not something readymade. It comes from your own actions. - Dalai Lama -->
 
 @extends('layouts.app')
 
@@ -12,7 +12,7 @@
         <div class="col-md-10 col-xl-8 mx-auto">
             <x-adminlte-card theme="dark" theme-mode="outline" title="Información Detallada del Estudiante">
                 <div class="row">
-                    <div class="col-md-4 text-center">
+                    <div class="col-md-5 text-center">
                         <div class="d-flex justify-content-center">
                             @if($estudiante->fotoPerfilPath && Storage::disk('public')->exists($estudiante->fotoPerfilPath))
                                 <img src="{{ Storage::url($estudiante->fotoPerfilPath) }}" alt="Foto Perfil" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
@@ -29,7 +29,7 @@
                             <small class="text-muted">Últ. Modificación: {{ $estudiante->fechaModificado ? $estudiante->fechaModificado->format('d/m/Y H:i A') : 'N/A' }}</small>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-7 d-flex flex-column justify-content-between">
                         <dl class="row">
                             <dt class="col-sm-4 col-md-3"><small class="text-muted">Cédula de Identidad</small></dt>
                             <dd class="col-sm-8 col-md-9">{{ $estudiante->letraCedula->letra ?? 'N/A' }}-{{ $estudiante->cedulaNumero }}</dd>
@@ -70,11 +70,17 @@
                             <p class="text-muted">Este estudiante no tiene representantes asociados.</p>
                         @endif
 
-                        <div class="mt-4 text-center">
-                            <a href="{{ route('estudiante.edit', $estudiante) }}" class="btn btn-primary"><i class="fas fa-edit"></i> Modificar Estudiante</a>
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-                                <i class="fas fa-trash"></i> Eliminar Estudiante
-                            </button>
+                        <div>
+                            <hr>
+                            <div class="mt-4 text-center">
+                                <a href="{{ route('estudiante.edit', $estudiante) }}" class="btn btn-primary mb-1"><i class="fas fa-edit"></i> Modificar</a>
+                                <button type="button" class="btn btn-danger mb-1" data-toggle="modal" data-target="#deleteModal">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                                <a href="{{ route('estudiante.reporte.show', $estudiante) }}" class="printWindow btn btn-secondary mb-1">
+                                    <i class="fas fa-print"></i> Imprimir
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

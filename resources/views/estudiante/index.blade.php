@@ -11,6 +11,9 @@
         <a href="{{ route('estudiante.create') }}" class="btn btn-success">
             <i class="fas fa-plus"></i> Agregar Estudiante
         </a>
+        <a href="{{ route('estudiante.reporte.index') }}" class="btn btn-secondary">
+            <i class="fas fa-clipboard-list"></i> Imprimir listado
+        </a>
     </div>
 @endsection
 
@@ -68,9 +71,6 @@
                     @endif
                 </tbody>
             </table>
-        </div>
-        <div class="card-footer clearfix">
-            {{ $estudiantes->links() }}
         </div>
     </div>
 @endsection

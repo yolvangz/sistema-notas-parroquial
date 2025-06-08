@@ -78,9 +78,10 @@ w
                         @endif
 
                         <div class="mt-4 text-center">
-                            <a href="{{ route('representante.edit', $representante) }}" class="btn btn-primary"><i class="fas fa-edit"></i> Modificar Representante</a>
+                            <a href="{{ route('representante.edit', $representante) }}" class="btn btn-primary"><i class="fas fa-edit"></i> Modificar</a>
+                            <a href="{{ route('representante.reporte.show', $representante) }}" class="printWindow btn btn-secondary"><i class="fas fa-print"></i> Imprimir</a>
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-                                <i class="fas fa-trash"></i> Eliminar Representante
+                                <i class="fas fa-trash"></i> Eliminar
                             </button>
                         </div>
                     </div>
