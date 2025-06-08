@@ -53,21 +53,22 @@
                             @endif
                         </dl>
 
-                        {{-- <h5>Estudiantes Representados</h5>
-                        @if($estudiante->estudiantes && $estudiante->estudiantes->count() > 0)
+                        <hr>
+                        <h5>Representantes</h5>
+                        @if($estudiante->representantes && $estudiante->representantes->count() > 0)
                             <ul class="list-group list-group-flush">
-                                @foreach($estudiante->estudiantes as $estudiante)
+                                @foreach($estudiante->representantes as $representante)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <a href="{{ route('estudiante.show', $estudiante->id) }}">{{ $estudiante->nombreCompleto }}</a>
-                                        @if($estudiante->pivot->estudiantePrincipal)
-                                            <span class="badge badge-primary">Principal</span>
+                                        <a href="{{ route('representante.show', $representante->id) }}">{{ $representante->nombreCompleto }}</a>
+                                        @if($representante->pivot->representantePrincipal)
+                                            <span class="badge badge-primary">Representante Principal</span>
                                         @endif
                                     </li>
                                 @endforeach
                             </ul>
                         @else
-                            <p class="text-muted">Este estudiante no tiene estudiantes asociados.</p>
-                        @endif --}}
+                            <p class="text-muted">Este estudiante no tiene representantes asociados.</p>
+                        @endif
 
                         <div>
                             <hr>

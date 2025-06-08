@@ -74,6 +74,7 @@ Route::prefix('representantes')->name('representante.')->controller(Representant
     Route::post('/', 'store')->name('store');
     Route::put('/{representante}', 'update')->name('update');
     Route::delete('/{representante}', 'destroy')->name('destroy');
+    Route::post('/buscar-estudiantes', 'buscarEstudiantes')->name('buscarEstudiantes');
 });
 
 Route::prefix('estudiantes')->name('estudiante.')->controller(EstudianteController::class)->group(function () {
@@ -84,11 +85,12 @@ Route::prefix('estudiantes')->name('estudiante.')->controller(EstudianteControll
     Route::post('/', 'store')->name('store');
     Route::put('/{estudiante}', 'update')->name('update');
     Route::delete('/{estudiante}', 'destroy')->name('destroy');
+    Route::post('/buscar-representantes', 'buscarRepresentantes')->name('buscarRepresentantes');
 
     // Reportes
-    Route::get('/estudiantes/imprimir', [EstudianteController::class, 'reporteIndex'])->name('reporte.index');
-    Route::post('/estudiantes/imprimir', [EstudianteController::class, 'reporteIndex'])->name('reporte.index');
-    Route::get('/estudiantes/{estudiante}/imprimir', [EstudianteController::class, 'reporteShow'])->name('reporte.show');
+    Route::get('/estudiantes/imprimir', 'reporteIndex')->name('reporte.index');
+    Route::post('/estudiantes/imprimir', 'reporteIndex')->name('reporte.index');
+    Route::get('/estudiantes/{estudiante}/imprimir', 'reporteShow')->name('reporte.show');
 });
 
 // --- Plan de Estudio Routes ---

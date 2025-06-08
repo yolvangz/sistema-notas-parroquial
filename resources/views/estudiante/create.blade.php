@@ -32,10 +32,10 @@
                         <div class="col-sm-8 col-md-9">
                             <div class="d-flex flex-nowrap">
                                 <div class="w-25">
-                                    <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$letraCedulaModel" />
+                                    <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$letraCedulaModel" :except="['J']" />
                                 </div>
                                 <div class="ml-2 flex-grow-1">
-                                    <x-adminlte.form.input name="cedulaNumero" placeholder="Número de cédula" fgroup-class="flex-grow-1" data-inputmask="'mask': '9{7,10}'" required value="{{ old('cedulaNumero') }}" />
+                                    <x-adminlte.form.input name="cedulaNumero" placeholder="Número de cédula" fgroup-class="flex-grow-1" data-inputmask="'mask': '9{7,9}'" required value="{{ old('cedulaNumero') }}" />
                                 </div>
                             </div>
                         </div>
@@ -56,21 +56,6 @@
                 <x-slot name="footerSlot">
                     <a href="{{ route('estudiante.index') }}" class="text-decoration-none text-secondary"><i class="fas fa-arrow-left"></i> Cancelar</a>
                 </x-slot>
-            </x-adminlte-card>
-        </div>
-        <div class="col-xl-4 mx-auto">
-            <x-adminlte-card theme="dark" theme-mode="outline" title="Añadir representantes al Estudiante">
-                <x-adminlte.form.input name="" id="buscarRepresentante" type="search" placeholder="Buscar Representante" class="form-control">
-                    <x-slot name="appendSlot">
-                        <div class="input-group-text">
-                            <i class="fas fa-search"></i>
-                        </div>
-                    </x-slot>
-                </x-adminlte.form.input>
-                <hr>
-                <div id="listaRepresentantes" class="d-flex flex-column">
-                    <span class="text-center text-muted">Buscar representantes aquí</span>
-                </div>
             </x-adminlte-card>
         </div>
     </div>

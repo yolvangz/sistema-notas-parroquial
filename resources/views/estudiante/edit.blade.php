@@ -4,11 +4,12 @@
 
 @section('plugins.inputmask', true)
 @section('plugins.BsCustomFileInput', true)
-@section('plugins.Select2', true)
+@section('plugins.tempusdominusBootstrap4', true)
 
 @section('subtitle', 'Editar Estudiante')
 
 @section('content_header_title', 'Estudiantes')
+
 @section('content_header_subtitle', 'Editar Información')
 
 @php
@@ -48,9 +49,9 @@
                             <label for="cedulaLetra">Cédula de Identidad</label>
                             <div class="input-group">
                                 <div style="max-width: 80px;">
-                                     <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$cedulaLetra" />
+                                     <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$cedulaLetra" :except="['J']" />
                                 </div>
-                                <x-adminlte-input name="cedulaNumero" placeholder="Número" fgroup-class="flex-grow-1" value="{{ old('cedulaNumero', $estudiante->cedulaNumero) }}" data-inputmask="'mask': '9{7,15}'" required/>
+                                <x-adminlte-input name="cedulaNumero" placeholder="Número" fgroup-class="flex-grow-1" value="{{ old('cedulaNumero', $estudiante->cedulaNumero) }}" data-inputmask="'mask': '9{7,9}'" required/>
                             </div>
                         </div>
 
@@ -121,17 +122,110 @@
                 <x-adminlte-card theme="dark" theme-mode="outline" title="Añadir representantes al Estudiante">
                     <x-adminlte.form.input name="" id="buscarRepresentante" type="search" placeholder="Buscar Representante" class="form-control">
                         <x-slot name="appendSlot">
-                            <div class="input-group-text">
-                                <i class="fas fa-search"></i>
-                            </div>
+                            <button id="sendBuscarRepresentante" class="btn btn-dark"><i class="fas fa-search"></i></button>
                         </x-slot>
                     </x-adminlte.form.input>
                     <hr>
                     <div id="listaRepresentantes" class="d-flex flex-column">
-                        <span class="text-center text-muted">Buscar representantes aquí</span>
+                        @forelse ($estudiante->representantes as $representante)
+                            <div class="border rounded p-2 mb-2 align-items-start">
+                                <input type="checkbox" name="representantes[]" checked value="{{$representante->id}}" class="mr-1">
+                                <em>{{$representante->letraCedula->letra.'-'.$representante->cedulaNumero}}</em>
+                                <div class="ml-4">
+                                    <span class="d-block">{{ $representante->nombreCompleto }}</span>
+                                    <input type="radio" name="representantePrincipal" id="representantePrincipal{{$representante->id}}" value="{{$representante->id}}" @checked($representante->pivot->representantePrincipal) required />
+                                    <label for="representantePrincipal{{$representante->id}}"><small class="text-muted">Representante principal</small></label>
+                                </div>
+                            </div>
+                        @empty
+                            <span class="text-center text-muted">No hay representantes añadidos</span>
+                        @endforelse
                     </div>
                 </x-adminlte-card>
             </div>
         </div>
     </form>
 @endsection
+
+@push('js')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buscarRepresentanteInput = document.getElementById('buscarRepresentante');
+        const sendBuscarRepresentanteButton = document.getElementById('sendBuscarRepresentante');
+        const listaRepresentantesDiv = document.getElementById('listaRepresentantes');
+
+        const fetchRepresentantes = () => {
+            const search = buscarRepresentanteInput.value;
+            const checkedRepresentantes = Array.from(listaRepresentantesDiv.querySelectorAll('input[name="representantes[]"]:checked'))
+                .map(input => input.value);
+
+            fetch('{{ route('estudiante.buscarRepresentantes') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({ search, checkedRepresentantes }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                listaRepresentantesDiv.innerHTML = ''; // Clear the list
+
+                data.forEach(representante => {
+                    const representanteDiv = document.createElement('div');
+                    representanteDiv.className = 'border rounded p-2 mb-2 align-items-start';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.name = 'representantes[]';
+                    checkbox.value = representante.id;
+                    checkbox.checked = representante.checked;
+                    checkbox.className = 'mr-1';
+                    checkbox.addEventListener('change', fetchRepresentantes); // Re-fetch on change
+
+                    const em = document.createElement('em');
+                    em.textContent = `${representante.letraCedula}-${representante.cedulaNumero}`;
+
+                    const ml4Div = document.createElement('div');
+                    ml4Div.className = 'ml-4';
+
+                    const span = document.createElement('span');
+                    span.className = 'd-block';
+                    span.textContent = representante.nombreCompleto;
+
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = 'representantePrincipal';
+                    radio.id = `representantePrincipal${representante.id}`;
+                    radio.value = representante.id;
+                    radio.required = true;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `representantePrincipal${representante.id}`;
+                    label.innerHTML = '<small class="text-muted">Representante principal</small>';
+
+                    ml4Div.appendChild(span);
+                    ml4Div.appendChild(radio);
+                    ml4Div.appendChild(label);
+
+                    representanteDiv.appendChild(checkbox);
+                    representanteDiv.appendChild(em);
+                    representanteDiv.appendChild(ml4Div);
+
+                    listaRepresentantesDiv.appendChild(representanteDiv);
+                });
+            })
+            .catch(error => console.error('Error fetching representantes:', error));
+        };
+
+        // Add event listeners to existing checkboxes
+        const existingCheckboxes = listaRepresentantesDiv.querySelectorAll('input[name="representantes[]"]');
+        existingCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', fetchRepresentantes);
+        });
+
+        buscarRepresentanteInput.addEventListener('input', fetchRepresentantes);
+        sendBuscarRepresentanteButton.addEventListener('click', fetchRepresentantes);
+    });
+</script>
+@endpush

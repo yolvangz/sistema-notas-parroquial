@@ -61,21 +61,21 @@ w
                         </dl>
 
                         <hr>
-                        {{-- <h5>Estudiantes Representados</h5>
+                        <h5>Estudiantes Representados</h5>
                         @if($representante->estudiantes && $representante->estudiantes->count() > 0)
                             <ul class="list-group list-group-flush">
                                 @foreach($representante->estudiantes as $estudiante)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <a href="{{ route('estudiante.show', $estudiante->id) }}">{{ $estudiante->nombreCompleto }}</a>
                                         @if($estudiante->pivot->representantePrincipal)
-                                            <span class="badge badge-primary">Principal</span>
+                                            <span class="badge badge-primary">Representante Principal</span>
                                         @endif
                                     </li>
                                 @endforeach
                             </ul>
                         @else
                             <p class="text-muted">Este representante no tiene estudiantes asociados.</p>
-                        @endif --}}
+                        @endif
 
                         <div class="mt-4 text-center">
                             <a href="{{ route('representante.edit', $representante) }}" class="btn btn-primary"><i class="fas fa-edit"></i> Modificar Representante</a>
