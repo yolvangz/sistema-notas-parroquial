@@ -36,7 +36,7 @@
                                     <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$letraCedulaModel" />
                                 </div>
                                 <div class="ml-2 flex-grow-1">
-                                    <x-adminlte.form.input name="cedulaNumero" placeholder="Número de cédula" fgroup-class="flex-grow-1" data-inputmask="'mask': '9{7,10}'" required value="{{ old('cedulaNumero') }}" />
+                                    <x-adminlte.form.input name="cedulaNumero" placeholder="Número de cédula" fgroup-class="flex-grow-1" data-inputmask="'mask': '9{7,9}'" required value="{{ old('cedulaNumero') }}" />
                                 </div>
                             </div>
                         </div>

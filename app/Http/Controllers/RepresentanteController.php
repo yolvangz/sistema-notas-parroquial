@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estudiante;
 use App\Models\Representante;
 use App\Models\LetraCedula;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -58,6 +60,7 @@ class RepresentanteController extends Controller
         $letraCedulaID = LetraCedula::where('letra', $request->input('cedulaLetra'))->value('IDLetraCedula');
 
         $request->merge(['cedulaLetraID' => $letraCedulaID]);
+        if ($request->get('telefonoSecundario') === '+58 ___-_______') $request->merge(['telefonoSecundario' => null]);
         
         $validatedData = $request->validate([
             'nombres' => ['required', 'string', 'max:100'],
@@ -105,6 +108,7 @@ class RepresentanteController extends Controller
         $letraCedulaID = $letraCedula ? $letraCedula->IDLetraCedula : $representante->cedulaLetra;
 
         $request->merge(['cedulaLetra_validated_id' => $letraCedulaID]);
+        if ($request->get('telefonoSecundario') === '+58 ___-_______') $request->merge(['telefonoSecundario' => null]);
 
         $validatedData = $request->validate([
             'nombres' => ['required', 'string', 'max:100'],
@@ -123,6 +127,10 @@ class RepresentanteController extends Controller
             'email' => ['required', 'string', 'email', 'max:320', Rule::unique('Representantes', 'email')->ignore($representante->IDRepresentante, 'IDRepresentante')],
             'telefonoPrincipal' => ['required', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'], // Adjusted regex
             'telefonoSecundario' => ['nullable', 'string', 'regex:/^\+58 \d{3}-\d{7}$/'], // Adjusted regex
+            'estudiantes' => ['nullable', 'array'],
+            'estudiantes.*' => ['integer', 'exists:Estudiantes,IDEstudiante'],
+            'representantePrincipal' => ['nullable', 'array'],
+            'representantePrincipal.*' => ['integer', Rule::in($request->input('estudiantes'))],
             // 'fotoPerfilPath' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             // 'cedulaPath' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,svg,pdf', 'max:2048'],
         ]);
@@ -145,6 +153,17 @@ class RepresentanteController extends Controller
         unset($validatedData['cedulaLetra_validated_id']);
 
         $representante->update($validatedData);
+        if (array_key_exists('estudiantes', $validatedData) && !empty($validatedData['estudiantes'])) {
+            $validatedData['estudiantes'] = array_merge($validatedData['estudiantes'], 
+                    array_map(function($representante) {
+                        return ['representantePrincipal' => true];
+                    }, $validatedData['representantePrincipal']
+                )
+            );
+            $representante->estudiantes()->sync($validatedData['estudiantes']);
+        } else {
+            $representante->estudiantes()->detach();
+        }
 
         return redirect()->route('representante.show', $representante)->with('success', 'Representante actualizado con éxito.');
     }
@@ -156,5 +175,49 @@ class RepresentanteController extends Controller
     {
         $representante->delete();
         return redirect()->route('representante.index')->with('success', 'Representante eliminado con éxito.');
+    }
+
+    public function buscarEstudiantes(Request $request): JsonResponse
+    {
+        $request->validate([
+            'search' => 'nullable|string|max:255',
+            'checkedEstudiantes' => 'nullable|array',
+            'checkedEstudiantes.*' => 'integer',
+        ]);
+
+        $search = $request->input('search');
+        $checkedEstudiantes = $request->input('checkedEstudiantes', []);
+
+        // Fetch estudiantes matching the search query
+        $estudiantesQuery = Estudiante::query();
+
+        if ($search) {
+            $estudiantesQuery->where(function ($query) use ($search) {
+                $query->where('nombres', 'like', "%{$search}%")
+                    ->orWhere('apellidos', 'like', "%{$search}%")
+                    ->orWhere('cedulaNumero', 'like', "%{$search}%");
+            });
+        }
+
+        // Include already checked estudiantes
+        $estudiantesQuery->orWhereIn('IDEstudiante', $checkedEstudiantes);
+
+        $estudiantes = $estudiantesQuery->get()->map(function ($estudiante) use ($checkedEstudiantes) {
+            return [
+                'id' => $estudiante->id,
+                'nombreCompleto' => $estudiante->nombres . ' ' . $estudiante->apellidos,
+                'letraCedula' => $estudiante->letraCedula->letra,
+                'cedulaNumero' => $estudiante->cedulaNumero,
+                'checked' => in_array($estudiante->id, $checkedEstudiantes),
+            ];
+        });
+
+        // Sort by checked status and nombreCompleto
+        $sortedEstudiantes = $estudiantes->sortBy([
+            ['checked', 'desc'],
+            ['nombreCompleto', 'asc'],
+        ])->values();
+
+        return response()->json($sortedEstudiantes);
     }
 }

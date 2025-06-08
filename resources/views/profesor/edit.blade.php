@@ -4,6 +4,7 @@
 
 @section('plugins.inputmask', true)
 @section('plugins.BsCustomFileInput', true)
+@section('plugins.Select2', true)
 
 @section('subtitle', 'Editar Profesor')
 
@@ -44,12 +45,12 @@
                                 </dd>
                                 <dt class="col-md-3"><small class="text-muted">Cédula de Identidad</small></dt>
                                 <dd class="col-md-9">
-                                    <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$profesor->letraCedula" />
-                                    <x-adminlte.form.input name="cedulaNumero" value="{{ $profesor->cedulaNumero }}" placeholder="Número de Cédula" />
+                                    <x-form.letra-documento name="cedulaLetra" id="cedulaLetra" :selected="$profesor->letraCedula" :except="['J']" />
+                                    <x-adminlte.form.input name="cedulaNumero" value="{{ $profesor->cedulaNumero }}" placeholder="Número de Cédula" data-inputmask="'mask': '9{7,9}'" />
                                 </dd>
                                 <dt class="col-md-3"><small class="text-muted"><label for="genero">Género</label></small></dt>
                                 <dd class="col-md-9">
-                                    <x-form.genero :selected="$profesor->genero" />
+                                    <x-form.genero required selected="{{ old('genero', $profesor->genero->letra) }}" />
                                 </dd>
                                 <dt class="col-md-3"><small class="text-muted">Fecha de Nacimiento</small></dt>
                                 <dd class="col-md-9">

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Estudiante;
 use App\Models\LetraCedula;
+use App\Models\Representante;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -109,8 +111,8 @@ class EstudianteController extends Controller
      */
     public function edit(Estudiante $estudiante): View
     {
-        $letrasCedula = LetraCedula::all();
-        return view('estudiante.edit', compact('estudiante', 'letrasCedula'));
+        $estudiante->load('representantes');
+        return view('estudiante.edit', compact('estudiante'));
     }
 
     /**
@@ -126,7 +128,6 @@ class EstudianteController extends Controller
         // Merge the ID back for validation consistency
         $request->merge(['cedulaLetra_validated_id' => $letraCedulaID]);
 
-
         $validatedData = $request->validate([
             'nombres' => ['required', 'string', 'max:100'],
             'apellidos' => ['required', 'string', 'max:100'],
@@ -141,6 +142,9 @@ class EstudianteController extends Controller
             'genero' => ['required', Rule::in(['M', 'F'])],
             'fechaNacimiento' => ['required', 'date', 'before:today'],
             'direccion' => ['required', 'string', 'max:255'],
+            'representantes' => ['nullable', 'array'],
+            'representantes.*' => ['integer', 'exists:Representantes,IDRepresentante'],
+            'representantePrincipal' => ['nullable', 'integer', Rule::in($request->input('representantes'))],
             'fotoPerfilPath' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'cedulaPath' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,svg,pdf', 'max:2048'],
             'partidaNacimientoPath' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,svg,pdf', 'max:2048'],
@@ -174,6 +178,15 @@ class EstudianteController extends Controller
 
 
         $estudiante->update($validatedData);
+        if (array_key_exists('representantes', $validatedData) && !empty($validatedData['representantes'])) {
+            $estudiante->representantes()->sync(
+                $validatedData['representantes'] + [
+                    $validatedData['representantePrincipal'] => ['representantePrincipal' => true]
+                ]
+            );
+        } else {
+            $estudiante->representantes()->detach();
+        }
 
         return redirect()->route('estudiante.show', $estudiante)->with('success', 'Estudiante actualizado con éxito.');
     }
@@ -187,5 +200,49 @@ class EstudianteController extends Controller
         // If you want to delete files, you'd add that logic here or use model events.
         $estudiante->delete();
         return redirect()->route('estudiante.index')->with('success', 'Estudiante eliminado con éxito.');
+    }
+
+    public function buscarRepresentantes(Request $request): JsonResponse
+    {
+        $request->validate([
+            'search' => 'nullable|string|max:255',
+            'checkedRepresentantes' => 'nullable|array',
+            'checkedRepresentantes.*' => 'integer',
+        ]);
+
+        $search = $request->input('search');
+        $checkedRepresentantes = $request->input('checkedRepresentantes', []);
+
+        // Fetch representantes matching the search query
+        $representantesQuery = Representante::query();
+
+        if ($search) {
+            $representantesQuery->where(function ($query) use ($search) {
+                $query->where('nombres', 'like', "%{$search}%")
+                    ->orWhere('apellidos', 'like', "%{$search}%")
+                    ->orWhere('cedulaNumero', 'like', "%{$search}%");
+            });
+        }
+
+        // Include already checked representantes
+        $representantesQuery->orWhereIn('IDRepresentante', $checkedRepresentantes);
+
+        $representantes = $representantesQuery->get()->map(function ($representante) use ($checkedRepresentantes) {
+            return [
+                'id' => $representante->id,
+                'nombreCompleto' => $representante->nombres . ' ' . $representante->apellidos,
+                'letraCedula' => $representante->letraCedula->letra,
+                'cedulaNumero' => $representante->cedulaNumero,
+                'checked' => in_array($representante->id, $checkedRepresentantes),
+            ];
+        });
+
+        // Sort by checked status and nombreCompleto
+        $sortedRepresentantes = $representantes->sortBy([
+            ['checked', 'desc'],
+            ['nombreCompleto', 'asc'],
+        ])->values();
+
+        return response()->json($sortedRepresentantes);
     }
 }

@@ -74,6 +74,7 @@ Route::prefix('representantes')->name('representante.')->controller(Representant
     Route::post('/', 'store')->name('store');
     Route::put('/{representante}', 'update')->name('update');
     Route::delete('/{representante}', 'destroy')->name('destroy');
+    Route::post('/buscar-estudiantes', 'buscarEstudiantes')->name('buscarEstudiantes');
 });
 
 Route::prefix('estudiantes')->name('estudiante.')->controller(EstudianteController::class)->group(function () {
@@ -84,6 +85,7 @@ Route::prefix('estudiantes')->name('estudiante.')->controller(EstudianteControll
     Route::post('/', 'store')->name('store');
     Route::put('/{estudiante}', 'update')->name('update');
     Route::delete('/{estudiante}', 'destroy')->name('destroy');
+    Route::post('/buscar-representantes', 'buscarRepresentantes')->name('buscarRepresentantes');
 });
 
 // --- Plan de Estudio Routes ---
