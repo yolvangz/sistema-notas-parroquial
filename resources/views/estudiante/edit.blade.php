@@ -154,7 +154,6 @@
         const sendBuscarRepresentanteButton = document.getElementById('sendBuscarRepresentante');
         const listaRepresentantesDiv = document.getElementById('listaRepresentantes');
 
-        console.log('Initializing representante search functionality...');
         const fetchRepresentantes = () => {
             const search = buscarRepresentanteInput.value;
             const checkedRepresentantes = Array.from(listaRepresentantesDiv.querySelectorAll('input[name="representantes[]"]:checked'))

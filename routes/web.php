@@ -81,6 +81,7 @@ Route::controller(RepresentanteController::class)->group(function () {
             Route::post('/', 'store')->name('store');
             Route::put('/{representante}', 'update')->name('update');
             Route::delete('/{representante}', 'destroy')->name('destroy');
+            Route::post('/buscar-estudiantes', 'buscarEstudiantes')->name('buscarEstudiantes');
         });
     });
 });

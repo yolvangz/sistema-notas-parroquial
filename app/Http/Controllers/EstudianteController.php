@@ -128,7 +128,6 @@ class EstudianteController extends Controller
         // Merge the ID back for validation consistency
         $request->merge(['cedulaLetra_validated_id' => $letraCedulaID]);
 
-
         $validatedData = $request->validate([
             'nombres' => ['required', 'string', 'max:100'],
             'apellidos' => ['required', 'string', 'max:100'],
@@ -143,9 +142,9 @@ class EstudianteController extends Controller
             'genero' => ['required', Rule::in(['M', 'F'])],
             'fechaNacimiento' => ['required', 'date', 'before:today'],
             'direccion' => ['required', 'string', 'max:255'],
-            'representantes' => ['required', 'array'],
+            'representantes' => ['nullable', 'array'],
             'representantes.*' => ['integer', 'exists:Representantes,IDRepresentante'],
-            'representantePrincipal' => ['required', 'integer', Rule::in($request->input('representantes'))],
+            'representantePrincipal' => ['nullable', 'integer', Rule::in($request->input('representantes'))],
             'fotoPerfilPath' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'cedulaPath' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,svg,pdf', 'max:2048'],
             'partidaNacimientoPath' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,svg,pdf', 'max:2048'],
@@ -179,11 +178,15 @@ class EstudianteController extends Controller
 
 
         $estudiante->update($validatedData);
-        $estudiante->representantes()->sync(
-            $validatedData['representantes'] + [
-                $validatedData['representantePrincipal'] => ['representantePrincipal' => true]
-            ]
-        );
+        if (array_key_exists('representantes', $validatedData) && !empty($validatedData['representantes'])) {
+            $estudiante->representantes()->sync(
+                $validatedData['representantes'] + [
+                    $validatedData['representantePrincipal'] => ['representantePrincipal' => true]
+                ]
+            );
+        } else {
+            $estudiante->representantes()->detach();
+        }
 
         return redirect()->route('estudiante.show', $estudiante)->with('success', 'Estudiante actualizado con éxito.');
     }

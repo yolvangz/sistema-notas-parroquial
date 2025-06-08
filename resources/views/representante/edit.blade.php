@@ -4,7 +4,7 @@
 
 @section('plugins.inputmask', true)
 @section('plugins.BsCustomFileInput', true)
-@section('plugins.Select2', true)
+@section('plugins.tempusdominusBootstrap4', true)
 
 @section('subtitle', 'Editar Representante')
 
@@ -136,6 +136,113 @@
                     </x-slot>
                 </x-adminlte-card>
             </div>
+            <div class="col-xl-4 mx-auto">
+                <x-adminlte-card theme="dark" theme-mode="outline" title="Añadir estudiantes representados">
+                    <x-adminlte.form.input name="" id="buscarEstudiante" type="search" placeholder="Buscar Estudiante" class="form-control">
+                        <x-slot name="appendSlot">
+                            <button id="sendBuscarEstudiante" class="btn btn-dark"><i class="fas fa-search"></i></button>
+                        </x-slot>
+                    </x-adminlte.form.input>
+                    <hr>
+                    <div id="listaEstudiantes" class="d-flex flex-column">
+                        @forelse ($representante->estudiantes as $estudiante)
+                            <div class="border rounded p-2 mb-2 align-items-start">
+                                <input type="checkbox" name="estudiantes[]" checked value="{{$estudiante->id}}" class="mr-1">
+                                <em>{{$estudiante->letraCedula->letra.'-'.$estudiante->cedulaNumero}}</em>
+                                <div class="ml-4">
+                                    <span class="d-block">{{ $estudiante->nombreCompleto }}</span>
+                                    <input type="checkbox" name="representantePrincipal[]" id="representantePrincipal{{$estudiante->id}}" value="{{$estudiante->id}}" @checked($estudiante->pivot->representantePrincipal) required />
+                                    <label for="representantePrincipal{{$estudiante->id}}"><small class="text-muted">Representante principal</small></label>
+                                </div>
+                            </div>
+                        @empty
+                            <span class="text-center text-muted">No hay representantes añadidos</span>
+                        @endforelse
+                    </div>
+                </x-adminlte-card>
+            </div>
         </div>
     </form>
 @endsection
+
+@push('js')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buscarEstudianteInput = document.getElementById('buscarEstudiante');
+        const sendBuscarEstudianteButton = document.getElementById('sendBuscarEstudiante');
+        const listaEstudiantesDiv = document.getElementById('listaEstudiantes');
+
+        const fetchEstudiantes = () => {
+            const search = buscarEstudianteInput.value;
+            const checkedEstudiantes = Array.from(listaEstudiantesDiv.querySelectorAll('input[name="estudiantes[]"]:checked'))
+                .map(input => input.value);
+
+            fetch('{{ route('representante.buscarEstudiantes') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({ search, checkedEstudiantes }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                listaEstudiantesDiv.innerHTML = ''; // Clear the list
+
+                data.forEach(estudiante => {
+                    const estudianteDiv = document.createElement('div');
+                    estudianteDiv.className = 'border rounded p-2 mb-2 align-items-start';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.name = 'estudiantes[]';
+                    checkbox.value = estudiante.id;
+                    checkbox.checked = estudiante.checked;
+                    checkbox.className = 'mr-1';
+                    checkbox.addEventListener('change', fetchEstudiantes); // Re-fetch on change
+
+                    const em = document.createElement('em');
+                    em.textContent = `${estudiante.letraCedula}-${estudiante.cedulaNumero}`;
+
+                    const ml4Div = document.createElement('div');
+                    ml4Div.className = 'ml-4';
+
+                    const span = document.createElement('span');
+                    span.className = 'd-block';
+                    span.textContent = estudiante.nombreCompleto;
+
+                    const checkPrincipal = document.createElement('input');
+                    checkPrincipal.type = 'checkbox';
+                    checkPrincipal.name = 'representantePrincipal[]';
+                    checkPrincipal.id = `representantePrincipal${estudiante.id}`;
+                    checkPrincipal.value = estudiante.id;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `representantePrincipal${estudiante.id}`;
+                    label.innerHTML = '<small class="text-muted">Representante principal</small>';
+
+                    ml4Div.appendChild(span);
+                    ml4Div.appendChild(checkPrincipal);
+                    ml4Div.appendChild(label);
+
+                    estudianteDiv.appendChild(checkbox);
+                    estudianteDiv.appendChild(em);
+                    estudianteDiv.appendChild(ml4Div);
+
+                    listaEstudiantesDiv.appendChild(estudianteDiv);
+                });
+            })
+            .catch(error => console.error('Error fetching representantes:', error));
+        };
+
+        // Add event listeners to existing checkboxes
+        const existingCheckboxes = listaEstudiantesDiv.querySelectorAll('input[name="estudiantes[]"]');
+        existingCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', fetchEstudiantes);
+        });
+
+        buscarEstudianteInput.addEventListener('input', fetchEstudiantes);
+        sendBuscarEstudianteButton.addEventListener('click', fetchEstudiantes);
+    });
+</script>
+@endpush
