@@ -279,7 +279,7 @@ class EstudianteController extends Controller
     public function reporteShow(Estudiante $estudiante): View
     {
         // Eager load relationships if needed in the view
-        $estudiante->load('letraCedula');
+        $estudiante->load('letraCedula', 'representantes');
         return view('estudiante.reporte.show', ['estudiante' => $estudiante]);
     }
 }

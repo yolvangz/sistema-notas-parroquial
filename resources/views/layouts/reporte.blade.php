@@ -75,6 +75,7 @@ $institucion = Institucion::with('LetraRif')->find(1);
             }            
         }
     </style>
+    @stack('css')
 </head>
 <body>
     <div class="page-header">
