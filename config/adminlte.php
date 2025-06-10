@@ -318,6 +318,7 @@ return [
         ],
         [
             'header' => 'Administración',
+            'key' => 'administracion_header',
         ],
         [
             'text' => 'Profesores',
