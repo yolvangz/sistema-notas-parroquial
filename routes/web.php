@@ -1,39 +1,14 @@
 <?php
 
-use App\Http\Controllers\ComponenteController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfesorController;
+use App\Http\Controllers\ComponenteController;
+use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\InstitucionController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\PlanEstudioController;
+use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\RepresentanteController;
-use App\Http\Controllers\EstudianteController;
-use Illuminate\Support\Facades\DB;
-
-$dummy = [
-    'institucion' => (object)[
-        'nombre' => 'U.E.C. Parroquial Punta Cardón',
-        'letraRif' => 'J',
-        'numeroRif' => '123456789',
-        'direccion' => 'Av. 123, Punta Cardón, SUCRE',
-        'telefono' => '+58 123-2131231',
-        'logoPath' => null,
-        'fechaModificacion' => date('Y-m-d H:i:s'),
-    ],
-    'configuracion' => (object) [
-        'calificacionNumericaMinima' => 0,
-        'calificacionNumericaMaxima' => 20,
-        'calificacionNumericaAprobatoria' => 10,
-        'calificacionCualitativaLiterales' => [
-            (object) ['literal' => 'A', 'descripcion'=> 'Excelente',],
-            (object) ['literal' => 'B', 'descripcion'=> 'Bueno',],
-            (object) ['literal' => 'C', 'descripcion'=> 'Regular',],
-            (object) ['literal' => 'D', 'descripcion'=> 'Deficiente',],
-        ],
-        'calificacionCualitativaAprobatoria' => 'C',
-        'fechaModificacion' => date('Y-m-d H:i:s'),
-    ],
-];
 
 // Real Routes
 Route::get('/', function () {
@@ -138,40 +113,6 @@ Route::prefix('planes-estudio/{planEstudio:codigo}/componentes/{componente}/mate
 // RUTAS DE PRUEBA
 
 Route::prefix('pruebas')->group(function () {
-    Route::get('/letras-cedula', function () {
-        $letrasCedula = App\Models\LetraCedula::orderBy('IDLetraCedula')->select('IDLetraCedula as id', 'letra', 'nombre')->get();
-        return view('letrasCedula', ['letrasCedula' => $letrasCedula]);
-    });
-    
-    Route::get('/configuracion', function () {
-        $configuracion = DB::table('Configuraciones')
-        ->join('Instituciones', 'Configuraciones.institucionID', '=', 'Instituciones.IDInstitucion')
-        ->select('Configuraciones.*', 'Instituciones.*')
-        ->first();
-        
-        return $configuracion;
-    });
-    
-    Route::get('/planes-estudio', function () {
-        $planesEstudio = DB::table('PlanesDeEstudios')->get();
-        return $planesEstudio;
-    });
-    Route::get('/planes-estudio/{planEstudio}', function ($planEstudio) {
-        $componentes = DB::table('Componentes')->where('planEstudioID', $planEstudio)->get();
-        return $componentes;
-    });
-    Route::get('planes-estudio/{planEstudio}/{componente}', function ($planEstudio, $componente) {
-        $materias = DB::table('Materias')->where('componenteID', $componente)->get();
-        return $materias;
-    });
-    Route::get('/matematicas', function () {
-        $materias = DB::table('Materias')->whereLike('nombre', '%matematica%')->get();
-        $materias->each(function ($materia) {
-            $materia->componente = DB::table('Componentes')->where('IDComponente', $materia->componenteID)->first();
-            $materia->planEstudio = DB::table('PlanesDeEstudios')->where('IDPlanEstudio', $materia->componente->planEstudioID)->first();
-        });
-        return $materias;
-    });
     Route::get('/secciones', function () {
         $secciones = DB::table('Secciones')
         ->join('Componentes', 'Secciones.componenteID', '=', 'Componentes.IDComponente')
