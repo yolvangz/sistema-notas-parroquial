@@ -176,18 +176,18 @@ class EstudianteController extends Controller
         $validatedData['cedulaLetra'] = $validatedData['cedulaLetra_validated_id'];
         unset($validatedData['cedulaLetra_validated_id']); // Clean up temporary validation field
 
-        $validatedRepresentantes = array_combine(
-            array_map(function ($i) {return (int) $i;}, $validatedData['representantes']),
-            array_map(function ($r) use ($validatedData) {
-                return ['representantePrincipal' => $validatedData['representantePrincipal'] === $r];
-            }, $validatedData['representantes'])
-        );
-        $estudiante->update($validatedData);
-        if (array_key_exists('representantes', $validatedData) && !empty($validatedData['representantes'])) {
+        if (key_exists('representantes', $validatedData) && !empty($validatedData['representantes'])) {
+            $validatedRepresentantes = array_combine(
+                array_map(function ($i) {return (int) $i;}, $validatedData['representantes']),
+                array_map(function ($r) use ($validatedData) {
+                    return ['representantePrincipal' => $validatedData['representantePrincipal'] === $r];
+                }, $validatedData['representantes'])
+            );
+            $estudiante->update($validatedData);
             $estudiante->representantes()->detach();
-            $estudiante->representantes()->attach($validatedRepresentantes);
-        } else {
-            $estudiante->representantes()->detach();
+            if (array_key_exists('representantes', $validatedData) && !empty($validatedData['representantes'])) {
+                $estudiante->representantes()->attach($validatedRepresentantes);
+            }
         }
 
         return redirect()->route('estudiante.show', $estudiante)->with('success', 'Estudiante actualizado con éxito.');
