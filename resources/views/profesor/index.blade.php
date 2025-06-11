@@ -6,6 +6,34 @@
 
 @section('content_header_title', 'Todos los profesores')
 
+@php
+    $titulo = 'Lista de Profesores';
+    $search = (object) [
+        'route' => route('profesor.index'),
+        'placeholder' => 'Buscar profesor...'
+    ];
+    $columns = [
+        'nombreSimple' => (object) ['text' => 'Nombre',],
+        'cedula' => (object) [
+            'text' => 'Cédula',
+            'getter' => fn($e) => ($e->letraCedula->letra ?? 'N/A'). '-' . $e->cedulaNumero
+        ],
+        'fechaIngreso' => (object) [
+            'text' => 'Fecha de Ingreso',
+            'getter' => fn($e) => $e->fechaIngreso->format('d/m/Y')
+        ],
+        'email' => (object) ['text' => 'Correo electrónico',],
+        'telefonoPrincipal' => (object) ['text' => 'Teléfono Principal',]
+    ];
+    $items = $profesores;
+    $emptyMessage = 'No se han registrado profesores.';
+    $actions = [
+        ['route' => 'profesor.show', 'class' => 'primary', 'icon' => 'eye', 'label' => 'Ver'],
+        ['route' => 'profesor.edit', 'class' => 'info', 'icon' => 'edit', 'label' => 'Editar'],
+    ];
+    
+@endphp
+
 @section('content_header_actions')
     <div class="mt-3">
         <a href="{{ route('profesor.create') }}" class="btn btn-success">
@@ -15,56 +43,12 @@
 @endsection
 
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Lista de Profesores</h3>
-            <div class="card-tools">
-                <form action="" method="get">
-                    <div class="input-group input-group-sm">
-                        <input type="text" name="search" class="form-control float-right" placeholder="Buscar Profesor">
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="card-body table-responsive p-0">
-            <table class="table table-hover text-nowrap">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Fecha de Ingreso</th>
-                        <th>Cédula</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if($profesores->count() === 0)
-                        <tr>
-                            <td colspan="4" class="text-center">No se han creado profesores</td>
-                        </tr>
-                    @else
-                        @foreach($profesores as $profesor)
-                            <tr>
-                                <td>{{ $profesor->nombreSimple }}</td>
-                                <td>{{ $profesor->fechaIngreso->format('d/m/Y') }}</td>
-                                <td>{{ $profesor->letraCedula->letra }}-{{ $profesor->cedulaNumero }}</td>
-                                <td>
-                                    <a href="{{ route('profesor.show', $profesor) }}" class="btn btn-sm btn-primary">
-                                        <i class="fas fa-eye"></i> Ver
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @endif
-                </tbody>
-            </table>
-        </div>
-        <div class="card-footer clearfix">
-            {{ $profesores->links() }}
-        </div>
-    </div>
+    <x-app.listado-tabla
+        :titulo=$titulo
+        :search=$search
+        :columns=$columns
+        :items=$items
+        :emptyMessage=$emptyMessage
+        :actions=$actions
+    />
 @endsection
