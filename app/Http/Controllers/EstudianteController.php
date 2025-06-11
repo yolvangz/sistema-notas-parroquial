@@ -176,14 +176,16 @@ class EstudianteController extends Controller
         $validatedData['cedulaLetra'] = $validatedData['cedulaLetra_validated_id'];
         unset($validatedData['cedulaLetra_validated_id']); // Clean up temporary validation field
 
-
+        $validatedRepresentantes = array_combine(
+            array_map(function ($i) {return (int) $i;}, $validatedData['representantes']),
+            array_map(function ($r) use ($validatedData) {
+                return ['representantePrincipal' => $validatedData['representantePrincipal'] === $r];
+            }, $validatedData['representantes'])
+        );
         $estudiante->update($validatedData);
         if (array_key_exists('representantes', $validatedData) && !empty($validatedData['representantes'])) {
-            $estudiante->representantes()->sync(
-                $validatedData['representantes'] + [
-                    $validatedData['representantePrincipal'] => ['representantePrincipal' => true]
-                ]
-            );
+            $estudiante->representantes()->detach();
+            $estudiante->representantes()->attach($validatedRepresentantes);
         } else {
             $estudiante->representantes()->detach();
         }

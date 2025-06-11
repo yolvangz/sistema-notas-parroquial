@@ -82,7 +82,7 @@ $institucion = Institucion::with('LetraRif')->find(1);
         <header class="container-fluid mx-auto border-bottom pb-3">
             <div class="d-flex">
                     @if($institucion->logoPath)
-                <div class="d-flex justify-content-center align-items-center flex-shrink-0" style="max-width:500px;">
+                <div class="d-flex justify-content-center align-items-center flex-shrink-0" style="max-width: 150px; max-height:250px;">
                     <img src="{{ Storage::url($institucion->logoPath) }}" alt="Logo" class="img-fluid ratio ratio-3x4 border rounded">
                 </div>
                 @endif
