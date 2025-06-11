@@ -12,7 +12,7 @@ use App\Http\Controllers\RepresentanteController;
 
 // Real Routes
 Route::get('/', function () {
-    return redirect('dashboard');
+    return redirect()->route('dashboard');
 });
 
 Route::get('/dashboard', function () {
