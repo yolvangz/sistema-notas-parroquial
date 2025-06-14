@@ -1,0 +1,2 @@
+{{-- <!-- If you do not have a consistent goal in life, you can not live it in a consistent way. - Marcus Aurelius --> --}}
+<a href="{{ route($route, $params ?? []) }}" class="text-decoration-none text-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>

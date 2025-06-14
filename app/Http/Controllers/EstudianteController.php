@@ -6,11 +6,11 @@ use App\Models\Estudiante;
 use App\Models\LetraCedula;
 use App\Models\Representante;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class EstudianteController extends Controller
 {

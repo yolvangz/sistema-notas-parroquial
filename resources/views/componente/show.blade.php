@@ -8,92 +8,91 @@
 @section('content_header_subtitle', $planEstudio->nombre.' > '.$componente->nombre)
 
 @section('content_body')
-    <div class="row">
-        <div class="col-md-10 col-xl-8 mx-auto">
-            <x-adminlte-card theme="dark" theme-mode="outline" title="Materias de {{$componente->nombre}}">
-                <section>
-                    <a href="{{route('materia.create', ['planEstudio' => $planEstudio, 'componente' => $componente])}}" class="btn btn-success mb-3">
-                        <i class="fas fa-plus"></i> Añadir materia
-                    </a>
-                    <div class="border rounded">
-                        @if($componente->materias && $componente->materias->count() > 0)
-                            <ul class="list-group list-group-flush">
-                                @foreach($componente->materias as $materia)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        {{ $materia->nombre }}
-                                        <div>
-                                            <a href="{{ route('materia.edit', ['planEstudio' => $planEstudio, 'componente' => $componente, 'materia' => $materia]) }}" class="btn btn-warning"><i class="fas fa-edit"></i> Editar</a>
-                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteMateriaModal{{$materia->id}}"><i class="fas fa-trash"></i> Eliminar</button>
-                                        </div>
-                                        @push('modals')
-                                            <!-- Confirmation Modal for Delete Materia -->
-                                            <div class="modal fade" id="deleteMateriaModal{{$materia->id}}" tabindex="-1" role="dialog" aria-labelledby="deleteMateriaModalLabel{{$materia->id}}" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="deleteMateriaModalLabel{{$materia->id}}">Eliminar Materia</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            ¿Está seguro de eliminar la materia {{ $materia->nombre }}?
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                            <form action="{{ route('materia.destroy', ['planEstudio' => $planEstudio, 'componente' => $componente, 'materia' => $materia]) }}" method="post" style="display: inline;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
+    <x-layout.two-column-cards>
+        <x-slot:mainCardTitle>Materias de {{ $componente->nombre }}</x-slot>
+        <section>
+            <a href="{{route('materia.create', ['planEstudio' => $planEstudio, 'componente' => $componente])}}" class="btn btn-success mb-3">
+                <i class="fas fa-plus"></i> Añadir materia
+            </a>
+            @if($componente->materias && $componente->materias->count() > 0)
+                <ul class="list-group list-group">
+                    @foreach($componente->materias as $materia)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                {{ $materia->nombre }}
+                                @if ($materia->cualitativa)
+                                    <span class="badge bg-warning">Cualitativa</span>
+                                @else
+                                    <span class="badge bg-success">Cuantitativa</span>                                    
+                                @endif
+                                @if (!$materia->calcular)
+                                    <span class="badge bg-dark">No incluida en el promedio</span>
+                                @endif
+                            </div>
+                            <div>
+                                <a href="{{ route('materia.edit', ['planEstudio' => $planEstudio, 'componente' => $componente, 'materia' => $materia]) }}" class="btn btn-info"><i class="fas fa-edit"></i> Editar</a>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteMateriaModal{{$materia->id}}"><i class="fas fa-trash"></i> Eliminar</button>
+                            </div>
+                            @push('modals')
+                                <!-- Confirmation Modal for Delete Materia -->
+                                <div class="modal fade" id="deleteMateriaModal{{$materia->id}}" tabindex="-1" role="dialog" aria-labelledby="deleteMateriaModalLabel{{$materia->id}}" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteMateriaModalLabel{{$materia->id}}">Eliminar Materia</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                             </div>
-                                        @endpush
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @else
-                            <p class="mb-0 py-3 text-center text-muted">No hay materias creadas.</p>
-                        @endif
-                    </div>
-                </section>
-            </x-adminlte-card>
-        </div>
-        <div class="col-md-10 col-xl-4 mx-auto">
-            <div class="card card-dark card-outline">
-                <div class="card-header">
-                    <h3 class="card-title">Sobre el componente</h3>
-                </div>
-                <div class="card-body">
-                    <p class="text-center">{{$componente->descripcion}}</p>
-                    <p class="text-center">
-                        <small class="text-muted">Registrado: {{ $componente->fechaCreado ? $componente->fechaCreado->format('d/m/Y h:i A') : 'N/A' }}</small><br>
-                        <small class="text-muted">Últ. Modificación: {{ $componente->fechaModificado ? $componente->fechaModificado->format('d/m/Y h:i A') : 'N/A' }}</small>
-                    </p>
-                    {{-- <p class="text-muted text-center text-bold">Requisito: 
-                        @if ($componente->prela)
-                            <a href="{{ route('componente.show', ['planEstudio' => $planEstudio, 'componente' => $componente->prela]) }}" class="text-decoration-none">
-                                {{$componente->prela->nombre}}
-                            </a>
-                        @else
-                            Ninguno
-                        @endif
-                    </p> --}}
-                    <div class="mt-4 text-center">
-                        <a href="{{ route('componente.edit', ['planEstudio' => $planEstudio, 'componente' => $componente]) }}" class="btn btn-primary mb-2"><i class="fas fa-edit"></i> Modificar información</a>
-                        <button type="button" class="btn btn-danger mb-2" data-toggle="modal" data-target="#deleteModal">
-                            <i class="fas fa-trash"></i> Eliminar Componente
-                        </button>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <a href="{{ route('planEstudio.show', $planEstudio) }}" class="text-decoration-none text-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
-                </div>
+                                            <div class="modal-body">
+                                                ¿Está seguro de eliminar la materia {{ $materia->nombre }}?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                <form action="{{ route('materia.destroy', ['planEstudio' => $planEstudio, 'componente' => $componente, 'materia' => $materia]) }}" method="post" style="display: inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endpush
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="mb-0 py-3 text-center text-muted">No hay materias creadas.</p>
+            @endif
+        </section>
+
+        <x-slot:asideCardTitle>Sobre el Componente</x-slot>
+        <x-slot:aside>
+            <p class="text-center">{{$componente->descripcion}}</p>
+            <p class="text-center">
+                <small class="text-muted">Registrado: {{ $componente->fechaCreado ? $componente->fechaCreado->format('d/m/Y h:i A') : 'N/A' }}</small><br>
+                <small class="text-muted">Últ. Modificación: {{ $componente->fechaModificado ? $componente->fechaModificado->format('d/m/Y h:i A') : 'N/A' }}</small>
+            </p>
+            {{-- <p class="text-muted text-center text-bold">Requisito: 
+                @if ($componente->prela)
+                    <a href="{{ route('componente.show', ['planEstudio' => $planEstudio, 'componente' => $componente->prela]) }}" class="text-decoration-none">
+                        {{$componente->prela->nombre}}
+                    </a>
+                @else
+                    Ninguno
+                @endif
+            </p> --}}
+            <div class="mt-4 text-center">
+                <a href="{{ route('componente.edit', ['planEstudio' => $planEstudio, 'componente' => $componente]) }}" class="btn btn-primary mb-2"><i class="fas fa-edit"></i> Modificar información</a>
+                <button type="button" class="btn btn-danger mb-2" data-toggle="modal" data-target="#deleteModal">
+                    <i class="fas fa-trash"></i> Eliminar Componente
+                </button>
             </div>
-        </div>
-    </div>
+        </x-slot>
+        <x-slot:asideCardFooter><x-app.boton-regresar route="planEstudio.show" :params="['planEstudio' => $planEstudio]" /></x-slot:asideCardFooter>
+
+    </x-layout.two-column-cards>
 @endsection
 
 @pushOnce('modals')

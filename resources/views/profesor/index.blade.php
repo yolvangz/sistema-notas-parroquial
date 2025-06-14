@@ -4,7 +4,8 @@
 
 @section('subtitle', 'Todos los profesores')
 
-@section('content_header_title', 'Todos los profesores')
+@section('content_header_title', 'Profesor')
+@section('content_header_subtitle', 'Todos los Profesores')
 
 @php
     $titulo = 'Lista de Profesores';
