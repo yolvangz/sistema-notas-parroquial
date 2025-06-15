@@ -43,7 +43,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="{{ $columns }}" class="text-center">{{ $emptyMessage }}</td>
+                        <td colspan="{{ count($columns) + 1 }}" class="text-center">{{ $emptyMessage }}</td>
                     </tr>
                 @endif
             </tbody>

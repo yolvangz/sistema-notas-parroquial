@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\View\View;
+use Illuminate\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +19,7 @@ class InstitucionController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show() 
+    public function show(): View
     {
         $institucion = Institucion::with('letraRif', 'configuracion')->find(1);
         
@@ -33,7 +33,7 @@ class InstitucionController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(): RedirectResponse|View
     {
         // Check if an institution already exists
         if (Institucion::exists()) {
@@ -49,8 +49,12 @@ class InstitucionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
+        // Check if an institution already exists
+        if (Institucion::exists()) {
+            return redirect()->route('institucion.show')->with('error', 'Ya existe una institución registrada.');
+        }
         // Decode the JSON string into an array
         $calificacionCualitativaLiterales = json_decode($request->input('calificacionCualitativaLiterales'), true);
 
@@ -135,7 +139,7 @@ class InstitucionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(): RedirectResponse|View
     {
         $institucion = Institucion::with('letraRif', 'configuracion')->find(1);
 
@@ -152,13 +156,12 @@ class InstitucionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         $institucion = Institucion::find(1);
 
-        if (!$institucion) {
-            return redirect()->route('institucion.show');
-        }
+        if (!$institucion) return redirect()->route('institucion.show');
+
         $validatedData = $request->validate([
             'nombre' => ['required','string','max:255'],
             'letraRif' => ['required','string','max:1'],
@@ -184,25 +187,21 @@ class InstitucionController extends Controller
 
         return redirect()->route('institucion.show')->with('success', 'Institución actualizada correctamente.');
     }
-    public function configuracionEdit()
+    public function configuracionEdit(): RedirectResponse|View
     {
         $configuracion = configuracion::where('IDConfiguracion', 1)->first();
 
-        if (!$configuracion) {
-            return redirect()->route('institucion.show');
-        }
+        if (!$configuracion) return redirect()->route('institucion.show');
 
         return view('configuracion.edit', [
             'configuracion' => $configuracion,
         ]);
     }
-    public function configuracionUpdate(Request $request) 
+    public function configuracionUpdate(Request $request): RedirectResponse
     {
         $configuracion = configuracion::where('IDConfiguracion', 1)->first();
 
-        if (!$configuracion) {
-            return redirect()->route('institucion.show');
-        }
+        if (!$configuracion) return redirect()->route('institucion.show');
 
         // Decode the JSON string into an array
         $calificacionCualitativaLiterales = json_decode($request->input('calificacionCualitativaLiterales'), true);
