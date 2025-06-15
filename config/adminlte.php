@@ -316,6 +316,8 @@ return [
             'route' => 'institucion.show',
             'icon' => 'fas fa-school',
         ],
+    ],
+    'institucion_enabled_menu' => [
         [
             'header' => 'Administración',
             'key' => 'administracion_header',
